@@ -45,6 +45,12 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Migrations
+```bash
+dbmate new create_users_table
+npm run apply-migrations
+```
+
 ## Test
 
 ```bash
@@ -71,3 +77,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+### Reference
+- https://github.com/mwanago/nestjs-raw-sql/tree/master

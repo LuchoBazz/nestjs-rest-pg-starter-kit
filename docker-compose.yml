@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: nestjs_gql_pg
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=nestjs_gql_pg
+      - POSTGRES_PASSWORD=0c80139e6e6349eebc99fe7fcfc901e7
+      - POSTGRES_DB=nestjs_gql_pg
+    volumes:
+      - "nestjs_gql_pg:/var/lib/postgresql"
+  
+  dbmate:
+    image: amacneil/dbmate:v1.12.0
+    container_name: dbmate_nestjs_gql_pg
+    user: "1000:1000"
+    environment:
+      - DATABASE_URL=postgres://nestjs_gql_pg:0c80139e6e6349eebc99fe7fcfc901e7@postgres:5432/nestjs_gql_pg?sslmode=disable
+      - PGPASSWORD=0c80139e6e6349eebc99fe7fcfc901e7
+    volumes:
+      - ./db:/db
+    depends_on:
+      - postgres
+    command: -d db/migrations/ up
+  
+volumes:
+  nestjs_gql_pg:

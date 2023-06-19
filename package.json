@@ -18,7 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./tests/jest-e2e.json",
-    "linter-fix": "pnpm run lint --fix && prettier --write \"src/**/*.ts\" \"tests/**/*.ts\""
+    "linter-fix": "pnpm run lint --fix && prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "new-migration": "docker-compose run dbmate new --",
+    "apply-migrations": "docker-compose run dbmate"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
