@@ -17,10 +17,13 @@ CREATE TABLE IF NOT EXISTS core.users (
   user_role core."role_enum" NOT NULL,
   user_provider core."auth_provider_enum" NOT NULL,
   user_auth_type core."auth_type_enum" NOT NULL,
-  user_organization int4 NOT NULL,
+  user_organization VARCHAR(63) NOT NULL,
   user_created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   user_updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  user_dynamic_info JSONB NOT NULL DEFAULT '{}'::JSONB
+  user_dynamic_info JSONB NOT NULL DEFAULT '{}'::JSONB,
+
+  CONSTRAINT users_pk PRIMARY KEY (user_id),
+  CONSTRAINT users_organizations_fk FOREIGN KEY (user_organization) REFERENCES core.organizations(organization_client_id)
 );
 
 -- migrate:down
