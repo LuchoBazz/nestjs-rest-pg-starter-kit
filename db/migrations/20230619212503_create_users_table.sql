@@ -1,6 +1,5 @@
 -- migrate:up
 
-CREATE TYPE core.role_enum AS ENUM ('INTERNAL_ADMIN', 'EXTERNAL_ADMIN', 'USER');
 CREATE TYPE core.auth_provider_enum AS ENUM ('FIREBASE', 'SUPABASE');
 CREATE TYPE core.auth_type_enum AS ENUM ('EMAIL_AND_PASSWORD', 'FACEBOOK_AUTH', 'GOOGLE_AUTH', 'GITHUB_AUTH');
 
@@ -14,7 +13,7 @@ CREATE TABLE IF NOT EXISTS core.users (
   user_notifications BOOLEAN NOT NULL DEFAULT FALSE,
   user_is_active BOOLEAN NOT NULL DEFAULT TRUE,
   user_uid VARCHAR(255) NOT NULL,
-  user_role core."role_enum" NOT NULL,
+  user_role VARCHAR(63) NOT NULL,
   user_provider core."auth_provider_enum" NOT NULL,
   user_auth_type core."auth_type_enum" NOT NULL,
   user_organization VARCHAR(63) NOT NULL,
@@ -23,7 +22,8 @@ CREATE TABLE IF NOT EXISTS core.users (
   user_dynamic_info JSONB NOT NULL DEFAULT '{}'::JSONB,
 
   CONSTRAINT users_pk PRIMARY KEY (user_id),
-  CONSTRAINT users_organizations_fk FOREIGN KEY (user_organization) REFERENCES core.organizations(organization_client_id)
+  CONSTRAINT users_organizations_fk FOREIGN KEY (user_organization) REFERENCES core.organizations(organization_client_id),
+  CONSTRAINT roles_users_fk FOREIGN KEY (user_role) REFERENCES core.roles(role_name)
 );
 
 -- migrate:down
