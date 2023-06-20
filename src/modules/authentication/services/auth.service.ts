@@ -2,18 +2,20 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
-// import { FirebaseAuth } from '../../../common/auth/service/firebase.auth.service';
 import { JwtPayload } from '../../../entities/jwt-payload.entity';
 import { UserEntity } from '../../../entities/users.entity';
+import { FirebaseAuth } from '../../../gateways/auth/firebase/firebase.auth.service';
 import { UsersService } from '../../users/services/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(forwardRef(() => JwtService))
-    private _jwtService: JwtService,
+    private jwtService: JwtService,
     @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
+    @Inject(forwardRef(() => FirebaseAuth))
+    private firebaseAuth: FirebaseAuth,
   ) {}
 
   async validateFirebaseToken(params: {
@@ -22,7 +24,7 @@ export class AuthService {
     email?: string;
   }): Promise<DecodedIdToken> {
     const { clientId, accessToken, email } = params;
-    const decodedIdToken = await this.authService.validateToken(clientId, accessToken);
+    const decodedIdToken = await this.firebaseAuth.validateToken(clientId, accessToken);
     if (!decodedIdToken || !decodedIdToken.uid || (email && decodedIdToken?.email !== email)) {
       return undefined;
     }
@@ -64,7 +66,7 @@ export class AuthService {
       iss: 'https://example.com',
       aud: ['https://example.com'],
     };
-    const jwt = this._jwtService.sign(data, { expiresIn });
+    const jwt = this.jwtService.sign(data, { expiresIn });
     return {
       data,
       token: jwt,
