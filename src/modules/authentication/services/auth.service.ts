@@ -4,12 +4,16 @@ import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 // import { FirebaseAuth } from '../../../common/auth/service/firebase.auth.service';
 import { JwtPayload } from '../../../entities/jwt-payload.entity';
+import { UserEntity } from '../../../entities/users.entity';
+import { UsersService } from '../../users/services/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(forwardRef(() => JwtService))
     private _jwtService: JwtService,
+    @Inject(forwardRef(() => UsersService))
+    private usersService: UsersService,
   ) {}
 
   async validateFirebaseToken(params: {
@@ -33,11 +37,8 @@ export class AuthService {
    * @memberof {(AuthService JwtStrategy)}
    */
   async validateJwtPayload(payload: JwtPayload): Promise<UserEntity> {
-    // const user = await onSession(this.dataSource, async (manager) => {
-    //   return this.usersService.findOne(manager, payload.client, payload.email);
-    // });
-    const user = { id: 12, isActive: true };
-    if (user && payload.id === user.id && user.isActive) {
+    const user = await this.usersService.findOne(payload.client, payload.email);
+    if (user && payload.id === user.id && user.is_active) {
       return user;
     }
     return undefined;
@@ -45,18 +46,20 @@ export class AuthService {
 
   public createJwt(user: UserEntity): { data: JwtPayload; token: string } {
     const expiresIn = 60 * 60 * 24 * 7;
-    const { id, uid, email, username, firstName, lastName, role, provider, organization } = user;
+    const { id, uid, email, username, first_name, last_name, role, auth_provider, auth_type, organization_client_id } =
+      user;
 
     const data: JwtPayload = {
       id,
       uid,
       email,
       username,
-      firstName,
-      lastName,
-      client: organization.clientId,
+      first_name,
+      last_name,
+      client: organization_client_id,
       role,
-      provider,
+      auth_provider,
+      auth_type,
       iat: Math.floor(new Date().getTime() / 1000),
       iss: 'https://example.com',
       aud: ['https://example.com'],

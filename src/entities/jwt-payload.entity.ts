@@ -1,13 +1,14 @@
 export interface JwtPayload {
-  id: number;
+  id: string;
   uid: string;
   email: string;
   username: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   client: string;
   role: string;
-  provider: string;
+  auth_provider: string;
+  auth_type: string;
   iat: number;
   iss: string;
   aud: string[];

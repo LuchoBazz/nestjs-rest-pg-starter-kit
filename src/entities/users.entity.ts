@@ -12,7 +12,7 @@ export interface UserParams {
   role: UserRole;
   auth_provider: AuthProvider;
   auth_type: AuthType;
-  dynamic_info: JSON;
+  dynamic_info: Record<string, any>;
   organization_client_id: string;
 }
 
@@ -46,7 +46,7 @@ export class UserEntity extends BaseModel {
   private _role: UserRole;
   private _auth_provider: AuthProvider;
   private _auth_type: AuthType;
-  private _dynamic_info: JSON;
+  private _dynamic_info: Record<string, any>;
   private _organization_client_id: string;
 
   constructor(params: UserParams) {
@@ -177,11 +177,11 @@ export class UserEntity extends BaseModel {
     this._auth_type = value;
   }
 
-  public get dynamic_info(): JSON {
+  public get dynamic_info(): Record<string, any> {
     return this._dynamic_info;
   }
 
-  public set dynamic_info(value: JSON) {
+  public set dynamic_info(value: Record<string, any>) {
     this._dynamic_info = value;
   }
 
