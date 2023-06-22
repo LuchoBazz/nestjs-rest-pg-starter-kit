@@ -21,4 +21,23 @@ export class UsersService {
       organization_client_id: clientId,
     });
   }
+
+  public async create(clientId: string, _user: any): Promise<UserEntity> {
+    console.log(_user);
+    return UserEntity.load({
+      username: 'test',
+      first_name: 'test',
+      last_name: 'test',
+      email: 'test@test.com',
+      terms: true,
+      notifications: true,
+      is_active: true,
+      uid: 'abc123',
+      role: UserRole.USER,
+      auth_provider: AuthProvider.EMAIL_AND_PASSWORD,
+      auth_type: AuthType.FIREBASE,
+      dynamic_info: {},
+      organization_client_id: clientId,
+    });
+  }
 }
