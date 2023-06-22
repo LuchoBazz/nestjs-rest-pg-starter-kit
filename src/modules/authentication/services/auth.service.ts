@@ -7,6 +7,17 @@ import { UserEntity } from '../../../entities/users.entity';
 import { FirebaseAuth } from '../../../gateways/auth/firebase/firebase.auth.service';
 import { UsersService } from '../../users/services/users.service';
 
+interface ValidateTokenParams {
+  clientId: string;
+  accessToken: string;
+  email?: string;
+}
+
+interface CreateJWTOutput {
+  data: JwtPayload;
+  token: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -18,12 +29,7 @@ export class AuthService {
     private firebaseAuth: FirebaseAuth,
   ) {}
 
-  async validateFirebaseToken(params: {
-    clientId: string;
-    accessToken: string;
-    email?: string;
-  }): Promise<DecodedIdToken> {
-    const { clientId, accessToken, email } = params;
+  public async validateToken({ clientId, accessToken, email }: ValidateTokenParams): Promise<DecodedIdToken> {
     const decodedIdToken = await this.firebaseAuth.validateToken(clientId, accessToken);
     if (!decodedIdToken || !decodedIdToken.uid || (email && decodedIdToken?.email !== email)) {
       return undefined;
@@ -38,7 +44,7 @@ export class AuthService {
    * @returns {(Promise<UserEntity | undefined>)} returns undefined if there is no user or the account is not enabled
    * @memberof {(AuthService JwtStrategy)}
    */
-  async validateJwtPayload(payload: JwtPayload): Promise<UserEntity> {
+  public async validateJwtPayload(payload: JwtPayload): Promise<UserEntity | undefined> {
     const user = await this.usersService.findOne(payload.client, payload.email);
     if (user && payload.id === user.id && user.is_active) {
       return user;
@@ -46,7 +52,7 @@ export class AuthService {
     return undefined;
   }
 
-  public createJwt(user: UserEntity): { data: JwtPayload; token: string } {
+  public createJwt(user: UserEntity): CreateJWTOutput {
     const expiresIn = 60 * 60 * 24 * 7;
     const { id, uid, email, username, first_name, last_name, role, auth_provider, auth_type, organization_client_id } =
       user;
