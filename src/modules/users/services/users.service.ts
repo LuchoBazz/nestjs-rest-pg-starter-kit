@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
 import { AuthProvider, AuthType, UserEntity, UserRole } from '../../../entities/users.entity';
+import { PSQLSession } from '../../../gateways/database/postgresql';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   public async findOne(clientId: string, email: string): Promise<UserEntity> {
     return UserEntity.load({
       username: 'test',
@@ -22,7 +23,7 @@ export class UsersService {
     });
   }
 
-  public async create(clientId: string, _user: any): Promise<UserEntity> {
+  public async create(session: PSQLSession, clientId: string, _user: any): Promise<UserEntity> {
     console.log(_user);
     return UserEntity.load({
       username: 'test',

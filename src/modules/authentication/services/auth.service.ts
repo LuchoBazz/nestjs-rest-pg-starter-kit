@@ -5,7 +5,7 @@ import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { JwtPayload } from '../../../entities/jwt-payload.entity';
 import { UserEntity } from '../../../entities/users.entity';
 import { FirebaseAuth } from '../../../gateways/auth/firebase/firebase.auth.service';
-import { UsersService } from '../../users/services/users.service';
+import { UserService } from '../../users/services/users.service';
 
 interface ValidateTokenParams {
   clientId: string;
@@ -13,7 +13,7 @@ interface ValidateTokenParams {
   email?: string;
 }
 
-interface CreateJWTOutput {
+export interface CreateJWTOutput {
   data: JwtPayload;
   token: string;
 }
@@ -23,8 +23,8 @@ export class AuthService {
   constructor(
     @Inject(forwardRef(() => JwtService))
     private jwtService: JwtService,
-    @Inject(forwardRef(() => UsersService))
-    private usersService: UsersService,
+    @Inject(forwardRef(() => UserService))
+    private userService: UserService,
     @Inject(forwardRef(() => FirebaseAuth))
     private firebaseAuth: FirebaseAuth,
   ) {}
@@ -45,7 +45,7 @@ export class AuthService {
    * @memberof {(AuthService JwtStrategy)}
    */
   public async validateJwtPayload(payload: JwtPayload): Promise<UserEntity | undefined> {
-    const user = await this.usersService.findOne(payload.client, payload.email);
+    const user = await this.userService.findOne(payload.client, payload.email);
     if (user && payload.id === user.id && user.is_active) {
       return user;
     }
