@@ -5,6 +5,7 @@ import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { JwtPayload } from '../../../entities/jwt-payload.entity';
 import { UserEntity } from '../../../entities/users.entity';
 import { FirebaseAuth } from '../../../gateways/auth/firebase/firebase.auth.service';
+import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services/users.service';
 
 interface ValidateTokenParams {
@@ -27,6 +28,7 @@ export class AuthService {
     private userService: UserService,
     @Inject(forwardRef(() => FirebaseAuth))
     private firebaseAuth: FirebaseAuth,
+    private readonly pgGateway: PgGateway,
   ) {}
 
   public async validateToken({ clientId, accessToken, email }: ValidateTokenParams): Promise<DecodedIdToken> {
@@ -45,7 +47,9 @@ export class AuthService {
    * @memberof {(AuthService JwtStrategy)}
    */
   public async validateJwtPayload(payload: JwtPayload): Promise<UserEntity | undefined> {
-    const user = await this.userService.findOne(payload.client, payload.email);
+    const user = await this.pgGateway.onSession(async (manager: PSQLSession) => {
+      return this.userService.findOne(manager, { clientId: payload.client, email: payload.email });
+    });
     if (user && payload.id === user.id && user.is_active) {
       return user;
     }
