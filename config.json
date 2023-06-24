@@ -1,12 +1,12 @@
 {
   "postgresql": {
     "host": "localhost",
-    "port": "25432",
-    "dbname": "elementals",
-    "user": "elementals",
-    "password": "elementals",
+    "port": "5432",
+    "dbname": "nestjs_gql_pg",
+    "user": "nestjs_gql_pg",
+    "password": "0c80139e6e6349eebc99fe7fcfc901e7",
     "min": "20",
-    "max": "50",
+    "max": "100",
     "idle_timeout": "30000",
     "connection_timeout": "5000",
     "statement_timeout": "45000"
