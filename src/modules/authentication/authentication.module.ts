@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 
 import jwtConfig from '../../common/configuration/jwt.config';
 import { FirebaseModule } from '../../gateways/auth/firebase/firebase.module';
+import { PgGateway } from '../../gateways/database/postgresql';
 import { UserService } from '../users/services/users.service';
 import { UsersModule } from '../users/users.module';
 import { AuthService } from './services/auth.service';
@@ -31,6 +32,6 @@ import { AuthService } from './services/auth.service';
     FirebaseModule,
   ],
   controllers: [],
-  providers: [AuthService, UserService],
+  providers: [AuthService, UserService, PgGateway],
 })
 export class AuthenticationModule {}

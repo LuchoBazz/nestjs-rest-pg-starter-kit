@@ -1,0 +1,14 @@
+{
+  "postgresql": {
+    "host": "localhost",
+    "port": "25432",
+    "dbname": "elementals",
+    "user": "elementals",
+    "password": "elementals",
+    "min": "20",
+    "max": "50",
+    "idle_timeout": "30000",
+    "connection_timeout": "5000",
+    "statement_timeout": "45000"
+  }
+}
