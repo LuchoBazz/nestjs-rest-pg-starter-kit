@@ -32,7 +32,7 @@ export const findUserByEmail = async (
           user_is_active,
           user_uid,
           user_role,
-          user_provider,
+          user_auth_provider,
           user_auth_type,
           user_organization,
           user_created_at,
@@ -66,7 +66,7 @@ export const createUser = async (manager: PSQLSession, { user, clientId }: UserC
         user_is_active,
         user_uid,
         user_role,
-        user_provider,
+        user_auth_provider,
         user_auth_type,
         user_organization,
         user_dynamic_info

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS core.users (
   user_is_active BOOLEAN NOT NULL DEFAULT TRUE,
   user_uid VARCHAR(255) NOT NULL,
   user_role VARCHAR(63) NOT NULL,
-  user_provider core."auth_provider_enum" NOT NULL,
+  user_auth_provider core."auth_provider_enum" NOT NULL,
   user_auth_type core."auth_type_enum" NOT NULL,
   user_organization VARCHAR(63) NOT NULL,
   user_created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
