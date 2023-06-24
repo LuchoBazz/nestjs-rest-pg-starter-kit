@@ -46,6 +46,9 @@ export class AuthInteractor {
     const userCreated = await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
       return this.userService.create(manager, { clientId, user });
     });
+
+    ErrorValidator.orThrowInternalServerError(userCreated, 'USER_COULD_NOT_BE_CREATED');
+
     const jwt = this.authService.createJwt(userCreated);
     return this.authPresenter.presentToken(jwt);
   }
@@ -62,6 +65,10 @@ export class AuthInteractor {
     const user = await this.pgGateway.onSession(async (manager: PSQLSession) => {
       return this.userService.findOne(manager, { clientId, email: result.email });
     });
+
+    ErrorValidator.orThrowNotFoundError(user, 'USER_NOT_FOUND');
+
+    ErrorValidator.orThrowUnauthorizedError(user.is_active, 'USER_TEMPORARILY_INACTIVE');
 
     const jwt = this.authService.createJwt(user);
     return this.authPresenter.presentToken(jwt);
