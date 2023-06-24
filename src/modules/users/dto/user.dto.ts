@@ -1,9 +1,8 @@
 import { Field, InputType, InterfaceType } from '@nestjs/graphql';
 import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsEnum, IsJSON, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import GraphQLJSON from 'graphql-type-json';
+import { IsBoolean, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
-import { AuthProvider } from '../../../entities/users.entity';
+import { AuthType } from '../../../entities/users.entity';
 
 @InputType({ isAbstract: true })
 @InterfaceType({ isAbstract: true })
@@ -36,14 +35,9 @@ export class CreateUser {
   @Field()
   notifications: boolean;
 
-  @IsEnum(AuthProvider)
+  @IsEnum(AuthType)
   @Field()
-  authProvider: AuthProvider;
-
-  @IsOptional()
-  @IsJSON()
-  @Field(() => GraphQLJSON)
-  dynamicInfo: JSON;
+  authType: AuthType;
 }
 
 @InputType({ isAbstract: true })

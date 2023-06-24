@@ -1,14 +1,14 @@
-import { v1 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
-export abstract class BaseModel {
+export class BaseModel {
   private _id: string;
 
   constructor() {
-    this._id = uuid.generate() as string;
+    this._id = uuid();
   }
 
   public get id(): string {
-    return this.id;
+    return this._id;
   }
 
   public set id(_id: string) {

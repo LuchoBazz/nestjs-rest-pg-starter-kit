@@ -23,15 +23,15 @@ export enum UserRole {
 }
 
 export enum AuthProvider {
+  FIREBASE = 'FIREBASE',
+  SUPABASE = 'SUPABASE',
+}
+
+export enum AuthType {
   EMAIL_AND_PASSWORD = 'EMAIL_AND_PASSWORD',
   FACEBOOK_AUTH = 'FACEBOOK_AUTH',
   GOOGLE_AUTH = 'GOOGLE_AUTH',
   GITHUB_AUTH = 'GITHUB_AUTH',
-}
-
-export enum AuthType {
-  FIREBASE = 'FIREBASE',
-  SUPABASE = 'SUPABASE',
 }
 
 export class UserEntity extends BaseModel {
@@ -51,19 +51,19 @@ export class UserEntity extends BaseModel {
 
   constructor(params: UserParams) {
     super();
-    this._username = params.username;
-    this._first_name = params.first_name;
-    this._last_name = params.last_name;
-    this._email = params.email;
-    this._terms = params.terms;
-    this._notifications = params.notifications;
-    this._is_active = params.is_active;
-    this._uid = params.uid;
-    this._role = params.role;
-    this._auth_provider = params.auth_provider;
-    this._auth_type = params.auth_type;
-    this._dynamic_info = params.dynamic_info;
-    this._organization_client_id = params.organization_client_id;
+    this.username = params.username;
+    this.first_name = params.first_name;
+    this.last_name = params.last_name;
+    this.email = params.email;
+    this.terms = params.terms;
+    this.notifications = params.notifications;
+    this.is_active = params.is_active;
+    this.uid = params.uid;
+    this.role = params.role;
+    this.auth_provider = params.auth_provider;
+    this.auth_type = params.auth_type;
+    this.dynamic_info = params.dynamic_info;
+    this.organization_client_id = params.organization_client_id;
   }
 
   public static load(params: UserParams): UserEntity {

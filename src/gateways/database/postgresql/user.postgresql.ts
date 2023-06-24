@@ -71,17 +71,18 @@ export const createUser = async (manager: PSQLSession, { user, clientId }: UserC
         user_organization,
         user_dynamic_info
       ) VALUES(
-        %1$L, %2$L, %3$L, '%4$L, %5$L, %6$L, %7$L, %8$L, %9$L, %10$L, %11$L, %12$L, %13$L, %4$L::jsonb
+        %1$L, %2$L, %3$L, %4$L, %5$L, %6$L, %7$L, %8$L, %9$L, %10$L, %11$L, %12$L, %13$L, %14$L::jsonb
       )
+      RETURNING *
       `,
       user.id,
       user.username,
       user.first_name,
       user.last_name,
       user.email,
-      user.terms,
-      user.notifications,
-      user.is_active,
+      String(user.terms),
+      String(user.notifications),
+      String(user.is_active),
       user.uid,
       user.role,
       user.auth_provider,

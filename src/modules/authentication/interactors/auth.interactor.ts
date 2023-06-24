@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ErrorValidator } from '../../../common/errors/error.validator';
-import { AuthType, UserEntity, UserRole } from '../../../entities/users.entity';
+import { AuthProvider, UserEntity, UserRole } from '../../../entities/users.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services/users.service';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
@@ -37,9 +37,9 @@ export class AuthInteractor {
       is_active: true,
       uid: result.uid,
       role: UserRole.USER,
-      auth_provider: userInfo.authProvider,
-      auth_type: AuthType.FIREBASE,
-      dynamic_info: userInfo.dynamicInfo,
+      auth_provider: AuthProvider.FIREBASE,
+      auth_type: userInfo.authType,
+      dynamic_info: {},
       organization_client_id: clientId,
     });
 

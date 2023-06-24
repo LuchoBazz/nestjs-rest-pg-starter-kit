@@ -1,9 +1,10 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UpdateRequest } from 'firebase-admin/lib/auth/auth-config';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 import { FirebaseConfigService } from './firebase.service';
 
+@Injectable()
 export class FirebaseAuth {
   constructor(private readonly firebaseConfig: FirebaseConfigService) {}
 
