@@ -3,9 +3,19 @@ import { Injectable } from '@nestjs/common';
 import { AuthProvider, AuthType, UserEntity, UserRole } from '../../../entities/users.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 
+interface UserFindOneParams {
+  clientId: string;
+  email: string;
+}
+
+interface UserCreateParams {
+  clientId: string;
+  user: any;
+}
+
 @Injectable()
 export class UserService {
-  public async findOne(clientId: string, email: string): Promise<UserEntity> {
+  public async findOne(session: PSQLSession, { clientId, email }: UserFindOneParams): Promise<UserEntity> {
     return UserEntity.load({
       username: 'test',
       first_name: 'test',
@@ -23,8 +33,8 @@ export class UserService {
     });
   }
 
-  public async create(session: PSQLSession, clientId: string, _user: any): Promise<UserEntity> {
-    console.log(_user);
+  public async create(session: PSQLSession, { clientId, user }: UserCreateParams): Promise<UserEntity> {
+    console.log(user);
     return UserEntity.load({
       username: 'test',
       first_name: 'test',

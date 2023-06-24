@@ -4,7 +4,7 @@ import { ErrorValidator } from '../../../common/errors/error.validator';
 import { AuthType, UserEntity, UserRole } from '../../../entities/users.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services/users.service';
-import { SignUpInput } from '../dto/sign-up.input';
+import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
 import { AuthPresenter } from '../presenters/auth.presenter';
 import { AuthService } from '../services/auth.service';
 
@@ -17,7 +17,7 @@ export class AuthInteractor {
     private readonly authPresenter: AuthPresenter,
   ) {}
 
-  public async signUp(input: SignUpInput): Promise<any> {
+  public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
     const result = await this.authService.validateToken({
       clientId,
@@ -25,7 +25,7 @@ export class AuthInteractor {
       email: userInfo.email,
     });
 
-    ErrorValidator.orThrowBadRequestError(result, 'Could not log-in with the provided credentials');
+    ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
 
     const user: UserEntity = UserEntity.load({
       username: userInfo.username,
@@ -44,9 +44,26 @@ export class AuthInteractor {
     });
 
     const userCreated = await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
-      return this.userService.create(manager, clientId, user);
+      return this.userService.create(manager, { clientId, user });
     });
     const jwt = this.authService.createJwt(userCreated);
-    return this.authPresenter.signUp(jwt);
+    return this.authPresenter.presentToken(jwt);
+  }
+
+  public async signIn(input: SignInInput): Promise<AuthResponse> {
+    const { clientId, accessToken } = input;
+    const result = await this.authService.validateToken({
+      clientId,
+      accessToken,
+    });
+
+    ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
+
+    const user = await this.pgGateway.onSession(async (manager: PSQLSession) => {
+      return this.userService.findOne(manager, { clientId, email: result.email });
+    });
+
+    const jwt = this.authService.createJwt(user);
+    return this.authPresenter.presentToken(jwt);
   }
 }

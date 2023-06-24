@@ -21,8 +21,22 @@ export class SignUpInput {
   userInfo: CreateUser;
 }
 
+@InputType()
+@InterfaceType()
+export class SignInInput {
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  clientId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  accessToken: string;
+}
+
 @ObjectType()
-export class SignUpResponse {
+export class AuthResponse {
   @IsNotEmpty()
   @IsString()
   @Field()
