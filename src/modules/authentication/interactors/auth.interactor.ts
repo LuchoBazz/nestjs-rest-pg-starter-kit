@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
 import { ErrorValidator } from '../../../common/errors/error.validator';
-import { AuthProvider, UserEntity, UserRole } from '../../../entities/users.entity';
+import { UserEntity, UserRole } from '../../../entities/users.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
+import { FeatureFlagRepository } from '../../../gateways/database/postgresql/feature-flag.repository';
 import { UserService } from '../../users/services/users.service';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
 import { AuthPresenter } from '../presenters/auth.presenter';
@@ -12,6 +13,7 @@ import { AuthService } from '../services/auth.service';
 export class AuthInteractor {
   constructor(
     private readonly pgGateway: PgGateway,
+    private readonly featureFlagRepository: FeatureFlagRepository,
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
@@ -19,11 +21,16 @@ export class AuthInteractor {
 
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
-    const result = await this.authService.validateToken({
-      clientId,
-      accessToken,
-      email: userInfo.email,
-    });
+    const [result, authProvider] = await Promise.all([
+      this.authService.validateToken({
+        clientId,
+        accessToken,
+        email: userInfo.email,
+      }),
+      this.pgGateway.onSession(async (manager: PSQLSession) => {
+        return this.featureFlagRepository.findAuthProvider(manager, { clientId });
+      }),
+    ]);
 
     ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
 
@@ -37,7 +44,7 @@ export class AuthInteractor {
       is_active: true,
       uid: result.uid,
       role: UserRole.USER,
-      auth_provider: AuthProvider.FIREBASE,
+      auth_provider: authProvider,
       auth_type: userInfo.authType,
       dynamic_info: {},
       organization_client_id: clientId,
