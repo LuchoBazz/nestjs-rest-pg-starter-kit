@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS core.feature_flags (
   feature_flag_value text NULL,
   feature_flag_is_active BOOLEAN NOT NULL DEFAULT TRUE,
   feature_flag_type core."feature_flag_type_enum" NOT NULL,
+  feature_flag_is_experimental BOOLEAN NOT NULL DEFAULT FALSE,
   feature_flag_organization VARCHAR(63) NOT NULL,
   feature_flag_created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   feature_flag_updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
