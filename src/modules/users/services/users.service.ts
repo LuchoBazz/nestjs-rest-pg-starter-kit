@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { UserEntity } from '../../../entities/users.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { createUser, findUserByEmail } from '../../../gateways/database/postgresql/user.postgresql';
+import { UserRepository } from '../../../gateways/database/postgresql/user.repository';
 
 interface UserFindOneParams {
   clientId: string;
@@ -16,11 +16,13 @@ interface UserCreateParams {
 
 @Injectable()
 export class UserService {
+  constructor(private readonly userRepository: UserRepository) {}
+
   public async findOne(session: PSQLSession, { clientId, email }: UserFindOneParams): Promise<UserEntity> {
-    return findUserByEmail(session, { email, clientId });
+    return this.userRepository.findUserByEmail(session, { email, clientId });
   }
 
   public async create(session: PSQLSession, { clientId, user }: UserCreateParams): Promise<UserEntity> {
-    return createUser(session, { clientId, user });
+    return this.userRepository.createUser(session, { clientId, user });
   }
 }
