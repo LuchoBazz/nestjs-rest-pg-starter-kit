@@ -12,6 +12,7 @@ import { AuthInteractor } from './interactors/auth.interactor';
 import { AuthPresenter } from './presenters/auth.presenter';
 import { AuthResolver } from './resolvers/auth.resolver';
 import { AuthService } from './services/auth.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { AuthService } from './services/auth.service';
     PostgresqlModule,
   ],
   controllers: [],
-  providers: [AuthResolver, AuthInteractor, AuthPresenter, AuthService, UserService],
-  exports: [AuthService, UserService],
+  providers: [AuthResolver, AuthInteractor, AuthPresenter, AuthService, UserService, JwtStrategy],
+  exports: [AuthService, UserService, JwtStrategy],
 })
 export class AuthenticationModule {}

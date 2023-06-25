@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service';
 export class AuthInteractor {
   constructor(
     private readonly pgGateway: PgGateway,
-    private readonly featureFlagRepository: FeatureFlagRepository,
+    private readonly featFlagRepository: FeatureFlagRepository,
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
@@ -28,7 +28,7 @@ export class AuthInteractor {
         email: userInfo.email,
       }),
       this.pgGateway.onSession(async (manager: PSQLSession) => {
-        return this.featureFlagRepository.findAuthProvider(manager, { clientId });
+        return this.featFlagRepository.findAuthProvider(manager, { clientId });
       }),
     ]);
 
@@ -79,5 +79,10 @@ export class AuthInteractor {
 
     const jwt = this.authService.createJwt(user);
     return this.authPresenter.presentToken(jwt);
+  }
+
+  public async revokeAndRefreshToken(user: UserEntity): Promise<AuthResponse> {
+    console.log(user);
+    return { token: '' };
   }
 }

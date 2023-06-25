@@ -50,10 +50,8 @@ export class AuthService {
     const user = await this.pgGateway.onSession(async (manager: PSQLSession) => {
       return this.userService.findOne(manager, { clientId: payload.client, email: payload.email });
     });
-    if (user && payload.id === user.id && user.is_active) {
-      return user;
-    }
-    return undefined;
+    const isValidUser = user && payload.id === user.id && user.is_active;
+    return isValidUser ? user : undefined;
   }
 
   public createJwt(user: UserEntity): CreateJWTOutput {

@@ -3,8 +3,8 @@ import { v4 as uuid } from 'uuid';
 export class BaseModel {
   private _id: string;
 
-  constructor() {
-    this._id = uuid();
+  constructor(id?: string) {
+    this._id = id ?? uuid();
   }
 
   public get id(): string {

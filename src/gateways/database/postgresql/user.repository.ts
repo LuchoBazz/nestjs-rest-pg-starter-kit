@@ -41,13 +41,13 @@ export class UserRepository {
             user_updated_at,
             user_dynamic_info
           FROM core.users users
-          WHERE users.email = %1$L AND users.user_organization = %2$L
+          WHERE users.user_email = %1$L AND users.user_organization = %2$L
         `,
         email,
         clientId,
       );
       const { rows } = await manager.query(query);
-      return UserEntity.load(rows[0]);
+      return UserEntity.loadFromRow(rows[0]);
     } catch (error) {
       throw new NotFoundException('USER_NOT_FOUND');
     }
@@ -93,7 +93,7 @@ export class UserRepository {
         JSON.stringify(user.dynamic_info),
       );
       const { rows } = await manager.query(query);
-      return UserEntity.load(rows[0]);
+      return UserEntity.loadFromRow(rows[0]);
     } catch (error) {
       throw new NotFoundException('USER_COULD_NOT_BE_CREATED');
     }

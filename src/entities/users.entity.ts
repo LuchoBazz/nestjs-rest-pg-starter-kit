@@ -1,6 +1,7 @@
 import { BaseModel } from './base.entity';
 
 export interface UserParams {
+  id?: string;
   username: string;
   first_name: string;
   last_name: string;
@@ -50,7 +51,7 @@ export class UserEntity extends BaseModel {
   private _organization_client_id: string;
 
   constructor(params: UserParams) {
-    super();
+    super(params.id);
     this.username = params.username;
     this.first_name = params.first_name;
     this.last_name = params.last_name;
@@ -71,8 +72,9 @@ export class UserEntity extends BaseModel {
   }
 
   // deno-lint-ignore no-explicit-any
-  public loadFromRow(row: any): UserEntity {
+  public static loadFromRow(row: any): UserEntity {
     return UserEntity.load({
+      id: row.user_id,
       username: row.user_username,
       first_name: row.user_first_name,
       last_name: row.user_last_name,
@@ -85,7 +87,7 @@ export class UserEntity extends BaseModel {
       auth_provider: row.user_auth_provider,
       auth_type: row.user_auth_type,
       dynamic_info: row.user_dynamic_info,
-      organization_client_id: row.user_organization_client_id,
+      organization_client_id: row.user_organization,
     });
   }
 
