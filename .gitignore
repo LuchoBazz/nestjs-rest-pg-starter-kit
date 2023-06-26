@@ -42,3 +42,4 @@ schema.gql
 
 # Env Files
 *.env
+!example.env

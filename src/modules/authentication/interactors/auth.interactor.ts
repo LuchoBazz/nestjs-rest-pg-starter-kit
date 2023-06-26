@@ -21,6 +21,7 @@ export class AuthInteractor {
 
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
+    console.log({ clientId });
     const [result, authProvider] = await Promise.all([
       this.authService.validateToken({
         clientId,
@@ -31,6 +32,8 @@ export class AuthInteractor {
         return this.featFlagRepository.findAuthProvider(manager, { clientId });
       }),
     ]);
+
+    console.log(authProvider);
 
     ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
 

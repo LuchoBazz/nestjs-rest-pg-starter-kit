@@ -42,13 +42,13 @@ export class FeatureFlagEntity extends BaseModel {
   }
 
   // deno-lint-ignore no-explicit-any
-  public loadFromRow(row: any): FeatureFlagEntity {
+  public static loadFromRow(row: any): FeatureFlagEntity {
     return FeatureFlagEntity.load({
       key: row.feature_flag_key,
       value: row.feature_flag_value,
       is_active: row.feature_flag_is_active,
       type: row.feature_flag_type,
-      organization_client_id: row.feature_flag_organization_client_id,
+      organization_client_id: row.feature_flag_organization,
       is_experimental: row.feature_flag_is_experimental,
     });
   }
