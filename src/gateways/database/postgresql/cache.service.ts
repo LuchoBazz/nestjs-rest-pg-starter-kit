@@ -1,41 +1,10 @@
 import * as NodeCache from 'node-cache';
 
+import { CacheParameters } from '../../../entities/cache/organization-parameters-cache.entity';
 import { PSQLSession } from '.';
-
-export abstract class CacheParameters {
-  public abstract generateKey(): string;
-  public abstract getSearchValues(): string[];
-}
 
 export abstract class CacheSearcher<T> {
   public abstract search(session: PSQLSession, params: string[]): Promise<T | undefined>;
-}
-
-export class OrganizationCacheParameters extends CacheParameters {
-  private clientId: string;
-  private paramKey: string;
-
-  public constructor(clientId: string, paramKey: string) {
-    super();
-    this.clientId = clientId;
-    this.paramKey = paramKey;
-  }
-
-  public generateKey(): string {
-    return `${this.getClientId()}-${this.getParamKey()}`;
-  }
-
-  public getSearchValues(): string[] {
-    return [this.getClientId(), this.getParamKey()];
-  }
-
-  public getClientId(): string {
-    return this.clientId;
-  }
-
-  public getParamKey(): string {
-    return this.paramKey;
-  }
 }
 
 export class CacheService {
@@ -63,7 +32,7 @@ export class CacheService {
     }
 
     const newValue = await searcher.search(session, parameters.getSearchValues());
-    this.cache.set(key, newValue, 3600);
+    this.cache.set(key, newValue);
     return newValue;
   }
 
