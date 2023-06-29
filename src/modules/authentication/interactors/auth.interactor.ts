@@ -21,7 +21,6 @@ export class AuthInteractor {
 
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
-    console.log({ clientId });
     const [result, authProvider] = await Promise.all([
       this.authService.validateToken({
         clientId,

@@ -1,16 +1,15 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
-import { Cache } from 'cache-manager';
 import { parseEnum } from 'src/common/enum';
 
 import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/feature-flag.entity';
 import { AuthProvider } from '../../../entities/users.entity';
 import { PSQLSession } from '.';
+import { CacheSearcher, CacheService, OrganizationCacheParameters } from './cache.service';
 
 interface InternalParams {
   clientId: string;
-  key: FeatureFlagKey;
+  key: string;
 }
 
 interface Params {
@@ -18,17 +17,14 @@ interface Params {
 }
 
 @Injectable()
-export class FeatureFlagRepository {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
+  private cache: CacheService;
 
-  // @UseInterceptors(CacheInterceptor)
-  private async findFeatureFlag(manager: PSQLSession, { key, clientId }: InternalParams): Promise<FeatureFlagEntity> {
-    const hashKey = `${clientId}-${key}`;
+  constructor() {
+    this.cache = new CacheService();
+  }
 
-    const value = await this.cacheManager.get(hashKey);
-    console.log({ hashKey, value });
-    if (value) return FeatureFlagEntity.loadFromRow(JSON.parse(value as string));
-
+  public async findFeatureFlag(manager: PSQLSession, { key, clientId }: InternalParams): Promise<FeatureFlagEntity> {
     try {
       const query = format(
         `
@@ -50,22 +46,30 @@ export class FeatureFlagRepository {
         key.toString(),
       );
       const { rows } = await manager.query(query);
-      this.cacheManager.set(hashKey, JSON.stringify(rows[0]), 100);
       return FeatureFlagEntity.loadFromRow(rows[0]);
     } catch (error) {
       throw new NotFoundException('FEATURE_FLAG_NOT_FOUND');
     }
   }
 
-  public async findAuthProvider(manager: PSQLSession, { clientId }: Params): Promise<AuthProvider> {
-    const authProviderDefault = AuthProvider.FIREBASE;
+  public async search(session: PSQLSession, params: string[]): Promise<FeatureFlagEntity | undefined> {
     try {
-      const flag = await this.findFeatureFlag(manager, { clientId, key: FeatureFlagKey.AUTH_PROVIDER });
-      const isEnabled = !(!flag.is_active || flag.is_experimental || !flag.value);
-      const parsed = parseEnum(AuthProvider, flag.value);
-      return isEnabled && parsed ? parsed : authProviderDefault;
+      const response = await this.findFeatureFlag(session, { clientId: params[0], key: params[1] });
+      return response;
     } catch (error) {
-      return authProviderDefault;
+      return undefined;
+    }
+  }
+
+  public async findAuthProvider(manager: PSQLSession, { clientId }: Params): Promise<AuthProvider> {
+    const parameter = new OrganizationCacheParameters(clientId, FeatureFlagKey.AUTH_PROVIDER);
+    try {
+      const flag = await this.cache.get(parameter, manager, this);
+      const parsed = parseEnum(AuthProvider, flag.value);
+      const isEnabled = flag.is_active && !flag.is_experimental && !!flag.value;
+      return isEnabled && parsed ? parsed : AuthProvider.FIREBASE;
+    } catch (error) {
+      return AuthProvider.FIREBASE;
     }
   }
 }
