@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ErrorValidator } from '../../../common/errors/error.validator';
 import { UserEntity, UserRole } from '../../../entities/users.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
+import { AuthTokenStatuses } from '../../../gateways/database/postgresql/auth_token_statuses.repository';
 import { FeatureFlagRepository } from '../../../gateways/database/postgresql/feature-flag.repository';
 import { UserService } from '../../users/services/users.service';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
@@ -14,6 +15,7 @@ export class AuthInteractor {
   constructor(
     private readonly pgGateway: PgGateway,
     private readonly featFlagRepository: FeatureFlagRepository,
+    private readonly authTokenStatuses: AuthTokenStatuses,
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
@@ -83,8 +85,16 @@ export class AuthInteractor {
     return this.authPresenter.presentToken(jwt);
   }
 
-  public async revokeAndRefreshToken(user: UserEntity): Promise<AuthResponse> {
-    console.log(user);
-    return { token: '' };
+  public async revokeAndRefreshToken(userFromToken: UserEntity): Promise<AuthResponse> {
+    const { organization_client_id: clientId, email } = userFromToken;
+    const [user] = await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
+      return Promise.all([
+        this.userService.findOne(manager, { clientId, email }),
+        this.authTokenStatuses.revoke(manager, { user_id: userFromToken.id }),
+      ]);
+    });
+    ErrorValidator.orThrowUnauthorizedError(user.is_active, 'USER_TEMPORARILY_INACTIVE');
+    const jwt = this.authService.createJwt(user);
+    return this.authPresenter.presentToken(jwt);
   }
 }
