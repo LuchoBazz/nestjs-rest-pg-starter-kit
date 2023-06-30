@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { IsBoolean } from 'class-validator';
 
 @ObjectType()
-export class AuthSucessResponse {
+export class AuthSuccessResponse {
   @IsBoolean()
   @Field()
   success: boolean;

@@ -10,7 +10,6 @@ interface UserFindOneParams {
 }
 
 interface UserCreateParams {
-  clientId: string;
   user: UserEntity;
 }
 
@@ -22,11 +21,11 @@ export class UserService {
     return this.userRepository.findUserByEmail(session, { email, clientId });
   }
 
-  public async create(session: PSQLSession, { clientId, user }: UserCreateParams): Promise<UserEntity> {
-    return this.userRepository.createUser(session, { clientId, user });
+  public async create(session: PSQLSession, { user }: UserCreateParams): Promise<UserEntity> {
+    return this.userRepository.createUser(session, { user });
   }
 
-  public async delete(session: PSQLSession, { clientId, user }: UserCreateParams): Promise<boolean> {
-    return this.userRepository.delete(session, { clientId, user });
+  public async delete(session: PSQLSession, { user }: UserCreateParams): Promise<boolean> {
+    return this.userRepository.delete(session, { user });
   }
 }

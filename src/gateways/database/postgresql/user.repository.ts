@@ -10,7 +10,6 @@ interface UserFindUserByEmailParams {
 }
 
 interface UserCreateParams {
-  clientId: string;
   user: UserEntity;
 }
 
@@ -53,7 +52,7 @@ export class UserRepository {
     }
   }
 
-  public async createUser(manager: PSQLSession, { user, clientId }: UserCreateParams): Promise<UserEntity> {
+  public async createUser(manager: PSQLSession, { user }: UserCreateParams): Promise<UserEntity> {
     try {
       const query = format(
         `
@@ -89,7 +88,7 @@ export class UserRepository {
         user.role,
         user.auth_provider,
         user.auth_type,
-        clientId,
+        user.organization_client_id,
         JSON.stringify(user.dynamic_info),
       );
       const { rows } = await manager.query(query);
@@ -99,7 +98,7 @@ export class UserRepository {
     }
   }
 
-  public async delete(manager: PSQLSession, { user, clientId }: UserCreateParams): Promise<boolean> {
+  public async delete(manager: PSQLSession, { user }: UserCreateParams): Promise<boolean> {
     try {
       const query = format(
         `
@@ -107,7 +106,7 @@ export class UserRepository {
           WHERE user_id = %1$L AND user_organization = %2$L;
         `,
         user.id,
-        clientId,
+        user.organization_client_id,
       );
       const response = await manager.query(query);
       return Boolean(response);

@@ -6,7 +6,7 @@ import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { AuthTokenStatuses } from '../../../gateways/database/postgresql/auth_token_statuses.repository';
 import { FeatureFlagRepository } from '../../../gateways/database/postgresql/feature-flag.repository';
 import { UserService } from '../../users/services/users.service';
-import { AuthSucessResponse } from '../dto/auth_sucess.dto';
+import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
 import { AuthPresenter } from '../presenters/auth.presenter';
 import { AuthService } from '../services/auth.service';
@@ -56,7 +56,7 @@ export class AuthInteractor {
     });
 
     const userCreated = await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
-      return this.userService.create(manager, { clientId, user });
+      return this.userService.create(manager, { user });
     });
 
     ErrorValidator.orThrowInternalServerError(userCreated, 'USER_COULD_NOT_BE_CREATED');
@@ -99,9 +99,9 @@ export class AuthInteractor {
     return this.authPresenter.presentToken(jwt);
   }
 
-  public async deleteMyAccount(user: UserEntity): Promise<AuthSucessResponse> {
+  public async deleteMyAccount(user: UserEntity): Promise<AuthSuccessResponse> {
     const success = await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
-      return this.userService.delete(manager, { clientId: user.organization_client_id, user });
+      return this.userService.delete(manager, { user });
     });
     return { success };
   }
