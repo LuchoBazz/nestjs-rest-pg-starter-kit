@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { AuthSucessResponse } from '../dto/auth_sucess.dto';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { AuthInteractor } from '../interactors/auth.interactor';
@@ -32,10 +33,9 @@ export class AuthResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation(() => AuthResponse, { nullable: false })
-  public async deleteMyAccount(@Context() ctx): Promise<AuthResponse> {
+  @Mutation(() => AuthSucessResponse, { nullable: false })
+  public async deleteMyAccount(@Context() ctx): Promise<AuthSucessResponse> {
     const { user } = ctx.req;
-    console.log(user);
-    return { token: '' };
+    return this.authInteractor.deleteMyAccount(user);
   }
 }

@@ -25,4 +25,8 @@ export class UserService {
   public async create(session: PSQLSession, { clientId, user }: UserCreateParams): Promise<UserEntity> {
     return this.userRepository.createUser(session, { clientId, user });
   }
+
+  public async delete(session: PSQLSession, { clientId, user }: UserCreateParams): Promise<boolean> {
+    return this.userRepository.delete(session, { clientId, user });
+  }
 }

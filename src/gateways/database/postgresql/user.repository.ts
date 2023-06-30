@@ -98,4 +98,21 @@ export class UserRepository {
       throw new NotFoundException('USER_COULD_NOT_BE_CREATED');
     }
   }
+
+  public async delete(manager: PSQLSession, { user, clientId }: UserCreateParams): Promise<boolean> {
+    try {
+      const query = format(
+        `
+          DELETE FROM core.users
+          WHERE user_id = %1$L AND user_organization = %2$L;
+        `,
+        user.id,
+        clientId,
+      );
+      const response = await manager.query(query);
+      return Boolean(response);
+    } catch (error) {
+      throw new NotFoundException('USER_COULD_NOT_BE_DELETED');
+    }
+  }
 }
