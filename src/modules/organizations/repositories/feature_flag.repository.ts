@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 
 import { CacheSearcher, CacheService } from '../../../common/cache/cache.service';
-import { parseEnum } from '../../../common/enum';
+import { parseEnum } from '../../../common/enum.util';
 import { OrganizationCacheParameters } from '../../../entities/cache/organization-parameters-cache.entity';
 import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/feature-flag.entity';
 import { AuthProvider } from '../../../entities/users.entity';
