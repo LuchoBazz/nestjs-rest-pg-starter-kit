@@ -3,8 +3,14 @@ import { format } from '@scaleleap/pg-format';
 
 import { CacheSearcher, CacheService } from '../../../common/cache/cache.service';
 import { parseEnum } from '../../../common/enum.util';
+import { mapPagination } from '../../../common/mappers/pagination.mapper';
 import { OrganizationCacheParameters } from '../../../entities/cache/organization_parameters_cache.entity';
-import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/organizations/feature_flag.entity';
+import {
+  FeatureFlagEntity,
+  FeatureFlagKey,
+  FeatureFlagPaginationResponse,
+} from '../../../entities/organizations/feature_flag.entity';
+import { OrderBy, Pagination } from '../../../entities/pagination.entity';
 import { AuthProvider } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 
@@ -15,6 +21,12 @@ interface InternalParams {
 
 interface Params {
   clientId: string;
+}
+
+interface PaginationParams {
+  clientId: string;
+  orderBy: OrderBy;
+  pagination?: Pagination;
 }
 
 @Injectable()
@@ -46,6 +58,44 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
       return FeatureFlagEntity.loadFromRow(rows[0]);
     } catch (error) {
       throw new NotFoundException('FEATURE_FLAG_NOT_FOUND');
+    }
+  }
+
+  public async findFeatureFlagsByOrganization(
+    manager: PSQLSession,
+    { clientId, pagination, orderBy }: PaginationParams,
+  ): Promise<FeatureFlagPaginationResponse> {
+    try {
+      const { offset = 1, limit = 10 } = pagination ?? {};
+      const { sortField, asc = true } = orderBy;
+      const query = format(
+        `
+          SELECT
+            feature_flag_id,
+            feature_flag_key,
+            feature_flag_value,
+            feature_flag_is_active,
+            feature_flag_type,
+            feature_flag_organization,
+            feature_flag_created_at,
+            feature_flag_updated_at,
+            feature_flag_is_experimental,
+            COUNT(*) OVER () AS total_count
+          FROM core.feature_flags feature_flags
+          WHERE feature_flags.feature_flag_organization = %1$L
+          ORDER BY %3$L %4$L
+          LIMIT %5$L OFFSET %6$L
+        `,
+        clientId,
+        sortField,
+        Boolean(asc),
+        limit,
+        (offset - 1) * limit,
+      );
+      const { rows } = await manager.query(query);
+      return mapPagination(rows, pagination, FeatureFlagEntity.loadFromRow);
+    } catch (error) {
+      throw new NotFoundException('FEATURE_FLAGS_NOT_FOUND');
     }
   }
 

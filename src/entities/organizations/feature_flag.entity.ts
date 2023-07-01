@@ -1,4 +1,5 @@
 import { BaseModel } from '../base.entity';
+import { PageInfoResponse } from '../pagination.entity';
 
 export interface FeatureFlagParams {
   key: string;
@@ -17,6 +18,12 @@ export enum FeatureFlagType {
 
 export enum FeatureFlagKey {
   AUTH_PROVIDER = 'AUTH_PROVIDER',
+}
+
+export interface FeatureFlagPaginationResponse {
+  totalCount: number;
+  items: FeatureFlagEntity[];
+  pageInfo: PageInfoResponse;
 }
 
 export class FeatureFlagEntity extends BaseModel {
