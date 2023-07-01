@@ -14,7 +14,7 @@ export const mapPagination = <T>(
 };
 
 export const mapPageInfo = (totalCount: number, pagination: Pagination): PageInfoResponse => {
-  const { offset = 1, limit = 10 } = pagination ?? {};
-  const hasNextPage = offset * limit < totalCount;
+  const { page = 1, limit = 10 } = pagination ?? {};
+  const hasNextPage = page * limit < totalCount;
   return { hasNextPage };
 };

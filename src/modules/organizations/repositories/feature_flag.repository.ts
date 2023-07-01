@@ -23,7 +23,7 @@ interface Params {
   clientId: string;
 }
 
-interface PaginationParams {
+interface findFFWithPagination {
   clientId: string;
   orderBy: OrderBy;
   pagination?: Pagination;
@@ -63,10 +63,10 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
 
   public async findFeatureFlagsByOrganization(
     manager: PSQLSession,
-    { clientId, pagination, orderBy }: PaginationParams,
+    { clientId, pagination, orderBy }: findFFWithPagination,
   ): Promise<FeatureFlagPaginationResponse> {
     try {
-      const { offset = 1, limit = 10 } = pagination ?? {};
+      const { page = 1, limit = 10 } = pagination ?? {};
       const { sortField, asc = true } = orderBy;
       const query = format(
         `
@@ -90,7 +90,7 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
         sortField,
         Boolean(asc),
         limit,
-        (offset - 1) * limit,
+        (page - 1) * limit,
       );
       const { rows } = await manager.query(query);
       return mapPagination(rows, pagination, FeatureFlagEntity.loadFromRow);
