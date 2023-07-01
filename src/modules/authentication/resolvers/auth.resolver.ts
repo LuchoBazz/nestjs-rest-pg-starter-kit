@@ -2,8 +2,8 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
-import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign_up.input';
+import { JwtAuthGuard } from '../guards/jwt_auth.guard';
 import { AuthInteractor } from '../interactors/auth.interactor';
 
 @Resolver('Auth')

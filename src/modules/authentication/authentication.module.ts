@@ -7,7 +7,7 @@ import jwtConfig from '../../common/configuration/jwt.config';
 import { FirebaseModule } from '../../gateways/auth/firebase/firebase.module';
 import { PostgresqlModule } from '../../gateways/database/postgresql/postgresql.module';
 import { OrganizationsModule } from '../organizations/organizations.module';
-import { UserService } from '../users/services/users.service';
+import { UserService } from '../users/services/user.service';
 import { UsersModule } from '../users/users.module';
 import { AuthInteractor } from './interactors/auth.interactor';
 import { AuthPresenter } from './presenters/auth.presenter';

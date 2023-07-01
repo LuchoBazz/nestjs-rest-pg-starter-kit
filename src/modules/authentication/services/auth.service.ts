@@ -6,7 +6,7 @@ import { JwtPayload } from '../../../entities/jwt_payload.entity';
 import { UserEntity } from '../../../entities/user.entity';
 import { FirebaseAuth } from '../../../gateways/auth/firebase/firebase.auth.service';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
-import { UserService } from '../../users/services/users.service';
+import { UserService } from '../../users/services/user.service';
 
 interface ValidateTokenParams {
   clientId: string;

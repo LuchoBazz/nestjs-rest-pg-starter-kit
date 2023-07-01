@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { JwtAuthGuard } from '../../authentication/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../authentication/guards/jwt_auth.guard';
 import { FeatureFlagInput, FeatureFlagResponse } from '../dto/feature_flag.dto';
 import { FeatureFlagInteractor } from '../interactors/feature_flag.interactor';
 
