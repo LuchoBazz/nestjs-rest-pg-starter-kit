@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import * as NodeCache from 'node-cache';
 
 import { CacheParameters } from '../../../entities/cache/organization-parameters-cache.entity';
@@ -7,6 +8,7 @@ export abstract class CacheSearcher<T> {
   public abstract search(session: PSQLSession, params: string[]): Promise<T | undefined>;
 }
 
+@Injectable()
 export class CacheService {
   private readonly cache: NodeCache;
 

@@ -19,11 +19,7 @@ interface Params {
 
 @Injectable()
 export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
-  private cache: CacheService;
-
-  constructor() {
-    this.cache = new CacheService();
-  }
+  constructor(private readonly cacheService: CacheService) {}
 
   public async findFeatureFlag(manager: PSQLSession, { key, clientId }: InternalParams): Promise<FeatureFlagEntity> {
     try {
@@ -65,7 +61,7 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
   public async findAuthProvider(manager: PSQLSession, { clientId }: Params): Promise<AuthProvider> {
     const parameter = new OrganizationCacheParameters(clientId, FeatureFlagKey.AUTH_PROVIDER);
     try {
-      const flag = await this.cache.get(parameter, manager, this);
+      const flag = await this.cacheService.get(parameter, manager, this);
       const parsed = parseEnum(AuthProvider, flag.value);
       const isEnabled = flag.is_active && !flag.is_experimental && !!flag.value;
       return isEnabled && parsed ? parsed : AuthProvider.FIREBASE;
