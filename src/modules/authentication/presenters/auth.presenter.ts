@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserEntity } from '../../../entities/users.entity';
+import { UserEntity } from '../../../entities/user.entity';
 import { AuthService } from '../services/auth.service';
 
 interface PresentTokenResponse {
