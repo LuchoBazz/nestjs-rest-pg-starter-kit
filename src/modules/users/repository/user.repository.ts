@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 
 import { UserEntity } from '../../../entities/users.entity';
-import { PSQLSession } from '.';
+import { PSQLSession } from '../../../gateways/database/postgresql';
 
 interface UserFindUserByEmailParams {
   email: string;

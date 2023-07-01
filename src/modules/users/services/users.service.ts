@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { UserEntity } from '../../../entities/users.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { UserRepository } from '../../../gateways/database/postgresql/user.repository';
+import { UserRepository } from '../repository/user.repository';
 
 interface UserFindOneParams {
   clientId: string;
