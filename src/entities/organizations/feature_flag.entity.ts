@@ -1,7 +1,10 @@
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
+
 import { BaseModel } from '../base.entity';
 import { PageInfoResponse } from '../pagination.entity';
 
 export interface FeatureFlagParams {
+  id: string;
   key: string;
   value: string | null;
   is_active: boolean;
@@ -26,6 +29,25 @@ export interface FeatureFlagPaginationResponse {
   pageInfo: PageInfoResponse;
 }
 
+@ObjectType({ isAbstract: true })
+@InputType({ isAbstract: true })
+export class FeatureFlagObject {
+  @Field()
+  id: string;
+  @Field()
+  key: string;
+  @Field()
+  value: string | null;
+  @Field()
+  is_active: boolean;
+  @Field()
+  type: FeatureFlagType;
+  @Field()
+  organization_client_id: string;
+  @Field()
+  is_experimental: boolean;
+}
+
 export class FeatureFlagEntity extends BaseModel {
   private _key: string;
   private _value: string | null;
@@ -35,7 +57,7 @@ export class FeatureFlagEntity extends BaseModel {
   private _is_experimental: boolean;
 
   constructor(params: FeatureFlagParams) {
-    super();
+    super(params.id);
     this.key = params.key;
     this.value = params.value;
     this.is_active = params.is_active;
@@ -51,6 +73,7 @@ export class FeatureFlagEntity extends BaseModel {
   // deno-lint-ignore no-explicit-any
   public static loadFromRow(row: any): FeatureFlagEntity {
     return FeatureFlagEntity.load({
+      id: row.feature_flag_id,
       key: row.feature_flag_key,
       value: row.feature_flag_value,
       is_active: row.feature_flag_is_active,

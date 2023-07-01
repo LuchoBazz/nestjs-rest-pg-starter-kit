@@ -1,17 +1,26 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { UserEntity } from '../../../entities/users/user.entity';
 import { JwtAuthGuard } from '../../authentication/guards/jwt_auth.guard';
-import { FeatureFlagInput, FeatureFlagResponse } from '../dto/feature_flag.dto';
+import {
+  FeatureFlagInput,
+  FeatureFlagResponse,
+  FeatureFlagsInput,
+  FeatureFlagsResponse,
+} from '../dto/feature_flag.dto';
 import { FeatureFlagInteractor } from '../interactors/feature_flag.interactor';
 
 @Resolver('FeatureFlag')
 export class FeatureFlagResolver {
   constructor(private featureFlagInteractor: FeatureFlagInteractor) {}
 
-  @Query(() => String)
-  public featureFlags(): string {
-    return 'Hello, World!';
+  @UseGuards(JwtAuthGuard)
+  @Query(() => FeatureFlagsResponse)
+  public async featureFlags(@Args('input') input: FeatureFlagsInput, @Context() ctx): Promise<FeatureFlagsResponse> {
+    const request = ctx.req;
+    const user = request.user as UserEntity;
+    return this.featureFlagInteractor.getFeatureFlags({ ...input, clientId: user.organization_client_id });
   }
 
   @Query(() => String)

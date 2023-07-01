@@ -83,12 +83,12 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
             COUNT(*) OVER () AS total_count
           FROM core.feature_flags feature_flags
           WHERE feature_flags.feature_flag_organization = %1$L
-          ORDER BY %3$L %4$L
-          LIMIT %5$L OFFSET %6$L
+          ORDER BY feature_flags.%2$s %3$s
+          LIMIT %4$L OFFSET %5$L
         `,
         clientId,
         sortField,
-        Boolean(asc),
+        asc ? 'ASC' : 'DESC',
         limit,
         (page - 1) * limit,
       );

@@ -1,6 +1,6 @@
 export interface Pagination {
-  page?: number | null;
-  limit?: number | null;
+  page?: number;
+  limit?: number;
 }
 
 export interface OrderBy {
