@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
-import { parseEnum } from 'src/common/enum';
 
+import { parseEnum } from '../../../common/enum';
 import { OrganizationCacheParameters } from '../../../entities/cache/organization-parameters-cache.entity';
 import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/feature-flag.entity';
 import { AuthProvider } from '../../../entities/users.entity';
-import { PSQLSession } from '.';
-import { CacheSearcher, CacheService } from './cache.service';
+import { PSQLSession } from '../../../gateways/database/postgresql';
+import { CacheSearcher, CacheService } from '../../../gateways/database/postgresql/cache.service';
 
 interface InternalParams {
   clientId: string;

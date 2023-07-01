@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import jwtConfig from '../../common/configuration/jwt.config';
 import { FirebaseModule } from '../../gateways/auth/firebase/firebase.module';
 import { PostgresqlModule } from '../../gateways/database/postgresql/postgresql.module';
+import { OrganizationsModule } from '../organizations/organizations.module';
 import { UserService } from '../users/services/users.service';
 import { UsersModule } from '../users/users.module';
 import { AuthInteractor } from './interactors/auth.interactor';
@@ -35,6 +36,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UsersModule,
     FirebaseModule,
     PostgresqlModule,
+    OrganizationsModule,
   ],
   controllers: [],
   providers: [AuthResolver, AuthInteractor, AuthPresenter, AuthService, UserService, JwtStrategy],

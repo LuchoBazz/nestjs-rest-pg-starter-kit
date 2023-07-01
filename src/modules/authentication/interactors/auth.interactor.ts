@@ -4,7 +4,7 @@ import { ErrorValidator } from '../../../common/errors/error.validator';
 import { UserEntity, UserRole } from '../../../entities/users.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { AuthTokenStatuses } from '../../../gateways/database/postgresql/auth_token_statuses.repository';
-import { FeatureFlagRepository } from '../../../gateways/database/postgresql/feature-flag.repository';
+import { FeatureFlagRepository } from '../../organizations/repositories/feature_flag.repository';
 import { UserService } from '../../users/services/users.service';
 import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { PgGateway } from '../../../gateways/database/postgresql';
-import { FeatureFlagRepository } from '../../../gateways/database/postgresql/feature-flag.repository';
+import { FeatureFlagRepository } from '../repositories/feature_flag.repository';
 
 @Injectable()
 export class FeatureFlagInteractor {
