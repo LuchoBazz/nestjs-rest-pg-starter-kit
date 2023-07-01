@@ -11,6 +11,7 @@ import { UserService } from '../users/services/users.service';
 import { UsersModule } from '../users/users.module';
 import { AuthInteractor } from './interactors/auth.interactor';
 import { AuthPresenter } from './presenters/auth.presenter';
+import { AuthTokenStatusesRepository } from './repositories/auth_token_statuses.repository';
 import { AuthResolver } from './resolvers/auth.resolver';
 import { AuthService } from './services/auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -39,7 +40,15 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     OrganizationsModule,
   ],
   controllers: [],
-  providers: [AuthResolver, AuthInteractor, AuthPresenter, AuthService, UserService, JwtStrategy],
-  exports: [AuthService, UserService, JwtStrategy],
+  providers: [
+    AuthResolver,
+    AuthInteractor,
+    AuthPresenter,
+    AuthService,
+    UserService,
+    JwtStrategy,
+    AuthTokenStatusesRepository,
+  ],
+  exports: [AuthService, UserService, JwtStrategy, AuthTokenStatusesRepository],
 })
 export class AuthenticationModule {}

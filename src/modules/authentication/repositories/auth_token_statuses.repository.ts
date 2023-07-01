@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 
-import { PSQLSession } from '.';
+import { PSQLSession } from '../../../gateways/database/postgresql';
 
 interface AuthTokenStatusesParams {
   user_id: string;
 }
 
 @Injectable()
-export class AuthTokenStatuses {
+export class AuthTokenStatusesRepository {
   public async revoke(manager: PSQLSession, { user_id }: AuthTokenStatusesParams): Promise<boolean> {
     try {
       const query = format(

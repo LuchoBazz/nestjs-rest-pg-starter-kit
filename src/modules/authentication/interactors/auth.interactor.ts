@@ -3,12 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { ErrorValidator } from '../../../common/errors/error.validator';
 import { UserEntity, UserRole } from '../../../entities/users.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
-import { AuthTokenStatuses } from '../../../gateways/database/postgresql/auth_token_statuses.repository';
 import { FeatureFlagRepository } from '../../organizations/repositories/feature_flag.repository';
 import { UserService } from '../../users/services/users.service';
 import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign-up.input';
 import { AuthPresenter } from '../presenters/auth.presenter';
+import { AuthTokenStatusesRepository } from '../repositories/auth_token_statuses.repository';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthInteractor {
   constructor(
     private readonly pgGateway: PgGateway,
     private readonly featFlagRepository: FeatureFlagRepository,
-    private readonly authTokenStatuses: AuthTokenStatuses,
+    private readonly authTokenStatusesRepository: AuthTokenStatusesRepository,
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
@@ -89,7 +89,7 @@ export class AuthInteractor {
     const [user] = await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
       return Promise.all([
         this.userService.findOne(manager, { clientId, email }),
-        this.authTokenStatuses.revoke(manager, { user_id: userFromToken.id }),
+        this.authTokenStatusesRepository.revoke(manager, { user_id: userFromToken.id }),
       ]);
     });
     ErrorValidator.orThrowUnauthorizedError(user.is_active, 'USER_TEMPORARILY_INACTIVE');
