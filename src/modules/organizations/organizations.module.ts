@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { PostgresqlModule } from '../../gateways/database/postgresql/postgresql.module';
+import { CacheModule } from '../../common/cache/cache.module';
 import { FeatureFlagRepository } from './repositories/feature_flag.repository';
 
 @Module({
-  imports: [PostgresqlModule],
+  imports: [CacheModule],
   providers: [FeatureFlagRepository],
   exports: [FeatureFlagRepository],
 })

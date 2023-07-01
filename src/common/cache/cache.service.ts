@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as NodeCache from 'node-cache';
 
-import { CacheParameters } from '../../../entities/cache/organization-parameters-cache.entity';
-import { PSQLSession } from '.';
+import { CacheParameters } from '../../entities/cache/organization-parameters-cache.entity';
+import { PSQLSession } from '../../gateways/database/postgresql';
 
 export abstract class CacheSearcher<T> {
   public abstract search(session: PSQLSession, params: string[]): Promise<T | undefined>;

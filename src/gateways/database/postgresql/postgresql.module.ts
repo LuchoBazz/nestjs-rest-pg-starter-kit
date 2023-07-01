@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 
 import { PgGateway } from '.';
-import { CacheService } from './cache.service';
 
 @Module({
   imports: [],
-  providers: [PgGateway, CacheService],
-  exports: [PgGateway, CacheService],
+  providers: [PgGateway],
+  exports: [PgGateway],
 })
 export class PostgresqlModule {}
