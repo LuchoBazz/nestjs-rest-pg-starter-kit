@@ -1,14 +1,10 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { PaginationWithOrderByInput } from '../../../common/dto/pagination.dto';
 import { UserEntity } from '../../../entities/users/user.entity';
 import { JwtAuthGuard } from '../../authentication/guards/jwt_auth.guard';
-import {
-  FeatureFlagInput,
-  FeatureFlagResponse,
-  FeatureFlagsInput,
-  FeatureFlagsResponse,
-} from '../dto/feature_flag.dto';
+import { FeatureFlagInput, FeatureFlagResponse, FeatureFlagsResponse } from '../dto/feature_flag.dto';
 import { FeatureFlagInteractor } from '../interactors/feature_flag.interactor';
 
 @Resolver('FeatureFlag')
@@ -17,10 +13,13 @@ export class FeatureFlagResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => FeatureFlagsResponse)
-  public async featureFlags(@Args('input') input: FeatureFlagsInput, @Context() ctx): Promise<FeatureFlagsResponse> {
+  public async featureFlags(
+    @Args('input') input: PaginationWithOrderByInput,
+    @Context() ctx,
+  ): Promise<FeatureFlagsResponse> {
     const request = ctx.req;
     const user = request.user as UserEntity;
-    return this.featureFlagInteractor.getFeatureFlags({ ...input, clientId: user.organization_client_id });
+    return this.featureFlagInteractor.getFeatureFlags(user.organization_client_id, input);
   }
 
   @Query(() => String)
