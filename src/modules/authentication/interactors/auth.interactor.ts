@@ -61,8 +61,7 @@ export class AuthInteractor {
 
     ErrorValidator.orThrowInternalServerError(userCreated, 'USER_COULD_NOT_BE_CREATED');
 
-    const jwt = this.authService.createJwt(userCreated);
-    return this.authPresenter.presentToken(jwt);
+    return this.authPresenter.presentToken(userCreated);
   }
 
   public async signIn(input: SignInInput): Promise<AuthResponse> {
@@ -82,8 +81,7 @@ export class AuthInteractor {
 
     ErrorValidator.orThrowUnauthorizedError(user.is_active, 'USER_TEMPORARILY_INACTIVE');
 
-    const jwt = this.authService.createJwt(user);
-    return this.authPresenter.presentToken(jwt);
+    return this.authPresenter.presentToken(user);
   }
 
   public async revokeAndRefreshToken(userFromToken: UserEntity): Promise<AuthResponse> {
@@ -95,8 +93,7 @@ export class AuthInteractor {
       ]);
     });
     ErrorValidator.orThrowUnauthorizedError(user.is_active, 'USER_TEMPORARILY_INACTIVE');
-    const jwt = this.authService.createJwt(user);
-    return this.authPresenter.presentToken(jwt);
+    return this.authPresenter.presentToken(user);
   }
 
   public async deleteMyAccount(user: UserEntity): Promise<AuthSuccessResponse> {
