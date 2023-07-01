@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ErrorValidator } from '../../../common/errors/error.validator';
-import { UserEntity, UserRole } from '../../../entities/user.entity';
+import { UserEntity, UserRole } from '../../../entities/users/user.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { FeatureFlagRepository } from '../../organizations/repositories/feature_flag.repository';
 import { UserService } from '../../users/services/user.service';

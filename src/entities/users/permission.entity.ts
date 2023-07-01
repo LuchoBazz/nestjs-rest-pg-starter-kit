@@ -1,4 +1,4 @@
-import { BaseModel } from './base.entity';
+import { BaseModel } from '../base.entity';
 
 export interface PermissionParams {
   name: string;

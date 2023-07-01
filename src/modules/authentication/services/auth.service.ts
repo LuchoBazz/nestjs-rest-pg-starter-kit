@@ -2,8 +2,8 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
-import { JwtPayload } from '../../../entities/jwt_payload.entity';
-import { UserEntity } from '../../../entities/user.entity';
+import { JwtPayload } from '../../../entities/authentication/jwt_payload.entity';
+import { UserEntity } from '../../../entities/users/user.entity';
 import { FirebaseAuth } from '../../../gateways/auth/firebase/firebase.auth.service';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services/user.service';

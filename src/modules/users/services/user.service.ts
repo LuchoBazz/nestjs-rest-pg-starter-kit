@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserEntity } from '../../../entities/user.entity';
+import { UserEntity } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 import { UserRepository } from '../repositories/user.repository';
 

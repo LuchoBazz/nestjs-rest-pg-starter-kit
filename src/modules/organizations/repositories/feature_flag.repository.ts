@@ -4,8 +4,8 @@ import { format } from '@scaleleap/pg-format';
 import { CacheSearcher, CacheService } from '../../../common/cache/cache.service';
 import { parseEnum } from '../../../common/enum.util';
 import { OrganizationCacheParameters } from '../../../entities/cache/organization_parameters_cache.entity';
-import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/feature_flag.entity';
-import { AuthProvider } from '../../../entities/user.entity';
+import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/organizations/feature_flag.entity';
+import { AuthProvider } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 
 interface InternalParams {
