@@ -8,10 +8,11 @@ import { UsersModule } from '../users/users.module';
 import { FeatureFlagInteractor } from './interactors/feature_flag.interactor';
 import { FeatureFlagRepository } from './repositories/feature_flag.repository';
 import { FeatureFlagResolver } from './resolvers/feature_flag.resolver';
+import { FeatureFlagService } from './services/feature_flag.service';
 
 @Module({
   imports: [CacheModule, PostgresqlModule, forwardRef(() => AuthenticationModule), UsersModule],
-  providers: [FeatureFlagRepository, FeatureFlagResolver, FeatureFlagInteractor, PermissionsGuard],
-  exports: [FeatureFlagRepository, FeatureFlagResolver, FeatureFlagInteractor],
+  providers: [FeatureFlagRepository, FeatureFlagService, FeatureFlagResolver, FeatureFlagInteractor, PermissionsGuard],
+  exports: [FeatureFlagRepository, FeatureFlagService, FeatureFlagResolver, FeatureFlagInteractor],
 })
 export class OrganizationsModule {}

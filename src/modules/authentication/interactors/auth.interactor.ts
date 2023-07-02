@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ErrorValidator } from '../../../common/errors/error.validator';
 import { UserEntity, UserRole } from '../../../entities/users/user.entity';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
-import { FeatureFlagRepository } from '../../organizations/repositories/feature_flag.repository';
+import { FeatureFlagService } from '../../organizations/services/feature_flag.service';
 import { UserService } from '../../users/services/user.service';
 import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign_up.input';
@@ -15,7 +15,7 @@ import { AuthService } from '../services/auth.service';
 export class AuthInteractor {
   constructor(
     private readonly pgGateway: PgGateway,
-    private readonly featFlagRepository: FeatureFlagRepository,
+    private readonly featFlagService: FeatureFlagService,
     private readonly authTokenStatusesRepository: AuthTokenStatusesRepository,
     private readonly authService: AuthService,
     private readonly userService: UserService,
@@ -31,7 +31,7 @@ export class AuthInteractor {
         email: userInfo.email,
       }),
       this.pgGateway.onSession(async (manager: PSQLSession) => {
-        return this.featFlagRepository.findAuthProvider(manager, { clientId });
+        return this.featFlagService.findAuthProvider(manager, { clientId });
       }),
     ]);
 
