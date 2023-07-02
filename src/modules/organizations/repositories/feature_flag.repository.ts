@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
+import { v4 as uuid } from 'uuid';
 
 import { CacheSearcher, CacheService } from '../../../common/cache/cache.service';
 import { parseEnum } from '../../../common/enum.util';
@@ -9,6 +10,7 @@ import {
   FeatureFlagEntity,
   FeatureFlagKey,
   FeatureFlagPaginationResponse,
+  FeatureFlagType,
 } from '../../../entities/organizations/feature_flag.entity';
 import { OrderBy, Pagination } from '../../../entities/pagination.entity';
 import { AuthProvider } from '../../../entities/users/user.entity';
@@ -24,10 +26,18 @@ interface Params {
   clientId: string;
 }
 
-interface findFFWithPagination {
+interface FindFFWithPagination {
   clientId: string;
   orderBy?: OrderBy;
   pagination?: Pagination;
+}
+
+interface CreateFeatureFlag {
+  key: string;
+  value: string | null;
+  type: FeatureFlagType;
+  is_experimental: boolean;
+  clientId: string;
 }
 
 @Injectable()
@@ -64,7 +74,7 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
 
   public async findFeatureFlagsByOrganization(
     manager: PSQLSession,
-    { clientId, pagination, orderBy }: findFFWithPagination,
+    { clientId, pagination, orderBy }: FindFFWithPagination,
   ): Promise<FeatureFlagPaginationResponse> {
     try {
       const { page = 1, limit = 10 } = pagination ?? {};
@@ -103,6 +113,38 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
       return mapPagination(rows, pagination, FeatureFlagEntity.loadFromRow);
     } catch (error) {
       throw new NotFoundException('FEATURE_FLAGS_NOT_FOUND');
+    }
+  }
+
+  public async createFeatureFlag(
+    manager: PSQLSession,
+    { key, value, type, is_experimental, clientId }: CreateFeatureFlag,
+  ): Promise<FeatureFlagEntity> {
+    try {
+      const query = format(
+        `
+          INSERT INTO core.feature_flags(
+            feature_flag_id,
+            feature_flag_key,
+            feature_flag_value,
+            feature_flag_is_active,
+            feature_flag_type,
+            feature_flag_organization,
+            feature_flag_is_experimental
+          ) VALUES(%1$L, %2$L, %3$L, true, %4$L, %5$L, %6$L)
+          RETURNING *
+        `,
+        uuid(),
+        key,
+        value,
+        type.toString(),
+        clientId,
+        String(is_experimental),
+      );
+      const { rows } = await manager.query(query);
+      return FeatureFlagEntity.loadFromRow(rows[0]);
+    } catch (error) {
+      throw new NotFoundException('FEATURE_FLAG_COULD_NOT_BE_CREATED');
     }
   }
 

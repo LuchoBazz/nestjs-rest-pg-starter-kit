@@ -2,7 +2,7 @@ import { Field, InputType, InterfaceType, ObjectType, registerEnumType } from '@
 import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { PageInfoResponse, PaginationInput } from '../../../common/dto/pagination.dto';
-import { FeatureFlagObject } from '../../../entities/organizations/feature_flag.entity';
+import { FeatureFlagObject, FeatureFlagType } from '../../../entities/organizations/feature_flag.entity';
 
 export enum OrderByFeatureFlag {
   ID = 'ID',
@@ -10,6 +10,7 @@ export enum OrderByFeatureFlag {
 }
 
 registerEnumType(OrderByFeatureFlag, { name: 'OrderByFeatureFlag' });
+registerEnumType(FeatureFlagType, { name: 'FeatureFlagType' });
 
 @InputType()
 @InterfaceType()
@@ -41,6 +42,28 @@ export class FeatureFlagPaginationInput {
 
   @Field({ nullable: true })
   pagination: PaginationInput;
+}
+
+@InputType({ isAbstract: true })
+@InterfaceType({ isAbstract: true })
+export class CreateFeatureFlag {
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  key: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field({ nullable: true })
+  value: string | null;
+
+  @IsEnum(FeatureFlagType)
+  @Field(() => FeatureFlagType)
+  type: FeatureFlagType;
+
+  @IsBoolean()
+  @Field()
+  is_experimental: boolean;
 }
 
 @ObjectType({ isAbstract: true })
