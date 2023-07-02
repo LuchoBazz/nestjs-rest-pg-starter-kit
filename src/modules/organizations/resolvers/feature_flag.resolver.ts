@@ -50,6 +50,7 @@ export class FeatureFlagResolver {
     return await this.featureFlagInteractor.createFeatureFlag(user.organization_client_id, input);
   }
 
+  // TODO: Add updateFeatureFlag mutation
   @Permissions(PermissionsValues.REMOVE_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Mutation(() => FeatureFlagResponse, { nullable: false })

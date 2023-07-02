@@ -11,6 +11,7 @@ interface PermissionRepositoryParams {
 
 @Injectable()
 export class PermissionRepository {
+  // TODO: Add Cache
   public async getPermissionsByRole(
     manager: PSQLSession,
     { role }: PermissionRepositoryParams,
