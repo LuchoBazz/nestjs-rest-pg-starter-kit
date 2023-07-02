@@ -1,10 +1,14 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { PaginationWithOrderByInput } from '../../../common/dto/pagination.dto';
 import { UserEntity } from '../../../entities/users/user.entity';
 import { JwtAuthGuard } from '../../authentication/guards/jwt_auth.guard';
-import { FeatureFlagInput, FeatureFlagResponse, FeatureFlagsResponse } from '../dto/feature_flag.dto';
+import {
+  FeatureFlagInput,
+  FeatureFlagPaginationInput,
+  FeatureFlagResponse,
+  FeatureFlagsResponse,
+} from '../dto/feature_flag.dto';
 import { FeatureFlagInteractor } from '../interactors/feature_flag.interactor';
 
 @Resolver('FeatureFlag')
@@ -14,7 +18,7 @@ export class FeatureFlagResolver {
   @UseGuards(JwtAuthGuard)
   @Query(() => FeatureFlagsResponse)
   public async featureFlags(
-    @Args('input') input: PaginationWithOrderByInput,
+    @Args('input') input: FeatureFlagPaginationInput,
     @Context() ctx,
   ): Promise<FeatureFlagsResponse> {
     const request = ctx.req;

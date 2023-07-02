@@ -4,7 +4,7 @@ export interface Pagination {
 }
 
 export interface OrderBy {
-  sortField: string;
+  sortField?: string;
   asc?: boolean;
 }
 

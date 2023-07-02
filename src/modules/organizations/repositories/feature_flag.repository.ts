@@ -13,6 +13,7 @@ import {
 import { OrderBy, Pagination } from '../../../entities/pagination.entity';
 import { AuthProvider } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
+import { OrderByFeatureFlag } from '../dto/feature_flag.dto';
 
 interface InternalParams {
   clientId: string;
@@ -25,7 +26,7 @@ interface Params {
 
 interface findFFWithPagination {
   clientId: string;
-  orderBy: OrderBy;
+  orderBy?: OrderBy;
   pagination?: Pagination;
 }
 
@@ -67,7 +68,13 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
   ): Promise<FeatureFlagPaginationResponse> {
     try {
       const { page = 1, limit = 10 } = pagination ?? {};
-      const { sortField, asc = true } = orderBy;
+      const { sortField = OrderByFeatureFlag.CREATED_AT, asc = true } = orderBy ?? {};
+
+      const mapSortField: Record<OrderByFeatureFlag, string> = {
+        [OrderByFeatureFlag.ID]: 'feature_flag_id',
+        [OrderByFeatureFlag.CREATED_AT]: 'feature_flag_created_at',
+      };
+
       const query = format(
         `
           SELECT
@@ -87,7 +94,7 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
           LIMIT %4$L OFFSET %5$L
         `,
         clientId,
-        sortField,
+        mapSortField[sortField],
         asc ? 'ASC' : 'DESC',
         limit,
         (page - 1) * limit,
