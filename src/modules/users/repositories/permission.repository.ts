@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 
-import { PermissionEntity } from '../../../entities/users/permission.entity';
+import { PermissionEntity } from '../../../entities/authentication/permission.entity';
 import { UserRole } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 

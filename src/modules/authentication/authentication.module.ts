@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -7,8 +7,10 @@ import jwtConfig from '../../common/configuration/jwt.config';
 import { FirebaseModule } from '../../gateways/auth/firebase/firebase.module';
 import { PostgresqlModule } from '../../gateways/database/postgresql/postgresql.module';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { PermissionService } from '../users/services/permission.service';
 import { UserService } from '../users/services/user.service';
 import { UsersModule } from '../users/users.module';
+import { PermissionsGuard } from './guards/permission.guard';
 import { AuthInteractor } from './interactors/auth.interactor';
 import { AuthPresenter } from './presenters/auth.presenter';
 import { AuthTokenStatusesRepository } from './repositories/auth_token_statuses.repository';
@@ -37,7 +39,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UsersModule,
     FirebaseModule,
     PostgresqlModule,
-    OrganizationsModule,
+    forwardRef(() => OrganizationsModule),
   ],
   controllers: [],
   providers: [
@@ -48,7 +50,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UserService,
     JwtStrategy,
     AuthTokenStatusesRepository,
+    PermissionsGuard,
+    PermissionService,
   ],
-  exports: [AuthService, UserService, JwtStrategy, AuthTokenStatusesRepository],
+  exports: [AuthService, UserService, JwtStrategy, AuthTokenStatusesRepository, PermissionsGuard],
 })
 export class AuthenticationModule {}
