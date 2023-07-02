@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { FeatureFlagObject, FeatureFlagPaginationResponse } from '../../../entities/organizations/feature_flag.entity';
 import { PgGateway } from '../../../gateways/database/postgresql';
-import { FeatureFlagInput, FeatureFlagPaginationInput } from '../dto/feature_flag.dto';
+import { CreateFeatureFlagInput, FeatureFlagInput, FeatureFlagPaginationInput } from '../dto/feature_flag.dto';
 import { FeatureFlagRepository } from '../repositories/feature_flag.repository';
 
 @Injectable()
@@ -25,6 +25,12 @@ export class FeatureFlagInteractor {
   public async getFeatureFlag(clientId: string, input: FeatureFlagInput): Promise<FeatureFlagObject> {
     return this.pgGateway.onSession((manager) => {
       return this.featFlagRepository.findFeatureFlag(manager, { ...input, clientId });
+    });
+  }
+
+  public async createFeatureFlag(clientId: string, input: CreateFeatureFlagInput): Promise<FeatureFlagObject> {
+    return this.pgGateway.onSession((manager) => {
+      return this.featFlagRepository.createFeatureFlag(manager, { ...input, clientId });
     });
   }
 }

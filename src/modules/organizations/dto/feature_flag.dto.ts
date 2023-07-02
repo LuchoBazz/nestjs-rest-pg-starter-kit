@@ -46,7 +46,7 @@ export class FeatureFlagPaginationInput {
 
 @InputType({ isAbstract: true })
 @InterfaceType({ isAbstract: true })
-export class CreateFeatureFlag {
+export class CreateFeatureFlagInput {
   @IsNotEmpty()
   @IsString()
   @Field()

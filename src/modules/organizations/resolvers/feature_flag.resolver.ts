@@ -5,6 +5,7 @@ import { FeatureFlagObject } from '../../../entities/organizations/feature_flag.
 import { UserEntity } from '../../../entities/users/user.entity';
 import { JwtAuthGuard } from '../../authentication/guards/jwt_auth.guard';
 import {
+  CreateFeatureFlagInput,
   FeatureFlagInput,
   FeatureFlagPaginationInput,
   FeatureFlagResponse,
@@ -35,11 +36,12 @@ export class FeatureFlagResolver {
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => FeatureFlagResponse, { nullable: false })
-  public async addFeatureFlag(@Args('input') input: FeatureFlagInput, @Context() ctx): Promise<FeatureFlagResponse> {
-    const { user } = ctx.req;
-    console.log({ user, input });
-    const success = await this.featureFlagInteractor.foo();
-    return { success };
+  public async addFeatureFlag(
+    @Args('input') input: CreateFeatureFlagInput,
+    @Context() ctx,
+  ): Promise<FeatureFlagObject> {
+    const user = ctx.req.user as UserEntity;
+    return await this.featureFlagInteractor.createFeatureFlag(user.organization_client_id, input);
   }
 
   @UseGuards(JwtAuthGuard)
