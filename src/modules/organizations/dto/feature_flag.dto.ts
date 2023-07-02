@@ -17,11 +17,6 @@ export class FeatureFlagInput {
   @IsNotEmpty()
   @IsString()
   @Field()
-  clientId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Field()
   key: string;
 }
 

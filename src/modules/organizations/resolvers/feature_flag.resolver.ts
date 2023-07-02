@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { FeatureFlagObject } from '../../../entities/organizations/feature_flag.entity';
 import { UserEntity } from '../../../entities/users/user.entity';
 import { JwtAuthGuard } from '../../authentication/guards/jwt_auth.guard';
 import {
@@ -21,14 +22,15 @@ export class FeatureFlagResolver {
     @Args('input') input: FeatureFlagPaginationInput,
     @Context() ctx,
   ): Promise<FeatureFlagsResponse> {
-    const request = ctx.req;
-    const user = request.user as UserEntity;
+    const user = ctx.req.user as UserEntity;
     return this.featureFlagInteractor.getFeatureFlags(user.organization_client_id, input);
   }
 
-  @Query(() => String)
-  public featureFlag(): string {
-    return 'Hello, World!';
+  @UseGuards(JwtAuthGuard)
+  @Query(() => FeatureFlagObject)
+  public async featureFlag(@Args('input') input: FeatureFlagInput, @Context() ctx): Promise<FeatureFlagObject> {
+    const user = ctx.req.user as UserEntity;
+    return this.featureFlagInteractor.getFeatureFlag(user.organization_client_id, input);
   }
 
   @UseGuards(JwtAuthGuard)
