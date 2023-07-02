@@ -33,4 +33,10 @@ export class FeatureFlagInteractor {
       return this.featFlagRepository.createFeatureFlag(manager, { ...input, clientId });
     });
   }
+
+  public async deleteFeatureFlag(clientId: string, input: FeatureFlagInput): Promise<boolean> {
+    return this.pgGateway.onTransaction((manager) => {
+      return this.featFlagRepository.deleteFeatureFlag(manager, { ...input, clientId });
+    });
+  }
 }

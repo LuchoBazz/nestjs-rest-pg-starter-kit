@@ -148,6 +148,24 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
     }
   }
 
+  public async deleteFeatureFlag(manager: PSQLSession, { key, clientId }: InternalParams): Promise<boolean> {
+    try {
+      const query = format(
+        `
+          DELETE FROM core.feature_flags
+          WHERE feature_flags.feature_flag_organization = %1$L
+          AND feature_flags.feature_flag_key = %2$L
+        `,
+        clientId,
+        key.toString(),
+      );
+      await manager.query(query);
+      return true;
+    } catch (error) {
+      throw new NotFoundException('FEATURE_FLAG_COULD_NOT_BE_DELETED');
+    }
+  }
+
   public async search(session: PSQLSession, params: string[]): Promise<FeatureFlagEntity | undefined> {
     try {
       const response = await this.findFeatureFlag(session, { clientId: params[0], key: params[1] });

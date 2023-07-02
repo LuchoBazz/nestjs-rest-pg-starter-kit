@@ -1,4 +1,4 @@
-import { Field, InputType, InterfaceType, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, InputType, InterfaceType, ObjectType, PartialType, registerEnumType } from '@nestjs/graphql';
 import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { PageInfoResponse, PaginationInput } from '../../../common/dto/pagination.dto';
@@ -64,6 +64,15 @@ export class CreateFeatureFlagInput {
   @IsBoolean()
   @Field()
   is_experimental: boolean;
+}
+
+@InputType({ isAbstract: true })
+@InterfaceType({ isAbstract: true })
+export class UpdateFeatureFlagInput extends PartialType(CreateFeatureFlagInput) {
+  @IsNotEmpty()
+  @IsString()
+  @Field({ nullable: true })
+  value: string | null;
 }
 
 @ObjectType({ isAbstract: true })
