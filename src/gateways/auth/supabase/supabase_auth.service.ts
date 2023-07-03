@@ -1,5 +1,4 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UpdateRequest } from 'firebase-admin/lib/auth/auth-config';
 
 import { SupabaseConfigService } from './supabase_config.service';
 
@@ -16,10 +15,4 @@ export class SupabaseAuthService {
       throw new UnauthorizedException('INVALID_JWT_TOKEN');
     }
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-  public async updateUser(clientId: string, uid: string, user: UpdateRequest): Promise<void> {}
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-  public async deleteUser(clientId: string, uid: string): Promise<void> {}
 }
