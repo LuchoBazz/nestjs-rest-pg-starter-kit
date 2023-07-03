@@ -10,7 +10,6 @@ import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign_up.input';
 import { AuthPresenter } from '../presenters/auth.presenter';
 import { AuthTokenStatusesRepository } from '../repositories/auth_token_statuses.repository';
-import { JwtService } from '../services/auth.service';
 
 @Injectable()
 export class AuthInteractor {
@@ -18,7 +17,6 @@ export class AuthInteractor {
     private readonly pgGateway: PgGateway,
     private readonly featFlagService: FeatureFlagService,
     private readonly authTokenStatusesRepository: AuthTokenStatusesRepository,
-    private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
     private readonly authGatewayService: AuthService,
@@ -26,16 +24,16 @@ export class AuthInteractor {
 
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
-    const [result, authProvider] = await Promise.all([
-      this.authGatewayService.validateToken({
-        clientId,
-        accessToken,
-        email: userInfo.email,
-      }),
-      this.pgGateway.onSession(async (manager: PSQLSession) => {
-        return this.featFlagService.findAuthProvider(manager, { clientId });
-      }),
-    ]);
+    const [result, authProvider] = await this.pgGateway.onSession(async (manager: PSQLSession) => {
+      return Promise.all([
+        this.authGatewayService.validateToken(manager, {
+          clientId,
+          accessToken,
+          email: userInfo.email,
+        }),
+        this.featFlagService.findAuthProvider(manager, { clientId }),
+      ]);
+    });
 
     console.log(authProvider);
 
@@ -68,14 +66,13 @@ export class AuthInteractor {
 
   public async signIn(input: SignInInput): Promise<AuthResponse> {
     const { clientId, accessToken } = input;
-    const result = await this.authGatewayService.validateToken({
-      clientId,
-      accessToken,
-    });
-
-    ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
 
     const user = await this.pgGateway.onSession(async (manager: PSQLSession) => {
+      const result = await this.authGatewayService.validateToken(manager, {
+        clientId,
+        accessToken,
+      });
+      ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
       return this.userService.findOne(manager, { clientId, email: result.email });
     });
 

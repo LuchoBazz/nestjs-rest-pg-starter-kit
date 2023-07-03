@@ -41,7 +41,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     FirebaseModule,
     PostgresqlModule,
     forwardRef(() => OrganizationsModule),
-    AuthGatewayModule,
+    forwardRef(() => AuthGatewayModule),
   ],
   controllers: [],
   providers: [
