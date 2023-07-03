@@ -97,6 +97,7 @@ export class AuthInteractor {
   }
 
   public async deleteMyAccount(user: UserEntity): Promise<AuthSuccessResponse> {
+    // TODO: Remove in Firebase or Supabase
     const success = await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
       return this.userService.delete(manager, { user });
     });
