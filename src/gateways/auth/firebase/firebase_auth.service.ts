@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { BaseAuthService, DeleteUserPayload, ValidateTokenPayload } from '../base.auth';
+import { AuthGatewayUser, BaseAuthService, DeleteUserPayload, ValidateTokenPayload } from '../base.auth';
 import { FirebaseConfigService } from './firebase.service';
 
 @Injectable()
@@ -9,11 +9,14 @@ export class FirebaseAuthService extends BaseAuthService {
     super();
   }
 
-  public async validateToken({ clientId, accessToken }: ValidateTokenPayload): Promise<any> {
+  public async validateToken({ clientId, accessToken }: ValidateTokenPayload): Promise<AuthGatewayUser> {
     try {
       const admin = await this.firebaseConfig.getFirebaseApp(clientId);
       const firebaseResponse = await admin.auth().verifyIdToken(accessToken);
-      return firebaseResponse;
+      return {
+        uid: firebaseResponse.uid,
+        email: firebaseResponse.email,
+      };
     } catch (error) {
       throw new UnauthorizedException('INVALID_JWT_TOKEN');
     }

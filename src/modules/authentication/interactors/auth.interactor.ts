@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { ErrorValidator } from '../../../common/errors/error.validator';
 import { UserEntity, UserRole } from '../../../entities/users/user.entity';
+import { AuthService } from '../../../gateways/auth/auth.service';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { FeatureFlagService } from '../../organizations/services/feature_flag.service';
 import { UserService } from '../../users/services/user.service';
@@ -20,12 +21,13 @@ export class AuthInteractor {
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
+    private readonly authGatewayService: AuthService,
   ) {}
 
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
     const [result, authProvider] = await Promise.all([
-      this.jwtService.validateToken({
+      this.authGatewayService.validateToken({
         clientId,
         accessToken,
         email: userInfo.email,
@@ -66,7 +68,7 @@ export class AuthInteractor {
 
   public async signIn(input: SignInInput): Promise<AuthResponse> {
     const { clientId, accessToken } = input;
-    const result = await this.jwtService.validateToken({
+    const result = await this.authGatewayService.validateToken({
       clientId,
       accessToken,
     });

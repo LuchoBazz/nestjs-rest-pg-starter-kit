@@ -1,18 +1,10 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService as NestjsJwtService } from '@nestjs/jwt';
-import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 import { JwtPayload } from '../../../entities/authentication/jwt_payload.entity';
 import { UserEntity } from '../../../entities/users/user.entity';
-import { AuthService as AuthServicex } from '../../../gateways/auth/auth.service';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services/user.service';
-
-interface ValidateTokenParams {
-  clientId: string;
-  accessToken: string;
-  email?: string;
-}
 
 export interface CreateJWTOutput {
   data: JwtPayload;
@@ -22,21 +14,10 @@ export interface CreateJWTOutput {
 @Injectable()
 export class JwtService {
   constructor(
-    @Inject(forwardRef(() => NestjsJwtService))
-    private nestJsJwtService: NestjsJwtService,
-    @Inject(forwardRef(() => UserService))
-    private userService: UserService,
-    private readonly authService: AuthServicex,
+    private readonly nestJsJwtService: NestjsJwtService,
+    private readonly userService: UserService,
     private readonly pgGateway: PgGateway,
   ) {}
-
-  public async validateToken({ clientId, accessToken, email }: ValidateTokenParams): Promise<DecodedIdToken> {
-    const decodedIdToken = await this.authService.validateToken({ clientId, accessToken });
-    if (!decodedIdToken || !decodedIdToken.uid || (email && decodedIdToken?.email !== email)) {
-      return undefined;
-    }
-    return decodedIdToken;
-  }
 
   /**
    * Verifies that the JWT payload associated with a JWT is valid by making sure the user exists and is enabled

@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { BaseAuthService, DeleteUserPayload, ValidateTokenPayload } from '../base.auth';
+import { AuthGatewayUser, BaseAuthService, DeleteUserPayload, ValidateTokenPayload } from '../base.auth';
 import { SupabaseConfigService } from './supabase_config.service';
 
 @Injectable()
@@ -9,11 +9,15 @@ export class SupabaseAuthService extends BaseAuthService {
     super();
   }
 
-  public async validateToken({ clientId, accessToken }: ValidateTokenPayload): Promise<any> {
+  public async validateToken({ clientId, accessToken }: ValidateTokenPayload): Promise<AuthGatewayUser> {
     try {
       const supabase = await this.supabaseConfig.getSupabaseApp(clientId);
       const { data } = await supabase.auth.getUser(accessToken);
-      return data.user;
+      const { user } = data;
+      return {
+        uid: user.id,
+        email: user.email,
+      };
     } catch (error) {
       throw new UnauthorizedException('INVALID_JWT_TOKEN');
     }
