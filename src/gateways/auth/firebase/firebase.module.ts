@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import firebaseConfig from '../../../common/configuration/firebase.config';
 import { FirebaseConfigService } from './firebase.service';
-import { FirebaseAuth } from './firebase_auth.service';
+import { FirebaseAuthService } from './firebase_auth.service';
 
 @Module({
   imports: [
@@ -11,7 +11,7 @@ import { FirebaseAuth } from './firebase_auth.service';
       load: [firebaseConfig],
     }),
   ],
-  providers: [FirebaseConfigService, FirebaseAuth],
-  exports: [FirebaseConfigService, FirebaseAuth],
+  providers: [FirebaseConfigService, FirebaseAuthService],
+  exports: [FirebaseConfigService, FirebaseAuthService],
 })
 export class FirebaseModule {}

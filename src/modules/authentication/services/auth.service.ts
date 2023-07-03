@@ -4,7 +4,7 @@ import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 import { JwtPayload } from '../../../entities/authentication/jwt_payload.entity';
 import { UserEntity } from '../../../entities/users/user.entity';
-import { FirebaseAuth } from '../../../gateways/auth/firebase/firebase_auth.service';
+import { FirebaseAuthService } from '../../../gateways/auth/firebase/firebase_auth.service';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services/user.service';
 
@@ -26,8 +26,8 @@ export class AuthService {
     private jwtService: JwtService,
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
-    @Inject(forwardRef(() => FirebaseAuth))
-    private firebaseAuth: FirebaseAuth,
+    @Inject(forwardRef(() => FirebaseAuthService))
+    private firebaseAuth: FirebaseAuthService,
     private readonly pgGateway: PgGateway,
   ) {}
 

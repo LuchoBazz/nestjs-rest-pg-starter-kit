@@ -4,7 +4,7 @@ import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { FirebaseConfigService } from './firebase.service';
 
 @Injectable()
-export class FirebaseAuth {
+export class FirebaseAuthService {
   constructor(private readonly firebaseConfig: FirebaseConfigService) {}
 
   public async validateToken(clientId: string, accessToken: string): Promise<DecodedIdToken> {
