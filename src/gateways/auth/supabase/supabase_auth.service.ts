@@ -1,12 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
+import { BaseAuthService, DeleteUserPayload, ValidateTokenPayload } from '../base.auth';
 import { SupabaseConfigService } from './supabase_config.service';
 
 @Injectable()
-export class SupabaseAuthService {
-  constructor(private readonly supabaseConfig: SupabaseConfigService) {}
+export class SupabaseAuthService extends BaseAuthService {
+  constructor(private readonly supabaseConfig: SupabaseConfigService) {
+    super();
+  }
 
-  public async validateToken(clientId: string, accessToken: string): Promise<any> {
+  public async validateToken({ clientId, accessToken }: ValidateTokenPayload): Promise<any> {
     try {
       const supabase = await this.supabaseConfig.getSupabaseApp(clientId);
       const { data } = await supabase.auth.getUser(accessToken);
@@ -16,7 +19,7 @@ export class SupabaseAuthService {
     }
   }
 
-  public async deleteUser(clientId: string, uid: string): Promise<boolean> {
+  public async deleteUser({ clientId, uid }: DeleteUserPayload): Promise<boolean> {
     try {
       const supabase = await this.supabaseConfig.getSupabaseApp(clientId);
       const { error } = await supabase.auth.admin.deleteUser(uid);

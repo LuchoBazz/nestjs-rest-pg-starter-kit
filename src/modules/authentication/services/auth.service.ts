@@ -4,7 +4,7 @@ import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 import { JwtPayload } from '../../../entities/authentication/jwt_payload.entity';
 import { UserEntity } from '../../../entities/users/user.entity';
-import { FirebaseAuthService } from '../../../gateways/auth/firebase/firebase_auth.service';
+import { AuthService as AuthServicex } from '../../../gateways/auth/auth.service';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services/user.service';
 
@@ -26,13 +26,12 @@ export class AuthService {
     private jwtService: JwtService,
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
-    @Inject(forwardRef(() => FirebaseAuthService))
-    private firebaseAuth: FirebaseAuthService,
+    private readonly authService: AuthServicex,
     private readonly pgGateway: PgGateway,
   ) {}
 
   public async validateToken({ clientId, accessToken, email }: ValidateTokenParams): Promise<DecodedIdToken> {
-    const decodedIdToken = await this.firebaseAuth.validateToken(clientId, accessToken);
+    const decodedIdToken = await this.authService.validateToken({ clientId, accessToken });
     if (!decodedIdToken || !decodedIdToken.uid || (email && decodedIdToken?.email !== email)) {
       return undefined;
     }
