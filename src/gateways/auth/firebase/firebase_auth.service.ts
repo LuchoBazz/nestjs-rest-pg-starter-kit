@@ -16,4 +16,14 @@ export class FirebaseAuth {
       throw new UnauthorizedException('INVALID_JWT_TOKEN');
     }
   }
+
+  public async deleteUser(clientId: string, uid: string): Promise<boolean> {
+    try {
+      const admin = await this.firebaseConfig.getFirebaseApp(clientId);
+      await admin.auth().deleteUser(uid);
+      return true;
+    } catch (error) {
+      throw new UnauthorizedException('DELETING_USER_ERROR');
+    }
+  }
 }
