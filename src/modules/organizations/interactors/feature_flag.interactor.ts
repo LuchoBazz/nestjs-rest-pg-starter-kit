@@ -9,10 +9,6 @@ import { FeatureFlagService } from '../services/feature_flag.service';
 export class FeatureFlagInteractor {
   constructor(private readonly pgGateway: PgGateway, private readonly featFlagService: FeatureFlagService) {}
 
-  public async foo(): Promise<boolean> {
-    return true;
-  }
-
   public async getFeatureFlags(
     clientId: string,
     input: FeatureFlagPaginationInput,
