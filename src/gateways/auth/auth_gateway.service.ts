@@ -8,7 +8,7 @@ import { FirebaseAuthService } from './firebase/firebase_auth.service';
 import { SupabaseAuthService } from './supabase/supabase_auth.service';
 
 @Injectable()
-export class AuthService {
+export class AuthGatewayService {
   private providers: Record<AuthProvider, BaseAuthService>;
 
   constructor(

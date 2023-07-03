@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { ErrorValidator } from '../../../common/errors/error.validator';
 import { UserEntity, UserRole } from '../../../entities/users/user.entity';
-import { AuthService } from '../../../gateways/auth/auth.service';
+import { AuthGatewayService } from '../../../gateways/auth/auth_gateway.service';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
 import { FeatureFlagService } from '../../organizations/services/feature_flag.service';
 import { UserService } from '../../users/services/user.service';
@@ -19,7 +19,7 @@ export class AuthInteractor {
     private readonly authTokenStatusesRepository: AuthTokenStatusesRepository,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
-    private readonly authGatewayService: AuthService,
+    private readonly authGatewayService: AuthGatewayService,
   ) {}
 
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
