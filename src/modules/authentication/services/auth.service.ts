@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService as NestjsJwtService } from '@nestjs/jwt';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 import { JwtPayload } from '../../../entities/authentication/jwt_payload.entity';
@@ -20,10 +20,10 @@ export interface CreateJWTOutput {
 }
 
 @Injectable()
-export class AuthService {
+export class JwtService {
   constructor(
-    @Inject(forwardRef(() => JwtService))
-    private jwtService: JwtService,
+    @Inject(forwardRef(() => NestjsJwtService))
+    private nestJsJwtService: NestjsJwtService,
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
     private readonly authService: AuthServicex,
@@ -73,7 +73,7 @@ export class AuthService {
       iss: 'https://example.com',
       aud: ['https://example.com'],
     };
-    const jwt = this.jwtService.sign(data, { expiresIn });
+    const jwt = this.nestJsJwtService.sign(data, { expiresIn });
     return {
       data,
       token: jwt,

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { UserEntity } from '../../../entities/users/user.entity';
-import { AuthService } from '../services/auth.service';
+import { JwtService } from '../services/auth.service';
 
 interface PresentTokenResponse {
   token: string;
@@ -9,10 +9,10 @@ interface PresentTokenResponse {
 
 @Injectable()
 export class AuthPresenter {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly jwtService: JwtService) {}
 
   public async presentToken(user: UserEntity): Promise<PresentTokenResponse> {
-    const { token } = this.authService.createJwt(user);
+    const { token } = this.jwtService.createJwt(user);
     return { token };
   }
 }

@@ -16,7 +16,7 @@ import { AuthInteractor } from './interactors/auth.interactor';
 import { AuthPresenter } from './presenters/auth.presenter';
 import { AuthTokenStatusesRepository } from './repositories/auth_token_statuses.repository';
 import { AuthResolver } from './resolvers/auth.resolver';
-import { AuthService } from './services/auth.service';
+import { JwtService } from './services/auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
@@ -48,13 +48,13 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     AuthResolver,
     AuthInteractor,
     AuthPresenter,
-    AuthService,
+    JwtService,
     UserService,
     JwtStrategy,
     AuthTokenStatusesRepository,
     PermissionsGuard,
     PermissionService,
   ],
-  exports: [AuthService, UserService, JwtStrategy, AuthTokenStatusesRepository, PermissionsGuard],
+  exports: [JwtService, UserService, JwtStrategy, AuthTokenStatusesRepository, PermissionsGuard],
 })
 export class AuthenticationModule {}

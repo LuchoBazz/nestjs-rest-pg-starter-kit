@@ -9,7 +9,7 @@ import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
 import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign_up.input';
 import { AuthPresenter } from '../presenters/auth.presenter';
 import { AuthTokenStatusesRepository } from '../repositories/auth_token_statuses.repository';
-import { AuthService } from '../services/auth.service';
+import { JwtService } from '../services/auth.service';
 
 @Injectable()
 export class AuthInteractor {
@@ -17,7 +17,7 @@ export class AuthInteractor {
     private readonly pgGateway: PgGateway,
     private readonly featFlagService: FeatureFlagService,
     private readonly authTokenStatusesRepository: AuthTokenStatusesRepository,
-    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
   ) {}
@@ -25,7 +25,7 @@ export class AuthInteractor {
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
     const [result, authProvider] = await Promise.all([
-      this.authService.validateToken({
+      this.jwtService.validateToken({
         clientId,
         accessToken,
         email: userInfo.email,
@@ -66,7 +66,7 @@ export class AuthInteractor {
 
   public async signIn(input: SignInInput): Promise<AuthResponse> {
     const { clientId, accessToken } = input;
-    const result = await this.authService.validateToken({
+    const result = await this.jwtService.validateToken({
       clientId,
       accessToken,
     });
