@@ -4,7 +4,7 @@ import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import jwtConfig from '../../common/configuration/jwt.config';
-import { AuthModule } from '../../gateways/auth/auth.module';
+import { AuthGatewayModule } from '../../gateways/auth/auth_gateway.module';
 import { FirebaseModule } from '../../gateways/auth/firebase/firebase.module';
 import { PostgresqlModule } from '../../gateways/database/postgresql/postgresql.module';
 import { OrganizationsModule } from '../organizations/organizations.module';
@@ -41,7 +41,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     FirebaseModule,
     PostgresqlModule,
     forwardRef(() => OrganizationsModule),
-    AuthModule,
+    AuthGatewayModule,
   ],
   controllers: [],
   providers: [

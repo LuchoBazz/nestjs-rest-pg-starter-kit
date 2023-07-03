@@ -9,4 +9,4 @@ import { SupabaseModule } from './supabase/supabase.module';
   providers: [AuthService],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthGatewayModule {}
