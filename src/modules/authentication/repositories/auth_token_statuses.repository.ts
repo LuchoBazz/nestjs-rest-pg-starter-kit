@@ -24,4 +24,23 @@ export class AuthTokenStatusesRepository {
       throw new NotFoundException('AUTH_TOKEN_STATUSES_NOT_FOUND');
     }
   }
+
+  public async clearExpiredTokens(manager: PSQLSession): Promise<boolean> {
+    const now = new Date();
+    const unixTime = Math.floor(now.getTime() / 1000);
+
+    try {
+      const query = format(
+        `
+          DELETE FROM core.auth_token_statuses
+            WHERE auth_token_statuses.auth_token_expiration_time < %1$L;  
+        `,
+        unixTime,
+      );
+      const deleted = await manager.query(query);
+      return Boolean(deleted);
+    } catch (error) {
+      throw new NotFoundException('AUTH_TOKEN_STATUSES_COULD_NOT_BE_REMOVED');
+    }
+  }
 }
