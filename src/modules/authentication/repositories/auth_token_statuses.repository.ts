@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
+import moment from 'moment-timezone';
 
 import { PSQLSession } from '../../../gateways/database/postgresql';
 
@@ -26,7 +27,7 @@ export class AuthTokenStatusesRepository {
   }
 
   public async clearExpiredTokens(manager: PSQLSession): Promise<boolean> {
-    const now = new Date();
+    const now = moment().tz('America/Bogota').toDate();
     const unixTime = Math.floor(now.getTime() / 1000);
 
     try {
