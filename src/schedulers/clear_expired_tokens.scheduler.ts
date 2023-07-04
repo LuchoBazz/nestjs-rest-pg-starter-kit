@@ -14,7 +14,7 @@ export class ClearExpiredTokensScheduler {
   @Cron(CronExpression.EVERY_DAY_AT_2AM, {
     timeZone: 'America/Bogota',
   })
-  async handleCron() {
+  public async handleCron(): Promise<void> {
     await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
       await this.authTokenStatusesRepository.clearExpiredTokens(manager);
     });
