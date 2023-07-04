@@ -1,10 +1,10 @@
-<h1 align="center">Nestjs using Graphql and Raw PostgreSQL Starter Kit</h1>
+<h1 align="center">Nest.js using GraphQL and Raw PostgreSQL Starter Kit</h1>
 
-<p align="center">...</p>
+<p align="center">A starter kit for creating Nest.js projects with GraphQL and raw PostgreSQL.</p>
 
 ## Description
 
-...
+This starter kit provides a template for creating Nest.js projects with GraphQL as the API layer and raw PostgreSQL for database operations.
 
 ## Installation
 
@@ -54,7 +54,8 @@ $ npm run test:cov
 
 ## License
 
-[MIT licensed](LICENSE).
+This project is licensed under the [MIT licensed](LICENSE).. See the LICENSE file for details.
 
 ### Reference
+
 - https://github.com/mwanago/nestjs-raw-sql/tree/master
