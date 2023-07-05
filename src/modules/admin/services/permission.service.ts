@@ -17,6 +17,6 @@ export class PermissionService {
     manager: PSQLSession,
     { role }: PermissionServiceParams,
   ): Promise<PermissionEntity[]> {
-    return this.permissionRepository.getPermissionsByRole(manager, { role });
+    return this.permissionRepository.getPermissionsOf(manager, { role });
   }
 }
