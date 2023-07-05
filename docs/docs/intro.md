@@ -1,8 +1,9 @@
 ---
 sidebar_position: 1
+title: Nest.js using GraphQL and Raw PostgreSQL Starter Kit
+sidebar_label: Intro
 ---
 
-<h1 align="center">Nest.js using GraphQL and Raw PostgreSQL Starter Kit</h1>
 
 <p align="center">A starter kit for creating Nest.js projects with GraphQL and raw PostgreSQL.</p>
 
