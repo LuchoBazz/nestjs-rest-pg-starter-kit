@@ -10,16 +10,24 @@ import { SupabaseAuthService } from './supabase/supabase_auth.service';
 @Injectable()
 export class AuthGatewayService {
   private providers: Record<AuthProvider, BaseAuthService>;
+  private static instance: AuthGatewayService;
 
   constructor(
     private readonly firebaseAuthService: FirebaseAuthService,
     private readonly supabaseAuthService: SupabaseAuthService,
     private readonly featFlatService: FeatureFlagService,
   ) {
+    if (AuthGatewayService.instance) {
+      return AuthGatewayService.instance;
+    }
+
     this.providers = {
       [AuthProvider.FIREBASE]: this.firebaseAuthService,
       [AuthProvider.SUPABASE]: this.supabaseAuthService,
     };
+
+    AuthGatewayService.instance = this;
+    return AuthGatewayService.instance;
   }
 
   private async getAuthService(manager: PSQLSession, clientId: string): Promise<BaseAuthService> {
