@@ -14,11 +14,11 @@ export class CachedPermissionRepository implements CacheSearcher<PermissionEntit
     private readonly permissionRepository: PermissionRepository,
   ) {}
 
-  public async search(session: PSQLSession, params: string[]): Promise<PermissionEntity[]> {
+  public async search(session: PSQLSession, params: string[]): Promise<PermissionEntity[] | null> {
     try {
       return this.permissionRepository.getPermissionsByRole(session, { role: params[0] as UserRole });
     } catch (error) {
-      return undefined;
+      return null;
     }
   }
 

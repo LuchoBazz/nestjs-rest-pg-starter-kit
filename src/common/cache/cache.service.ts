@@ -5,7 +5,7 @@ import { CacheParameters } from '../../entities/cache/organization_parameters_ca
 import { PSQLSession } from '../../gateways/database/postgresql';
 
 export abstract class CacheSearcher<T> {
-  public abstract search(session: PSQLSession, params: string[]): Promise<T | undefined>;
+  public abstract search(session: PSQLSession, params: string[]): Promise<T | null>;
 }
 
 @Injectable()
@@ -25,7 +25,7 @@ export class CacheService {
     parameters: CacheParameters,
     session: PSQLSession,
     searcher?: CacheSearcher<T>,
-  ): Promise<T | undefined> {
+  ): Promise<T | null> {
     const key = parameters.generateKey();
     const value = this.cache.get<T>(key);
 
