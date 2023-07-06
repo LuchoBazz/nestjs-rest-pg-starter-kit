@@ -7,7 +7,7 @@ import { PermissionEntity } from '../../../entities/authentication/permission.en
 import { PermissionsValues } from '../../../entities/authentication/permission.enum';
 import { UserEntity } from '../../../entities/users/user.entity';
 import { PgGateway } from '../../../gateways/database/postgresql';
-import { PermissionService } from '../../users/services/permission.service';
+import { PermissionService } from '../../admin/services/permission.service';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {

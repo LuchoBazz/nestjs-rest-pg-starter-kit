@@ -7,8 +7,9 @@ import jwtConfig from '../../common/configuration/jwt.config';
 import { AuthGatewayModule } from '../../gateways/auth/auth_gateway.module';
 import { FirebaseModule } from '../../gateways/auth/firebase/firebase.module';
 import { PostgresqlModule } from '../../gateways/database/postgresql/postgresql.module';
+import { AdminModule } from '../admin/admin.module';
+import { PermissionService } from '../admin/services/permission.service';
 import { OrganizationsModule } from '../organizations/organizations.module';
-import { PermissionService } from '../users/services/permission.service';
 import { UserService } from '../users/services/user.service';
 import { UsersModule } from '../users/users.module';
 import { PermissionsGuard } from './guards/permission.guard';
@@ -37,6 +38,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       },
       inject: [jwtConfig.KEY],
     }),
+    AdminModule,
     UsersModule,
     FirebaseModule,
     PostgresqlModule,
@@ -52,9 +54,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UserService,
     JwtStrategy,
     AuthTokenStatusesRepository,
-    PermissionsGuard,
     PermissionService,
+    PermissionsGuard,
   ],
-  exports: [JwtService, UserService, JwtStrategy, AuthTokenStatusesRepository, PermissionsGuard],
+  exports: [JwtService, UserService, JwtStrategy, AuthTokenStatusesRepository, PermissionsGuard, PermissionService],
 })
 export class AuthenticationModule {}
