@@ -1,6 +1,6 @@
 {
-  "label": "Dev - Docs",
-  "position": 3,
+  "label": "Development Docs",
+  "position": 2,
   "link": {
     "type": "generated-index"
   }
