@@ -76,7 +76,7 @@ export class PermissionRepository implements CacheSearcher<PermissionEntity[]> {
 
   public async deletePermissionToRole(
     manager: PSQLSession,
-    { role, permissionName }: { role: string; permissionName: string; },
+    { role, permissionName }: { role: string; permissionName: string },
   ): Promise<PermissionEntity> {
     try {
       const query = format(
