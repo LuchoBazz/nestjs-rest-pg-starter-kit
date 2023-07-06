@@ -2,18 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 import { v4 as uuid } from 'uuid';
 
-import { CacheSearcher, CacheService } from '../../../common/cache/cache.service';
-import { parseEnum } from '../../../common/enum.util';
 import { mapPagination } from '../../../common/mappers/pagination.mapper';
-import { OrganizationCacheParameters } from '../../../entities/cache/organization_parameters_cache.entity';
 import {
   FeatureFlagEntity,
-  FeatureFlagKey,
   FeatureFlagPaginationResponse,
   FeatureFlagType,
 } from '../../../entities/organizations/feature_flag.entity';
 import { OrderBy, Pagination } from '../../../entities/pagination.entity';
-import { AuthProvider } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 import { OrderByFeatureFlag } from '../dto/feature_flag.dto';
 
@@ -21,11 +16,6 @@ interface InternalParams {
   clientId: string;
   key: string;
 }
-
-interface Params {
-  clientId: string;
-}
-
 interface FindFFWithPagination {
   clientId: string;
   orderBy?: OrderBy;
@@ -41,9 +31,7 @@ interface CreateFeatureFlag {
 }
 
 @Injectable()
-export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
-  constructor(private readonly cacheService: CacheService) {}
-
+export class FeatureFlagRepository {
   public async findFeatureFlag(manager: PSQLSession, { key, clientId }: InternalParams): Promise<FeatureFlagEntity> {
     try {
       const query = format(
@@ -163,27 +151,6 @@ export class FeatureFlagRepository implements CacheSearcher<FeatureFlagEntity> {
       return true;
     } catch (error) {
       throw new NotFoundException('FEATURE_FLAG_COULD_NOT_BE_DELETED');
-    }
-  }
-
-  public async search(session: PSQLSession, params: string[]): Promise<FeatureFlagEntity | undefined> {
-    try {
-      const response = await this.findFeatureFlag(session, { clientId: params[0], key: params[1] });
-      return response;
-    } catch (error) {
-      return undefined;
-    }
-  }
-
-  public async findAuthProvider(manager: PSQLSession, { clientId }: Params): Promise<AuthProvider> {
-    const parameter = new OrganizationCacheParameters(clientId, FeatureFlagKey.AUTH_PROVIDER);
-    try {
-      const flag = await this.cacheService.get(parameter, manager, this);
-      const parsed = parseEnum(AuthProvider, flag.value);
-      const isEnabled = flag.is_active && !flag.is_experimental && !!flag.value;
-      return isEnabled && parsed ? parsed : AuthProvider.FIREBASE;
-    } catch (error) {
-      return AuthProvider.FIREBASE;
     }
   }
 }
