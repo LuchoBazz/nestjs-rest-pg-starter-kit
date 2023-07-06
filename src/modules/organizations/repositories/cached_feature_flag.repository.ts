@@ -23,7 +23,7 @@ export class CachedFeatureFlagRepository {
       };
       const flag = await this.cacheService.get(parameter, manager, searcher);
       const parsed = parseEnum(AuthProvider, flag.value);
-      const isEnabled = flag.is_active && !flag.is_experimental && !!flag.value;
+      const isEnabled = flag.is_active && !!flag.value;
       return isEnabled && parsed ? parsed : AuthProvider.FIREBASE;
     } catch (error) {
       return AuthProvider.FIREBASE;
