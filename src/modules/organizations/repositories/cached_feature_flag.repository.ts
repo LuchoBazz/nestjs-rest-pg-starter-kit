@@ -18,10 +18,10 @@ export class CachedFeatureFlagRepository {
   public async findAuthProvider(manager: PSQLSession, { clientId }: { clientId: string }): Promise<AuthProvider> {
     const parameter = new OrganizationCacheParameters(clientId, FeatureFlagKey.AUTH_PROVIDER);
     try {
-      const callback = (session: PSQLSession, params: string[]): Promise<FeatureFlagEntity | null> => {
+      const searcher = (session: PSQLSession, params: string[]): Promise<FeatureFlagEntity | null> => {
         return this.featureFlagRepository.findFeatureFlag(session, { clientId: params[0], key: params[1] });
       };
-      const flag = await this.cacheService.get(parameter, manager, callback);
+      const flag = await this.cacheService.get(parameter, manager, searcher);
       const parsed = parseEnum(AuthProvider, flag.value);
       const isEnabled = flag.is_active && !flag.is_experimental && !!flag.value;
       return isEnabled && parsed ? parsed : AuthProvider.FIREBASE;

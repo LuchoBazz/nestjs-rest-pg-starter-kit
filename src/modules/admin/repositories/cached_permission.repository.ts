@@ -17,10 +17,10 @@ export class CachedPermissionRepository {
   public async getPermissionsByRole(manager: PSQLSession, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
     const parameter = new RoleCachePermissions(role);
     try {
-      const callback = (session: PSQLSession, params: string[]): Promise<PermissionEntity[] | null> => {
+      const searcher = (session: PSQLSession, params: string[]): Promise<PermissionEntity[] | null> => {
         return this.permissionRepository.getPermissionsByRole(session, { role: params[0] as UserRole });
       };
-      return this.cacheService.get(parameter, manager, callback);
+      return this.cacheService.get(parameter, manager, searcher);
     } catch (error) {
       return [];
     }
