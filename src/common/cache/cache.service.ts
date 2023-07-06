@@ -21,6 +21,7 @@ export class CacheService {
     });
   }
 
+  // TODO: Add callback in searcher
   public async get<T>(
     parameters: CacheParameters,
     session: PSQLSession,
