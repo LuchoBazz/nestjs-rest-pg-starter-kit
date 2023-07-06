@@ -6,18 +6,12 @@ import { UserEntity } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 import { UpdateUser } from '../dto/user.dto';
 
-interface UserFindUserByEmailParams {
-  email: string;
-  clientId: string;
-}
-
-interface UserCreateParams {
-  user: UserEntity;
-}
-
 @Injectable()
 export class UserRepository {
-  public async findByEmail(manager: PSQLSession, { email, clientId }: UserFindUserByEmailParams): Promise<UserEntity> {
+  public async findByEmail(
+    manager: PSQLSession,
+    { email, clientId }: { email: string; clientId: string },
+  ): Promise<UserEntity> {
     try {
       const query = format(
         `
@@ -51,7 +45,7 @@ export class UserRepository {
     }
   }
 
-  public async create(manager: PSQLSession, { user }: UserCreateParams): Promise<UserEntity> {
+  public async create(manager: PSQLSession, { user }: { user: UserEntity }): Promise<UserEntity> {
     try {
       const query = format(
         `
@@ -129,7 +123,7 @@ export class UserRepository {
     }
   }
 
-  public async delete(manager: PSQLSession, { user }: UserCreateParams): Promise<boolean> {
+  public async delete(manager: PSQLSession, { user }: { user: UserEntity }): Promise<boolean> {
     try {
       const query = format(
         `
