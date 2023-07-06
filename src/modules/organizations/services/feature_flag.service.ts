@@ -8,6 +8,7 @@ import {
 import { OrderBy, Pagination } from '../../../entities/pagination.entity';
 import { AuthProvider } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
+import { CachedFeatureFlagRepository } from '../repositories/cached_feature_flag.repository';
 import { FeatureFlagRepository } from '../repositories/feature_flag.repository';
 
 interface InternalParams {
@@ -35,7 +36,10 @@ interface CreateFeatureFlag {
 
 @Injectable()
 export class FeatureFlagService {
-  constructor(private readonly featFlagRepository: FeatureFlagRepository) {}
+  constructor(
+    private readonly featFlagRepository: FeatureFlagRepository,
+    private readonly cachedFeatFlagRepository: CachedFeatureFlagRepository,
+  ) {}
 
   public async findFeatureFlag(manager: PSQLSession, params: InternalParams): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.findFeatureFlag(manager, params);
@@ -57,6 +61,6 @@ export class FeatureFlagService {
   }
 
   public async findAuthProvider(manager: PSQLSession, params: Params): Promise<AuthProvider> {
-    return this.featFlagRepository.findAuthProvider(manager, params);
+    return this.cachedFeatFlagRepository.findAuthProvider(manager, params);
   }
 }
