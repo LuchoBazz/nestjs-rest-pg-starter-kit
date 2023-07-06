@@ -2,30 +2,32 @@ import { Injectable } from '@nestjs/common';
 
 import { UserEntity } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
+import { UpdateUser } from '../dto/user.dto';
 import { UserRepository } from '../repositories/user.repository';
-
-interface UserFindOneParams {
-  clientId: string;
-  email: string;
-}
-
-interface UserCreateParams {
-  user: UserEntity;
-}
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async findOne(session: PSQLSession, { clientId, email }: UserFindOneParams): Promise<UserEntity> {
-    return this.userRepository.findUserByEmail(session, { email, clientId });
+  public async findOne(
+    session: PSQLSession,
+    { clientId, email }: { clientId: string; email: string },
+  ): Promise<UserEntity> {
+    return this.userRepository.findByEmail(session, { email, clientId });
   }
 
-  public async create(session: PSQLSession, { user }: UserCreateParams): Promise<UserEntity> {
-    return this.userRepository.createUser(session, { user });
+  public async create(session: PSQLSession, params: { user: UserEntity }): Promise<UserEntity> {
+    return this.userRepository.create(session, params);
   }
 
-  public async delete(session: PSQLSession, { user }: UserCreateParams): Promise<boolean> {
-    return this.userRepository.delete(session, { user });
+  public async update(
+    session: PSQLSession,
+    params: { clientId: string; email: string; user: UpdateUser },
+  ): Promise<UserEntity> {
+    return this.userRepository.update(session, params);
+  }
+
+  public async delete(session: PSQLSession, params: { user: UserEntity }): Promise<boolean> {
+    return this.userRepository.delete(session, params);
   }
 }

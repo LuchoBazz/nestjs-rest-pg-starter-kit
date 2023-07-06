@@ -17,10 +17,7 @@ interface UserCreateParams {
 
 @Injectable()
 export class UserRepository {
-  public async findUserByEmail(
-    manager: PSQLSession,
-    { email, clientId }: UserFindUserByEmailParams,
-  ): Promise<UserEntity> {
+  public async findByEmail(manager: PSQLSession, { email, clientId }: UserFindUserByEmailParams): Promise<UserEntity> {
     try {
       const query = format(
         `
@@ -54,7 +51,7 @@ export class UserRepository {
     }
   }
 
-  public async createUser(manager: PSQLSession, { user }: UserCreateParams): Promise<UserEntity> {
+  public async create(manager: PSQLSession, { user }: UserCreateParams): Promise<UserEntity> {
     try {
       const query = format(
         `
