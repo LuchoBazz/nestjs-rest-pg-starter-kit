@@ -73,4 +73,24 @@ export class PermissionRepository implements CacheSearcher<PermissionEntity[]> {
       throw new NotFoundException('PERMISSION_COULD_NOT_BE_CREATED');
     }
   }
+
+  public async deletePermissionToRole(
+    manager: PSQLSession,
+    { role, permissionName }: { role: string; permissionName: string; },
+  ): Promise<PermissionEntity> {
+    try {
+      const query = format(
+        `
+          DELETE FROM core.permissions
+          WHERE permission_role = %1$L AND permission_name = %2$L;
+        `,
+        role.toString(),
+        permissionName,
+      );
+      const { rows } = await manager.query(query);
+      return PermissionEntity.loadFromRow(rows[0]);
+    } catch (error) {
+      throw new NotFoundException('PERMISSION_COULD_NOT_BE_DELETED');
+    }
+  }
 }
