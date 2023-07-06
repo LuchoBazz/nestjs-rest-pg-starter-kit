@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CacheService } from '../../../common/cache/cache.service';
-import { parseEnum } from '../../../common/enum.util';
+import { parseEnum } from '../../../common/utils/enum.util';
 import { OrganizationCacheParameters } from '../../../entities/cache/organization_parameters_cache.entity';
 import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/organizations/feature_flag.entity';
 import { AuthProvider } from '../../../entities/users/user.entity';

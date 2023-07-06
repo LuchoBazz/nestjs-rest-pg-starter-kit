@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 
+import { formatFields } from '../../../common/utils/format.postgresql';
 import { UserEntity } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
+import { UpdateUser } from '../dto/user.dto';
 
 interface UserFindUserByEmailParams {
   email: string;
@@ -95,6 +97,38 @@ export class UserRepository {
       return UserEntity.loadFromRow(rows[0]);
     } catch (error) {
       throw new NotFoundException('USER_COULD_NOT_BE_CREATED');
+    }
+  }
+
+  public async update(
+    manager: PSQLSession,
+    { clientId, email, user }: { clientId: string; email: string; user: UpdateUser },
+  ): Promise<UserEntity> {
+    try {
+      const fields = formatFields({
+        updateData: user,
+        columnName: {
+          username: 'user_username',
+          firstName: 'user_first_name',
+          lastName: 'user_last_name',
+          email: 'user_email',
+          terms: 'user_terms',
+          notifications: 'user_notifications',
+        },
+      });
+      const query = format(
+        `
+          UPDATE core.users
+          SET ${fields}
+          WHERE users.user_email = %1$L AND users.user_organization = %2$L
+        `,
+        email,
+        clientId,
+      );
+      const { rows } = await manager.query(query);
+      return UserEntity.loadFromRow(rows[0]);
+    } catch (error) {
+      throw new NotFoundException('USER_COULD_NOT_BE_UPDATED');
     }
   }
 
