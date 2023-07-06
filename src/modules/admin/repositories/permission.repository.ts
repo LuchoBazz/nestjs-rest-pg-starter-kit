@@ -2,25 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 import { v4 as uuid } from 'uuid';
 
-import { CacheSearcher, CacheService } from '../../../common/cache/cache.service';
 import { PermissionEntity } from '../../../entities/authentication/permission.entity';
-import { RoleCachePermissions } from '../../../entities/cache/permission_cache.entity';
 import { UserRole } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
 
 @Injectable()
-export class PermissionRepository implements CacheSearcher<PermissionEntity[]> {
-  constructor(private readonly cacheService: CacheService) {}
-
-  public async search(session: PSQLSession, params: string[]): Promise<PermissionEntity[]> {
-    try {
-      return this.getPermissionsByRole(session, { role: params[0] as UserRole });
-    } catch (error) {
-      return undefined;
-    }
-  }
-
-  private async getPermissionsByRole(manager: PSQLSession, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
+export class PermissionRepository {
+  public async getPermissionsByRole(manager: PSQLSession, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
     try {
       const query = format(
         `
@@ -38,15 +26,6 @@ export class PermissionRepository implements CacheSearcher<PermissionEntity[]> {
       return rows.map(PermissionEntity.loadFromRow);
     } catch (error) {
       throw new NotFoundException('PERMISSIONS_NOT_FOUND');
-    }
-  }
-
-  public async getPermissionsOf(manager: PSQLSession, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
-    const parameter = new RoleCachePermissions(role);
-    try {
-      return this.cacheService.get(parameter, manager, this);
-    } catch (error) {
-      return [];
     }
   }
 
