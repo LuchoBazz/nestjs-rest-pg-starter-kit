@@ -49,25 +49,25 @@ export class UserRepository {
     try {
       const query = format(
         `
-        INSERT INTO core.users (
-          user_id,
-          user_username,
-          user_first_name,
-          user_last_name,
-          user_email,
-          user_terms,
-          user_notifications,
-          user_is_active,
-          user_uid,
-          user_role,
-          user_auth_provider,
-          user_auth_type,
-          user_organization,
-          user_dynamic_info
-        ) VALUES(
-          %1$L, %2$L, %3$L, %4$L, %5$L, %6$L, %7$L, %8$L, %9$L, %10$L, %11$L, %12$L, %13$L, %14$L::jsonb
-        )
-        RETURNING *
+          INSERT INTO core.users (
+            user_id,
+            user_username,
+            user_first_name,
+            user_last_name,
+            user_email,
+            user_terms,
+            user_notifications,
+            user_is_active,
+            user_uid,
+            user_role,
+            user_auth_provider,
+            user_auth_type,
+            user_organization,
+            user_dynamic_info
+          ) VALUES(
+            %1$L, %2$L, %3$L, %4$L, %5$L, %6$L, %7$L, %8$L, %9$L, %10$L, %11$L, %12$L, %13$L, %14$L::jsonb
+          )
+          RETURNING *
         `,
         user.id,
         user.username,
