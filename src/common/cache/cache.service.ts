@@ -4,10 +4,6 @@ import * as NodeCache from 'node-cache';
 import { CacheParameters } from '../../entities/cache/organization_parameters_cache.entity';
 import { PSQLSession } from '../../gateways/database/postgresql';
 
-export abstract class CacheSearcher<T> {
-  public abstract search(session: PSQLSession, params: string[]): Promise<T | null>;
-}
-
 @Injectable()
 export class CacheService {
   private readonly cache: NodeCache;
@@ -21,11 +17,10 @@ export class CacheService {
     });
   }
 
-  // TODO: Add callback in searcher
   public async get<T>(
     parameters: CacheParameters,
     session: PSQLSession,
-    searcher?: CacheSearcher<T>,
+    searcher?: (session: PSQLSession, params: string[]) => Promise<T | null>,
   ): Promise<T | null> {
     const key = parameters.generateKey();
     const value = this.cache.get<T>(key);
@@ -33,10 +28,13 @@ export class CacheService {
     if (value || !searcher) {
       return value;
     }
-
-    const newValue = await searcher.search(session, parameters.getSearchValues());
-    this.cache.set(key, newValue);
-    return newValue;
+    try {
+      const newValue = await searcher(session, parameters.getSearchValues());
+      this.cache.set(key, newValue);
+      return newValue;
+    } catch (error) {
+      return null;
+    }
   }
 
   public delete(keys: NodeCache.Key[]) {
