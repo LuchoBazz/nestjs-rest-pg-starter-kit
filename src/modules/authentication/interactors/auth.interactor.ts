@@ -44,6 +44,8 @@ export class AuthInteractor {
       first_name: userInfo.firstName,
       last_name: userInfo.lastName,
       email: userInfo.email,
+      identification_number: null,
+      phone_number: null,
       terms: userInfo.terms,
       notifications: userInfo.notifications,
       is_active: true,

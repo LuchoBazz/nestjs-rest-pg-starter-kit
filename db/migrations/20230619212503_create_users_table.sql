@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS core.users (
   user_first_name VARCHAR(63) NOT NULL,
   user_last_name VARCHAR(63) NOT NULL,
   user_email VARCHAR(63) NOT NULL,
+  user_identification_number VARCHAR(63) DEFAULT NULL,
+  user_phone_number VARCHAR(31) DEFAULT NULL,
   user_terms BOOLEAN NOT NULL DEFAULT FALSE,
   user_notifications BOOLEAN NOT NULL DEFAULT FALSE,
   user_is_active BOOLEAN NOT NULL DEFAULT TRUE,

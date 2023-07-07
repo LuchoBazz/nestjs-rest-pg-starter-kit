@@ -6,6 +6,8 @@ export interface UserParams {
   first_name: string;
   last_name: string;
   email: string;
+  identification_number: string | null;
+  phone_number: string | null;
   terms: boolean;
   notifications: boolean;
   is_active: boolean;
@@ -40,6 +42,8 @@ export class UserEntity extends BaseModel {
   private _first_name: string;
   private _last_name: string;
   private _email: string;
+  private _identification_number: string | null;
+  private _phone_number: string | null;
   private _terms: boolean;
   private _notifications: boolean;
   private _is_active: boolean;
@@ -56,6 +60,8 @@ export class UserEntity extends BaseModel {
     this.first_name = params.first_name;
     this.last_name = params.last_name;
     this.email = params.email;
+    this.identification_number = params.identification_number;
+    this.phone_number = params.phone_number;
     this.terms = params.terms;
     this.notifications = params.notifications;
     this.is_active = params.is_active;
@@ -79,6 +85,8 @@ export class UserEntity extends BaseModel {
       first_name: row.user_first_name,
       last_name: row.user_last_name,
       email: row.user_email,
+      identification_number: row.user_identification_number ?? null,
+      phone_number: row.user_phone_number ?? null,
       terms: row.user_terms,
       notifications: row.user_notifications,
       is_active: row.user_is_active,
@@ -121,6 +129,22 @@ export class UserEntity extends BaseModel {
 
   public set email(value: string) {
     this._email = value;
+  }
+
+  public get identification_number(): string | null {
+    return this._identification_number;
+  }
+
+  public set identification_number(value: string | null) {
+    this._identification_number = value;
+  }
+
+  public get phone_number(): string | null {
+    return this._phone_number;
+  }
+
+  public set phone_number(value: string | null) {
+    this._phone_number = value;
   }
 
   public get terms(): boolean {
