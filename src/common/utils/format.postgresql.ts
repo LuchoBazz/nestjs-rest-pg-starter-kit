@@ -1,6 +1,6 @@
 import { format } from '@scaleleap/pg-format';
 
-import { isDefined, isUndefined } from './shared.utils';
+import { isDefined, isNull, isUndefined } from './shared.utils';
 
 export interface FormatFieldsParams {
   updateData: Record<string, any>;
@@ -14,7 +14,7 @@ export const formatFields = ({ updateData, columnName }: FormatFieldsParams) => 
     })
     .map(([key, value]) => {
       if (isUndefined(columnName[key])) return '';
-      return `"${columnName[key]}" = ${format('%1$L', String(value))}`;
+      return `"${columnName[key]}" = ${format('%1$L', isNull(value) ? value : String(value))}`;
     })
     .join(', ');
 };

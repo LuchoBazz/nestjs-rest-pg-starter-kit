@@ -27,6 +27,16 @@ export class CreateUser {
   @Field()
   email: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Field({ nullable: true })
+  identificationNumber: string | null;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field({ nullable: true })
+  phoneNumber: string | null;
+
   @IsBoolean()
   @Field()
   terms: boolean;

@@ -6,6 +6,10 @@ export const isDefined = (obj: any): boolean => {
   return !isUndefined(obj);
 };
 
+export const isNull = (obj: any): boolean => {
+  return obj === null;
+};
+
 export const isObject = (fn: any): boolean => {
   return !isNil(fn) && typeof fn === 'object';
 };

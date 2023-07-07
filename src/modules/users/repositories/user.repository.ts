@@ -55,6 +55,8 @@ export class UserRepository {
             user_first_name,
             user_last_name,
             user_email,
+            user_identification_number,
+            user_phone_number,
             user_terms,
             user_notifications,
             user_is_active,
@@ -65,7 +67,7 @@ export class UserRepository {
             user_organization,
             user_dynamic_info
           ) VALUES(
-            %1$L, %2$L, %3$L, %4$L, %5$L, %6$L, %7$L, %8$L, %9$L, %10$L, %11$L, %12$L, %13$L, %14$L::jsonb
+            %1$L, %2$L, %3$L, %4$L, %5$L, %6$L, %7$L, %8$L, %9$L, %10$L, %11$L, %12$L, %13$L, %14$L, %15$L, %16$L::jsonb
           )
           RETURNING *
         `,
@@ -74,6 +76,8 @@ export class UserRepository {
         user.first_name,
         user.last_name,
         user.email,
+        user.identification_number,
+        user.phone_number,
         String(user.terms),
         String(user.notifications),
         String(user.is_active),
@@ -103,10 +107,13 @@ export class UserRepository {
           firstName: 'user_first_name',
           lastName: 'user_last_name',
           email: 'user_email',
+          identificationNumber: 'user_identification_number',
+          phoneNumber: 'user_phone_number',
           terms: 'user_terms',
           notifications: 'user_notifications',
         },
       });
+
       const query = format(
         `
           UPDATE core.users
