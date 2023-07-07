@@ -1,4 +1,5 @@
 # https://github.com/github/linguist/blob/master/docs/overrides.md#using-gitattributes
 *.js linguist-vendored
 *.css linguist-vendored
+Dockerfile linguist-vendored
 package-lock.json linguist-generated
