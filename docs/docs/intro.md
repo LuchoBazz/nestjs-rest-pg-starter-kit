@@ -69,7 +69,7 @@ $ npm run test:cov
 
 ## License
 
-This project is licensed under the [MIT licensed](LICENSE).. See the LICENSE file for details.
+This project is licensed under the [MIT licensed](../../LICENSE).. See the LICENSE file for details.
 
 ### Reference
 

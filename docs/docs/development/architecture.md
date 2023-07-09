@@ -44,7 +44,7 @@ Folder which stores github hooks, by default it contains pre-commit hook which p
 
 ## `.vscode`
 
-Settings and extensions specific to this project, for Visual Studio Code. See [the editors doc](editors.md#visual-studio-code) for more.
+Settings and extensions specific to this project, for Visual Studio Code. See [the editors doc](#) for more.
 
 ## `docs`
 
