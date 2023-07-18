@@ -12,6 +12,7 @@ import {
   FeatureFlagPaginationInput,
   FeatureFlagResponse,
   FeatureFlagsResponse,
+  UpdateFeatureFlagInput,
 } from '../dto';
 import { FeatureFlagInteractor } from '../interactors';
 
@@ -49,7 +50,16 @@ export class FeatureFlagResolver {
     return await this.featureFlagInteractor.createFeatureFlag(user.organization_client_id, input);
   }
 
-  // TODO: Add updateFeatureFlag mutation
+  @Permissions(PermissionsValues.UPDATE_FEATURE_FLAGS)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Mutation(() => FeatureFlagObject, { nullable: false })
+  public async updateFeatureFlag(
+    @Args('input') input: UpdateFeatureFlagInput,
+    @JwtUser() user: UserEntity,
+  ): Promise<FeatureFlagObject> {
+    return this.featureFlagInteractor.updateFeatureFlag(user.organization_client_id, input);
+  }
+
   @Permissions(PermissionsValues.REMOVE_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Mutation(() => FeatureFlagResponse, { nullable: false })

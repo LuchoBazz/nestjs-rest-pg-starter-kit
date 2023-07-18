@@ -34,7 +34,7 @@ export class FeatureFlagService {
 
   public async updateOne(
     manager: PoolClient,
-    params: { clientId: string; key: string; featFlat: UpdateFeatureFlagInput },
+    params: { clientId: string; key: string; featFlag: UpdateFeatureFlagInput },
   ): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.updateOne(manager, params);
   }

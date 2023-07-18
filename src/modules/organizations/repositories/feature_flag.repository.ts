@@ -126,11 +126,11 @@ export class FeatureFlagRepository {
 
   public async updateOne(
     manager: PoolClient,
-    { clientId, key, featFlat }: { clientId: string; key: string; featFlat: UpdateFeatureFlagInput },
+    { clientId, key, featFlag }: { clientId: string; key: string; featFlag: UpdateFeatureFlagInput },
   ): Promise<FeatureFlagEntity> {
     try {
       const fields = formatFields({
-        updateData: featFlat,
+        updateData: featFlag,
         columnName: {
           key: 'feature_flag_key',
           value: 'feature_flag_value',
