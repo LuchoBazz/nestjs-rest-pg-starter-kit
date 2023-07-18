@@ -9,25 +9,25 @@ import { UserRepository } from '../repositories';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async findOne(
+  public async findOneByEmail(
     manager: PoolClient,
     { clientId, email }: { clientId: string; email: string },
   ): Promise<UserEntity> {
-    return this.userRepository.findByEmail(manager, { email, clientId });
+    return this.userRepository.findOneByEmail(manager, { email, clientId });
   }
 
-  public async create(manager: PoolClient, params: { user: UserEntity }): Promise<UserEntity> {
-    return this.userRepository.create(manager, params);
+  public async createOne(manager: PoolClient, params: { user: UserEntity }): Promise<UserEntity> {
+    return this.userRepository.createOne(manager, params);
   }
 
-  public async update(
+  public async updateOne(
     manager: PoolClient,
     params: { clientId: string; email: string; user: UpdateUser },
   ): Promise<UserEntity> {
-    return this.userRepository.update(manager, params);
+    return this.userRepository.updateOne(manager, params);
   }
 
-  public async delete(manager: PoolClient, params: { user: UserEntity }): Promise<boolean> {
-    return this.userRepository.delete(manager, params);
+  public async deleteOne(manager: PoolClient, params: { user: UserEntity }): Promise<boolean> {
+    return this.userRepository.deleteOne(manager, params);
   }
 }

@@ -8,7 +8,7 @@ import { UpdateUser } from '../dto';
 
 @Injectable()
 export class UserRepository {
-  public async findByEmail(
+  public async findOneByEmail(
     manager: PoolClient,
     { email, clientId }: { email: string; clientId: string },
   ): Promise<UserEntity> {
@@ -45,7 +45,7 @@ export class UserRepository {
     }
   }
 
-  public async create(manager: PoolClient, { user }: { user: UserEntity }): Promise<UserEntity> {
+  public async createOne(manager: PoolClient, { user }: { user: UserEntity }): Promise<UserEntity> {
     try {
       const query = format(
         `
@@ -95,7 +95,7 @@ export class UserRepository {
     }
   }
 
-  public async update(
+  public async updateOne(
     manager: PoolClient,
     { clientId, email, user }: { clientId: string; email: string; user: UpdateUser },
   ): Promise<UserEntity> {
@@ -130,7 +130,7 @@ export class UserRepository {
     }
   }
 
-  public async delete(manager: PoolClient, { user }: { user: UserEntity }): Promise<boolean> {
+  public async deleteOne(manager: PoolClient, { user }: { user: UserEntity }): Promise<boolean> {
     try {
       const query = format(
         `

@@ -25,7 +25,7 @@ export class JwtService {
    */
   public async validateJwtPayload(payload: JwtPayload): Promise<UserEntity | undefined> {
     const user = await this.pgGateway.onSession(async (manager: PoolClient) => {
-      return this.userService.findOne(manager, { clientId: payload.client, email: payload.email });
+      return this.userService.findOneByEmail(manager, { clientId: payload.client, email: payload.email });
     });
     const isValidUser = user && payload.id === user.id && user.is_active;
     return isValidUser ? user : undefined;

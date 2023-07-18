@@ -58,7 +58,7 @@ export class AuthInteractor {
     });
 
     const userCreated = await this.pgGateway.onTransaction(async (manager: PoolClient) => {
-      return this.userService.create(manager, { user });
+      return this.userService.createOne(manager, { user });
     });
 
     ErrorValidator.orThrowInternalServerError(userCreated, 'USER_COULD_NOT_BE_CREATED');
@@ -75,7 +75,7 @@ export class AuthInteractor {
         accessToken,
       });
       ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
-      return this.userService.findOne(manager, { clientId, email: result.email });
+      return this.userService.findOneByEmail(manager, { clientId, email: result.email });
     });
 
     ErrorValidator.orThrowNotFoundError(user, 'USER_NOT_FOUND');
@@ -89,7 +89,7 @@ export class AuthInteractor {
     const { organization_client_id: clientId, email } = userFromToken;
     const [user] = await this.pgGateway.onTransaction(async (manager: PoolClient) => {
       return Promise.all([
-        this.userService.findOne(manager, { clientId, email }),
+        this.userService.findOneByEmail(manager, { clientId, email }),
         this.authTokenStatusesRepository.revoke(manager, { user_id: userFromToken.id }),
       ]);
     });
@@ -101,7 +101,7 @@ export class AuthInteractor {
     const { organization_client_id: clientId, uid } = user;
     const success = await this.pgGateway.onTransaction(async (manager: PoolClient) => {
       await this.authGatewayService.deleteUser(manager, { clientId, uid });
-      return this.userService.delete(manager, { user });
+      return this.userService.deleteOne(manager, { user });
     });
     return { success };
   }
