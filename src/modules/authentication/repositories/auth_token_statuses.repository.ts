@@ -3,13 +3,9 @@ import { format } from '@scaleleap/pg-format';
 import moment from 'moment-timezone';
 import { PoolClient } from 'pg';
 
-interface AuthTokenStatusesParams {
-  user_id: string;
-}
-
 @Injectable()
 export class AuthTokenStatusesRepository {
-  public async revoke(manager: PoolClient, { user_id }: AuthTokenStatusesParams): Promise<boolean> {
+  public async revoke(manager: PoolClient, { user_id }: { user_id: string }): Promise<boolean> {
     try {
       const query = format(
         `

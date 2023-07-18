@@ -6,11 +6,7 @@ import { JwtPayload } from '../../../entities/authentication';
 import { UserEntity } from '../../../entities/users';
 import { PgGateway } from '../../../gateways/database/postgresql';
 import { UserService } from '../../users/services';
-
-export interface CreateJWTOutput {
-  data: JwtPayload;
-  token: string;
-}
+import { CreateJWTOutput } from '../dto';
 
 @Injectable()
 export class JwtService {
