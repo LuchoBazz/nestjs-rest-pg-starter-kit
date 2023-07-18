@@ -1,7 +1,7 @@
 import { Field, InputType, InterfaceType, ObjectType, PartialType, registerEnumType } from '@nestjs/graphql';
 import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-import { PageInfoResponse, PaginationInput } from '../../../common/dto/pagination.dto';
+import { PageInfoResponse, PaginationInput } from '../../../common/dto';
 import { FeatureFlagObject, FeatureFlagType } from '../../../entities/organizations/feature_flag.entity';
 
 export enum OrderByFeatureFlag {

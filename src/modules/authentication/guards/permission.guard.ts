@@ -2,12 +2,12 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { ErrorValidator } from '../../../common/errors/error.validator';
+import { ErrorValidator } from '../../../common/errors';
 import { PermissionEntity } from '../../../entities/authentication/permission.entity';
 import { PermissionsValues } from '../../../entities/authentication/permission.enum';
 import { UserEntity } from '../../../entities/users/user.entity';
 import { PgGateway } from '../../../gateways/database/postgresql';
-import { PermissionService } from '../../admin/services/permission.service';
+import { PermissionService } from '../../admin/services';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {

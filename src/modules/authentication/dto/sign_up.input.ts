@@ -1,7 +1,7 @@
 import { Field, InputType, InterfaceType, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-import { CreateUser } from '../../users/dto/user.dto';
+import { CreateUser } from '../../users/dto';
 
 @InputType({ isAbstract: true })
 @InterfaceType({ isAbstract: true })

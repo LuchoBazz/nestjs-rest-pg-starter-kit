@@ -4,17 +4,15 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PermissionsValues } from '../../../entities/authentication/permission.enum';
 import { FeatureFlagObject } from '../../../entities/organizations/feature_flag.entity';
 import { UserEntity } from '../../../entities/users/user.entity';
-import { Permissions } from '../../authentication/decorators/permission.decorator';
-import { JwtUser } from '../../authentication/decorators/user.decorator';
-import { JwtAuthGuard } from '../../authentication/guards/jwt_auth.guard';
-import { PermissionsGuard } from '../../authentication/guards/permission.guard';
+import { JwtUser, Permissions } from '../../authentication/decorators';
+import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
 import {
   CreateFeatureFlagInput,
   FeatureFlagInput,
   FeatureFlagPaginationInput,
   FeatureFlagResponse,
   FeatureFlagsResponse,
-} from '../dto/feature_flag.dto';
+} from '../dto';
 import { FeatureFlagInteractor } from '../interactors/feature_flag.interactor';
 
 @Resolver('FeatureFlag')

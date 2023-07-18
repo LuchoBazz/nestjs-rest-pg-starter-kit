@@ -8,8 +8,7 @@ import {
 import { OrderBy, Pagination } from '../../../entities/pagination.entity';
 import { AuthProvider } from '../../../entities/users/user.entity';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { CachedFeatureFlagRepository } from '../repositories/cached_feature_flag.repository';
-import { FeatureFlagRepository } from '../repositories/feature_flag.repository';
+import { CachedFeatureFlagRepository, FeatureFlagRepository } from '../repositories';
 
 interface InternalParams {
   clientId: string;
