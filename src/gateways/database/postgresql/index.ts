@@ -1,25 +1,24 @@
-import postgresql, { Session } from '@mercadoni/elementals/postgresql';
+import postgresql from '@mercadoni/elementals/postgresql';
 import { Injectable } from '@nestjs/common';
-
-export type PSQLSession = Session;
+import { PoolClient } from 'pg';
 
 const entityPostgreSQL = postgresql('postgresql');
 
 @Injectable()
 export class PgGateway {
-  public async newSession(): Promise<PSQLSession> {
+  public async newSession(): Promise<PoolClient> {
     return entityPostgreSQL.newSession();
   }
 
-  public closeSession(session: PSQLSession): void {
+  public closeSession(session: PoolClient): void {
     return entityPostgreSQL.closeSession(session);
   }
 
-  public async onSession<T>(operation: (session: PSQLSession) => Promise<T>): Promise<T> {
+  public async onSession<T>(operation: (session: PoolClient) => Promise<T>): Promise<T> {
     return entityPostgreSQL.onSession<T>(operation);
   }
 
-  public async onTransaction<T>(operation: (session: PSQLSession) => Promise<T>): Promise<T> {
+  public async onTransaction<T>(operation: (session: PoolClient) => Promise<T>): Promise<T> {
     return entityPostgreSQL.onTransaction<T>(operation);
   }
 

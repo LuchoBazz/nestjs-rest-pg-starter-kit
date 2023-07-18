@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as NodeCache from 'node-cache';
+import { PoolClient } from 'pg';
 
 import { CacheParameters } from '../../entities/cache';
-import { PSQLSession } from '../../gateways/database/postgresql';
 
 @Injectable()
 export class CacheService {
@@ -19,8 +19,8 @@ export class CacheService {
 
   public async get<T>(
     parameters: CacheParameters,
-    session: PSQLSession,
-    searcher?: (session: PSQLSession, params: string[]) => Promise<T | null>,
+    session: PoolClient,
+    searcher?: (session: PoolClient, params: string[]) => Promise<T | null>,
   ): Promise<T | null> {
     const key = parameters.generateKey();
     const value = this.cache.get<T>(key);

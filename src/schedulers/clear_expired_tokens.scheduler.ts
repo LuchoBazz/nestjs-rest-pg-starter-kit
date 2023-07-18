@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { PoolClient } from 'pg';
 
-import { PgGateway, PSQLSession } from '../gateways/database/postgresql';
+import { PgGateway } from '../gateways/database/postgresql';
 import { AuthTokenStatusesRepository } from '../modules/authentication/repositories/auth_token_statuses.repository';
 
 @Injectable()
@@ -15,7 +16,7 @@ export class ClearExpiredTokensScheduler {
     timeZone: 'America/Bogota',
   })
   public async handleCron(): Promise<void> {
-    await this.pgGateway.onTransaction(async (manager: PSQLSession) => {
+    await this.pgGateway.onTransaction(async (manager: PoolClient) => {
       await this.authTokenStatusesRepository.clearExpiredTokens(manager);
     });
   }

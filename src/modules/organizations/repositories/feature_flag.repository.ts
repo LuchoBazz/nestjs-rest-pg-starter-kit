@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
+import { PoolClient } from 'pg';
 import { v4 as uuid } from 'uuid';
 
 import { mapPagination } from '../../../common/mappers';
 import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
-import { PSQLSession } from '../../../gateways/database/postgresql';
 import { OrderByFeatureFlag } from '../dto';
 
 interface InternalParams {
@@ -28,7 +28,7 @@ interface CreateFeatureFlag {
 
 @Injectable()
 export class FeatureFlagRepository {
-  public async findFeatureFlag(manager: PSQLSession, { key, clientId }: InternalParams): Promise<FeatureFlagEntity> {
+  public async findFeatureFlag(manager: PoolClient, { key, clientId }: InternalParams): Promise<FeatureFlagEntity> {
     try {
       const query = format(
         `
@@ -57,7 +57,7 @@ export class FeatureFlagRepository {
   }
 
   public async findFeatureFlagsByOrganization(
-    manager: PSQLSession,
+    manager: PoolClient,
     { clientId, pagination, orderBy }: FindFFWithPagination,
   ): Promise<FeatureFlagPaginationResponse> {
     try {
@@ -101,7 +101,7 @@ export class FeatureFlagRepository {
   }
 
   public async createFeatureFlag(
-    manager: PSQLSession,
+    manager: PoolClient,
     { key, value, type, is_experimental, clientId }: CreateFeatureFlag,
   ): Promise<FeatureFlagEntity> {
     try {
@@ -132,7 +132,7 @@ export class FeatureFlagRepository {
     }
   }
 
-  public async deleteFeatureFlag(manager: PSQLSession, { key, clientId }: InternalParams): Promise<boolean> {
+  public async deleteFeatureFlag(manager: PoolClient, { key, clientId }: InternalParams): Promise<boolean> {
     try {
       const query = format(
         `

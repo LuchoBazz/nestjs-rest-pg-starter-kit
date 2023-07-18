@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { PoolClient } from 'pg';
 
 import { AuthProvider } from '../../entities/users/user.entity';
 import { FeatureFlagService } from '../../modules/organizations/services/feature_flag.service';
-import { PSQLSession } from '../database/postgresql';
 import { AuthGatewayUser, BaseAuthService, DeleteUserPayload, ValidateTokenPayload } from './base.auth';
 import { FirebaseAuthService } from './firebase/firebase_auth.service';
 import { SupabaseAuthService } from './supabase/supabase_auth.service';
@@ -30,15 +30,12 @@ export class AuthGatewayService {
     return AuthGatewayService.instance;
   }
 
-  private async getAuthService(manager: PSQLSession, clientId: string): Promise<BaseAuthService> {
+  private async getAuthService(manager: PoolClient, clientId: string): Promise<BaseAuthService> {
     const authProvider = await this.featFlatService.findAuthProvider(manager, { clientId });
     return this.providers[authProvider];
   }
 
-  public async validateToken(
-    manager: PSQLSession,
-    payload: ValidateTokenPayload,
-  ): Promise<AuthGatewayUser | undefined> {
+  public async validateToken(manager: PoolClient, payload: ValidateTokenPayload): Promise<AuthGatewayUser | undefined> {
     const { email, clientId } = payload;
     const authService = await this.getAuthService(manager, clientId);
     const user = await authService.validateToken(payload);
@@ -46,7 +43,7 @@ export class AuthGatewayService {
     return isValidUser ? user : undefined;
   }
 
-  public async deleteUser(manager: PSQLSession, payload: DeleteUserPayload): Promise<boolean> {
+  public async deleteUser(manager: PoolClient, payload: DeleteUserPayload): Promise<boolean> {
     const { clientId } = payload;
     const authService = await this.getAuthService(manager, clientId);
     return authService.deleteUser(payload);

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { PoolClient } from 'pg';
 
 import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
 import { AuthProvider } from '../../../entities/users';
-import { PSQLSession } from '../../../gateways/database/postgresql';
 import { CachedFeatureFlagRepository, FeatureFlagRepository } from '../repositories';
 
 interface InternalParams {
@@ -36,26 +36,26 @@ export class FeatureFlagService {
     private readonly cachedFeatFlagRepository: CachedFeatureFlagRepository,
   ) {}
 
-  public async findFeatureFlag(manager: PSQLSession, params: InternalParams): Promise<FeatureFlagEntity> {
+  public async findFeatureFlag(manager: PoolClient, params: InternalParams): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.findFeatureFlag(manager, params);
   }
 
   public async findFeatureFlagsByOrganization(
-    manager: PSQLSession,
+    manager: PoolClient,
     params: FindFFWithPagination,
   ): Promise<FeatureFlagPaginationResponse> {
     return this.featFlagRepository.findFeatureFlagsByOrganization(manager, params);
   }
 
-  public async createFeatureFlag(manager: PSQLSession, params: CreateFeatureFlag): Promise<FeatureFlagEntity> {
+  public async createFeatureFlag(manager: PoolClient, params: CreateFeatureFlag): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.createFeatureFlag(manager, params);
   }
 
-  public async deleteFeatureFlag(manager: PSQLSession, params: InternalParams): Promise<boolean> {
+  public async deleteFeatureFlag(manager: PoolClient, params: InternalParams): Promise<boolean> {
     return this.featFlagRepository.deleteFeatureFlag(manager, params);
   }
 
-  public async findAuthProvider(manager: PSQLSession, params: Params): Promise<AuthProvider> {
+  public async findAuthProvider(manager: PoolClient, params: Params): Promise<AuthProvider> {
     return this.cachedFeatFlagRepository.findAuthProvider(manager, params);
   }
 }

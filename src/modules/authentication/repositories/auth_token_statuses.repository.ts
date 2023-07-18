@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 import moment from 'moment-timezone';
-
-import { PSQLSession } from '../../../gateways/database/postgresql';
+import { PoolClient } from 'pg';
 
 interface AuthTokenStatusesParams {
   user_id: string;
@@ -10,7 +9,7 @@ interface AuthTokenStatusesParams {
 
 @Injectable()
 export class AuthTokenStatusesRepository {
-  public async revoke(manager: PSQLSession, { user_id }: AuthTokenStatusesParams): Promise<boolean> {
+  public async revoke(manager: PoolClient, { user_id }: AuthTokenStatusesParams): Promise<boolean> {
     try {
       const query = format(
         `
@@ -26,7 +25,7 @@ export class AuthTokenStatusesRepository {
     }
   }
 
-  public async clearExpiredTokens(manager: PSQLSession): Promise<boolean> {
+  public async clearExpiredTokens(manager: PoolClient): Promise<boolean> {
     const now = moment().tz('America/Bogota').toDate();
     const unixTime = Math.floor(now.getTime() / 1000);
 

@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
+import { PoolClient } from 'pg';
 
 import { formatFields } from '../../../common/utils/format.postgresql';
 import { UserEntity } from '../../../entities/users';
-import { PSQLSession } from '../../../gateways/database/postgresql';
 import { UpdateUser } from '../dto';
 
 @Injectable()
 export class UserRepository {
   public async findByEmail(
-    manager: PSQLSession,
+    manager: PoolClient,
     { email, clientId }: { email: string; clientId: string },
   ): Promise<UserEntity> {
     try {
@@ -45,7 +45,7 @@ export class UserRepository {
     }
   }
 
-  public async create(manager: PSQLSession, { user }: { user: UserEntity }): Promise<UserEntity> {
+  public async create(manager: PoolClient, { user }: { user: UserEntity }): Promise<UserEntity> {
     try {
       const query = format(
         `
@@ -96,7 +96,7 @@ export class UserRepository {
   }
 
   public async update(
-    manager: PSQLSession,
+    manager: PoolClient,
     { clientId, email, user }: { clientId: string; email: string; user: UpdateUser },
   ): Promise<UserEntity> {
     try {
@@ -130,7 +130,7 @@ export class UserRepository {
     }
   }
 
-  public async delete(manager: PSQLSession, { user }: { user: UserEntity }): Promise<boolean> {
+  public async delete(manager: PoolClient, { user }: { user: UserEntity }): Promise<boolean> {
     try {
       const query = format(
         `

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { PoolClient } from 'pg';
 
 import { PermissionEntity } from '../../../entities/authentication';
 import { UserRole } from '../../../entities/users';
-import { PSQLSession } from '../../../gateways/database/postgresql';
 import { CachedPermissionRepository, PermissionRepository } from '../repositories';
 
 @Injectable()
@@ -12,19 +12,19 @@ export class PermissionService {
     private readonly cachedPermissionRepository: CachedPermissionRepository,
   ) {}
 
-  public async getPermissionsByRole(manager: PSQLSession, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
+  public async getPermissionsByRole(manager: PoolClient, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
     return this.cachedPermissionRepository.getPermissionsByRole(manager, { role });
   }
 
   public async addPermissionToRole(
-    manager: PSQLSession,
+    manager: PoolClient,
     { role, permissionName }: { role: string; permissionName: string },
   ): Promise<PermissionEntity> {
     return this.permissionRepository.addPermissionToRole(manager, { role, permissionName });
   }
 
   public async deletePermissionToRole(
-    manager: PSQLSession,
+    manager: PoolClient,
     { role, permissionName }: { role: string; permissionName: string },
   ): Promise<PermissionEntity> {
     return this.permissionRepository.deletePermissionToRole(manager, { role, permissionName });

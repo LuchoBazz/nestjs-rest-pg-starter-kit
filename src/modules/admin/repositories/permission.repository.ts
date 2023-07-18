@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
+import { PoolClient } from 'pg';
 import { v4 as uuid } from 'uuid';
 
 import { PermissionEntity } from '../../../entities/authentication';
 import { UserRole } from '../../../entities/users';
-import { PSQLSession } from '../../../gateways/database/postgresql';
 
 @Injectable()
 export class PermissionRepository {
-  public async getPermissionsByRole(manager: PSQLSession, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
+  public async getPermissionsByRole(manager: PoolClient, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
     try {
       const query = format(
         `
@@ -30,7 +30,7 @@ export class PermissionRepository {
   }
 
   public async addPermissionToRole(
-    manager: PSQLSession,
+    manager: PoolClient,
     { role, permissionName }: { role: string; permissionName: string },
   ): Promise<PermissionEntity> {
     try {
@@ -54,7 +54,7 @@ export class PermissionRepository {
   }
 
   public async deletePermissionToRole(
-    manager: PSQLSession,
+    manager: PoolClient,
     { role, permissionName }: { role: string; permissionName: string },
   ): Promise<PermissionEntity> {
     try {
