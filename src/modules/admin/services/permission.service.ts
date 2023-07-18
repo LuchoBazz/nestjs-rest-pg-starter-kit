@@ -3,17 +3,17 @@ import { PoolClient } from 'pg';
 
 import { PermissionEntity } from '../../../entities/authentication';
 import { UserRole } from '../../../entities/users';
-import { CachedPermissionRepository, PermissionRepository } from '../repositories';
+import { CachedPermissionService, PermissionRepository } from '../repositories';
 
 @Injectable()
 export class PermissionService {
   constructor(
     private readonly permissionRepository: PermissionRepository,
-    private readonly cachedPermissionRepository: CachedPermissionRepository,
+    private readonly cachedPermissionService: CachedPermissionService,
   ) {}
 
   public async getPermissionsByRole(manager: PoolClient, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
-    return this.cachedPermissionRepository.getPermissionsByRole(manager, { role });
+    return this.cachedPermissionService.getPermissionsByRole(manager, { role });
   }
 
   public async addPermissionToRole(
