@@ -10,6 +10,8 @@
   <a href="https://jestjs.io/" target="blank"><img src="https://raw.githubusercontent.com/jestjs/jest/main/website/static/img/jest.png" height="100" width="100" alt="Jest logo" /></a>
   <a href="https://prettier.io/" target="blank"><img src="https://raw.githubusercontent.com/prettier/prettier/main/website/static/icon.png" height="100" width="100" alt="Prettier logo" /></a>
   <a href="https://eslint.org/" target="blank"><img src="https://raw.githubusercontent.com/eslint/archive-website/e19d0bd4b5c116996f4cd94d4e90df5cc4367236/assets/img/logo.svg" height="100" width="100" alt="ESLint logo" /></a>
+  <a href="firebase.google.com" target="blank"><img src="https://i.ibb.co/f4wm6Lg/firebase.webp" height="100" width="100" alt="Firebase logo" /></a>
+  <a href="https://supabase.com/" target="blank"><img src="https://i.ibb.co/SKHhMZ9/supabase.png" height="100" width="100" alt="Supabase logo" /></a>
 </p>
 
 ## Description
