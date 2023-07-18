@@ -1,6 +1,6 @@
 import { format } from '@scaleleap/pg-format';
 
-import { isDefined, isNull, isUndefined } from './shared.utils';
+import { isDefined, isNull, isUndefined } from '.';
 
 export interface FormatFieldsParams {
   updateData: Record<string, any>;

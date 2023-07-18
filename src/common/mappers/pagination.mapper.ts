@@ -1,4 +1,4 @@
-import { PageInfoResponse, Pagination, PaginationResponse } from '../../entities/pagination.entity';
+import { PageInfoResponse, Pagination, PaginationResponse } from '../../entities';
 
 export const mapPagination = <T>(
   rows: any[],

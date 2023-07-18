@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AuthGatewayUser, BaseAuthService, DeleteUserPayload, ValidateTokenPayload } from '../base.auth';
-import { FirebaseConfigService } from './firebase.service';
+import { FirebaseConfigService } from '.';
 
 @Injectable()
 export class FirebaseAuthService extends BaseAuthService {

@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import firebaseConfig from '../../../common/configuration/firebase.config';
-import { FirebaseConfigService } from './firebase.service';
-import { FirebaseAuthService } from './firebase_auth.service';
+import { FirebaseAuthService, FirebaseConfigService } from '.';
 
 @Module({
   imports: [
