@@ -1,2 +1,2 @@
-export * from './cached_feature_flag.repository';
+export * from '../services/cached_feature_flag.service';
 export * from './feature_flag.repository';

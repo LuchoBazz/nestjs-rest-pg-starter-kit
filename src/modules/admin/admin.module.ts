@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
 import { CacheModule } from '../../common/cache/cache.module';
-import { CachedPermissionService } from './services/cached_permission.service';
 import { PermissionRepository } from './repositories/permission.repository';
+import { CachedPermissionService } from './services/cached_permission.service';
 import { PermissionService } from './services/permission.service';
 
 @Module({

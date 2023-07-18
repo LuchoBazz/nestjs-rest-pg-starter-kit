@@ -6,10 +6,10 @@ import { parseEnum } from '../../../common/utils/enum.util';
 import { OrganizationCacheParameters } from '../../../entities/cache/organization_parameters_cache.entity';
 import { FeatureFlagEntity, FeatureFlagKey } from '../../../entities/organizations/feature_flag.entity';
 import { AuthProvider } from '../../../entities/users/user.entity';
-import { FeatureFlagRepository } from './feature_flag.repository';
+import { FeatureFlagRepository } from '../repositories/feature_flag.repository';
 
 @Injectable()
-export class CachedFeatureFlagRepository {
+export class CachedFeatureFlagService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly featureFlagRepository: FeatureFlagRepository,

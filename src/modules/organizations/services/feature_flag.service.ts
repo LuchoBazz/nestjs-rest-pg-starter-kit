@@ -4,7 +4,7 @@ import { PoolClient } from 'pg';
 import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
 import { AuthProvider } from '../../../entities/users';
-import { CachedFeatureFlagRepository, FeatureFlagRepository } from '../repositories';
+import { CachedFeatureFlagService, FeatureFlagRepository } from '../repositories';
 
 interface InternalParams {
   clientId: string;
@@ -33,7 +33,7 @@ interface CreateFeatureFlag {
 export class FeatureFlagService {
   constructor(
     private readonly featFlagRepository: FeatureFlagRepository,
-    private readonly cachedFeatFlagRepository: CachedFeatureFlagRepository,
+    private readonly cachedFeatFlagService: CachedFeatureFlagService,
   ) {}
 
   public async findFeatureFlag(manager: PoolClient, params: InternalParams): Promise<FeatureFlagEntity> {
@@ -56,6 +56,6 @@ export class FeatureFlagService {
   }
 
   public async findAuthProvider(manager: PoolClient, params: Params): Promise<AuthProvider> {
-    return this.cachedFeatFlagRepository.findAuthProvider(manager, params);
+    return this.cachedFeatFlagService.findAuthProvider(manager, params);
   }
 }
