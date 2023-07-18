@@ -5,10 +5,10 @@ import { CacheService } from '../../../common/cache';
 import { PermissionEntity } from '../../../entities/authentication';
 import { RoleCachePermissions } from '../../../entities/cache';
 import { UserRole } from '../../../entities/users';
-import { PermissionRepository } from '.';
+import { PermissionRepository } from '../repositories';
 
 @Injectable()
-export class CachedPermissionRepository {
+export class CachedPermissionService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly permissionRepository: PermissionRepository,
