@@ -17,8 +17,8 @@ export class CachedPermissionRepository {
   public async getPermissionsByRole(manager: PoolClient, { role }: { role: UserRole }): Promise<PermissionEntity[]> {
     const parameter = new RoleCachePermissions(role);
     try {
-      const searcher = (session: PoolClient, params: string[]): Promise<PermissionEntity[] | null> => {
-        return this.permissionRepository.getPermissionsByRole(session, { role: params[0] as UserRole });
+      const searcher = (manager: PoolClient, params: string[]): Promise<PermissionEntity[] | null> => {
+        return this.permissionRepository.getPermissionsByRole(manager, { role: params[0] as UserRole });
       };
       return this.cacheService.get(parameter, manager, searcher);
     } catch (error) {

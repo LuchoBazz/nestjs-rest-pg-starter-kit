@@ -19,8 +19,8 @@ export class CacheService {
 
   public async get<T>(
     parameters: CacheParameters,
-    session: PoolClient,
-    searcher?: (session: PoolClient, params: string[]) => Promise<T | null>,
+    manager: PoolClient,
+    searcher?: (manager: PoolClient, params: string[]) => Promise<T | null>,
   ): Promise<T | null> {
     const key = parameters.generateKey();
     const value = this.cache.get<T>(key);
@@ -29,7 +29,7 @@ export class CacheService {
       return value;
     }
     try {
-      const newValue = await searcher(session, parameters.getSearchValues());
+      const newValue = await searcher(manager, parameters.getSearchValues());
       this.cache.set(key, newValue);
       return newValue;
     } catch (error) {

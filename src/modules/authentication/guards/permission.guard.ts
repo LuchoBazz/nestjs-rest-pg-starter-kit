@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { PoolClient } from 'pg';
 
 import { ErrorValidator } from '../../../common/errors';
 import { PermissionEntity } from '../../../entities/authentication';
@@ -26,7 +27,7 @@ export class PermissionsGuard implements CanActivate {
     if (!permissions?.length || !user) {
       return true;
     }
-    const permissionByRole = await this.pgGateway.onSession((manager) => {
+    const permissionByRole = await this.pgGateway.onSession((manager: PoolClient) => {
       return this.permissionService.getPermissionsByRole(manager, { role: user.role });
     });
 
