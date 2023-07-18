@@ -8,27 +8,12 @@ import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
 import { OrderByFeatureFlag } from '../dto';
 
-interface InternalParams {
-  clientId: string;
-  key: string;
-}
-interface FindFFWithPagination {
-  clientId: string;
-  orderBy?: OrderBy;
-  pagination?: Pagination;
-}
-
-interface CreateFeatureFlag {
-  key: string;
-  value: string | null;
-  type: FeatureFlagType;
-  is_experimental: boolean;
-  clientId: string;
-}
-
 @Injectable()
 export class FeatureFlagRepository {
-  public async findFeatureFlag(manager: PoolClient, { key, clientId }: InternalParams): Promise<FeatureFlagEntity> {
+  public async findFeatureFlag(
+    manager: PoolClient,
+    { key, clientId }: { clientId: string; key: string },
+  ): Promise<FeatureFlagEntity> {
     try {
       const query = format(
         `
@@ -58,7 +43,7 @@ export class FeatureFlagRepository {
 
   public async findFeatureFlagsByOrganization(
     manager: PoolClient,
-    { clientId, pagination, orderBy }: FindFFWithPagination,
+    { clientId, pagination, orderBy }: { clientId: string; orderBy?: OrderBy; pagination?: Pagination },
   ): Promise<FeatureFlagPaginationResponse> {
     try {
       const { page = 1, limit = 10 } = pagination ?? {};
@@ -102,7 +87,13 @@ export class FeatureFlagRepository {
 
   public async createFeatureFlag(
     manager: PoolClient,
-    { key, value, type, is_experimental, clientId }: CreateFeatureFlag,
+    {
+      key,
+      value,
+      type,
+      is_experimental,
+      clientId,
+    }: { key: string; value: string | null; type: FeatureFlagType; is_experimental: boolean; clientId: string },
   ): Promise<FeatureFlagEntity> {
     try {
       const query = format(
@@ -132,7 +123,10 @@ export class FeatureFlagRepository {
     }
   }
 
-  public async deleteFeatureFlag(manager: PoolClient, { key, clientId }: InternalParams): Promise<boolean> {
+  public async deleteFeatureFlag(
+    manager: PoolClient,
+    { key, clientId }: { clientId: string; key: string },
+  ): Promise<boolean> {
     try {
       const query = format(
         `
