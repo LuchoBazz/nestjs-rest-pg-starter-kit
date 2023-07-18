@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserEntity } from '../../../entities/users/user.entity';
+import { UserEntity } from '../../../entities/users';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { UpdateUser } from '../dto/user.dto';
-import { UserRepository } from '../repositories/user.repository';
+import { UpdateUser } from '../dto';
+import { UserRepository } from '../repositories';
 
 @Injectable()
 export class UserService {

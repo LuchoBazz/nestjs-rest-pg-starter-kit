@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 
 import { formatFields } from '../../../common/utils/format.postgresql';
-import { UserEntity } from '../../../entities/users/user.entity';
+import { UserEntity } from '../../../entities/users';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { UpdateUser } from '../dto/user.dto';
+import { UpdateUser } from '../dto';
 
 @Injectable()
 export class UserRepository {

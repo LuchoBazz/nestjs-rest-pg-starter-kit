@@ -1,7 +1,7 @@
 import { BadRequestException, createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { UserEntity } from '../../../entities/users/user.entity';
+import { UserEntity } from '../../../entities/users';
 
 export const JwtUser = createParamDecorator((data: unknown, context: ExecutionContext): UserEntity => {
   const ctx = context.switchToHttp();

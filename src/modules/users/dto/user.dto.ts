@@ -2,7 +2,7 @@ import { Field, InputType, InterfaceType } from '@nestjs/graphql';
 import { PartialType } from '@nestjs/mapped-types';
 import { IsBoolean, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
-import { AuthType } from '../../../entities/users/user.entity';
+import { AuthType } from '../../../entities/users';
 
 @InputType({ isAbstract: true })
 @InterfaceType({ isAbstract: true })

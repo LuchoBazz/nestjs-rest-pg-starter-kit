@@ -2,15 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { format } from '@scaleleap/pg-format';
 import { v4 as uuid } from 'uuid';
 
-import { mapPagination } from '../../../common/mappers/pagination.mapper';
-import {
-  FeatureFlagEntity,
-  FeatureFlagPaginationResponse,
-  FeatureFlagType,
-} from '../../../entities/organizations/feature_flag.entity';
-import { OrderBy, Pagination } from '../../../entities/pagination.entity';
+import { mapPagination } from '../../../common/mappers';
+import { OrderBy, Pagination } from '../../../entities';
+import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { OrderByFeatureFlag } from '../dto/feature_flag.dto';
+import { OrderByFeatureFlag } from '../dto';
 
 interface InternalParams {
   clientId: string;

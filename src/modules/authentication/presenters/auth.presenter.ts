@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserEntity } from '../../../entities/users/user.entity';
-import { JwtService } from '../services/auth.service';
+import { UserEntity } from '../../../entities/users';
+import { JwtService } from '../services';
 
 interface PresentTokenResponse {
   token: string;

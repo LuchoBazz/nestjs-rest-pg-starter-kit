@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import { ErrorValidator } from '../../../common/errors/error.validator';
-import { UserEntity, UserRole } from '../../../entities/users/user.entity';
-import { AuthGatewayService } from '../../../gateways/auth/auth_gateway.service';
+import { ErrorValidator } from '../../../common/errors';
+import { UserEntity, UserRole } from '../../../entities/users';
+import { AuthGatewayService } from '../../../gateways/auth';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
-import { FeatureFlagService } from '../../organizations/services/feature_flag.service';
-import { UserService } from '../../users/services/user.service';
-import { AuthSuccessResponse } from '../dto/auth_sucess.dto';
-import { AuthResponse, SignInInput, SignUpInput } from '../dto/sign_up.input';
-import { AuthPresenter } from '../presenters/auth.presenter';
-import { AuthTokenStatusesRepository } from '../repositories/auth_token_statuses.repository';
+import { FeatureFlagService } from '../../organizations/services';
+import { UserService } from '../../users/services';
+import { AuthResponse, AuthSuccessResponse, SignInInput, SignUpInput } from '../dto';
+import { AuthPresenter } from '../presenters';
+import { AuthTokenStatusesRepository } from '../repositories';
 
 @Injectable()
 export class AuthInteractor {

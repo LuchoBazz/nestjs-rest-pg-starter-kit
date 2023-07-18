@@ -1,15 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import {
-  FeatureFlagEntity,
-  FeatureFlagPaginationResponse,
-  FeatureFlagType,
-} from '../../../entities/organizations/feature_flag.entity';
-import { OrderBy, Pagination } from '../../../entities/pagination.entity';
-import { AuthProvider } from '../../../entities/users/user.entity';
+import { OrderBy, Pagination } from '../../../entities';
+import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
+import { AuthProvider } from '../../../entities/users';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { CachedFeatureFlagRepository } from '../repositories/cached_feature_flag.repository';
-import { FeatureFlagRepository } from '../repositories/feature_flag.repository';
+import { CachedFeatureFlagRepository, FeatureFlagRepository } from '../repositories';
 
 interface InternalParams {
   clientId: string;

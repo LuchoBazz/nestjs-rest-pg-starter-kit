@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { FeatureFlagObject, FeatureFlagPaginationResponse } from '../../../entities/organizations/feature_flag.entity';
+import { FeatureFlagObject, FeatureFlagPaginationResponse } from '../../../entities/organizations';
 import { PgGateway } from '../../../gateways/database/postgresql';
-import { CreateFeatureFlagInput, FeatureFlagInput, FeatureFlagPaginationInput } from '../dto/feature_flag.dto';
-import { FeatureFlagService } from '../services/feature_flag.service';
+import { CreateFeatureFlagInput, FeatureFlagInput, FeatureFlagPaginationInput } from '../dto';
+import { FeatureFlagService } from '../services';
 
 @Injectable()
 export class FeatureFlagInteractor {

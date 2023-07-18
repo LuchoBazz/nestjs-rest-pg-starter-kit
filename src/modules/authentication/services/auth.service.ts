@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService as NestjsJwtService } from '@nestjs/jwt';
 
-import { JwtPayload } from '../../../entities/authentication/jwt_payload.entity';
-import { UserEntity } from '../../../entities/users/user.entity';
+import { JwtPayload } from '../../../entities/authentication';
+import { UserEntity } from '../../../entities/users';
 import { PgGateway, PSQLSession } from '../../../gateways/database/postgresql';
-import { UserService } from '../../users/services/user.service';
+import { UserService } from '../../users/services';
 
 export interface CreateJWTOutput {
   data: JwtPayload;

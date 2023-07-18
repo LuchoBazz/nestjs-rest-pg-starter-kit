@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { CacheService } from '../../../common/cache/cache.service';
-import { PermissionEntity } from '../../../entities/authentication/permission.entity';
-import { RoleCachePermissions } from '../../../entities/cache/permission_cache.entity';
-import { UserRole } from '../../../entities/users/user.entity';
+import { CacheService } from '../../../common/cache';
+import { PermissionEntity } from '../../../entities/authentication';
+import { RoleCachePermissions } from '../../../entities/cache';
+import { UserRole } from '../../../entities/users';
 import { PSQLSession } from '../../../gateways/database/postgresql';
-import { PermissionRepository } from './permission.repository';
+import { PermissionRepository } from '.';
 
 @Injectable()
 export class CachedPermissionRepository {
