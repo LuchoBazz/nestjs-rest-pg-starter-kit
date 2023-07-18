@@ -4,9 +4,10 @@ import { PoolClient } from 'pg';
 import { v4 as uuid } from 'uuid';
 
 import { mapPagination } from '../../../common/mappers';
+import { formatFields } from '../../../common/utils';
 import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
-import { OrderByFeatureFlag } from '../dto';
+import { OrderByFeatureFlag, UpdateFeatureFlagInput } from '../dto';
 
 @Injectable()
 export class FeatureFlagRepository {
@@ -120,6 +121,38 @@ export class FeatureFlagRepository {
       return FeatureFlagEntity.loadFromRow(rows[0]);
     } catch (error) {
       throw new NotFoundException('FEATURE_FLAG_COULD_NOT_BE_CREATED');
+    }
+  }
+
+  public async updateOne(
+    manager: PoolClient,
+    { clientId, key, featFlat }: { clientId: string; key: string; featFlat: UpdateFeatureFlagInput },
+  ): Promise<FeatureFlagEntity> {
+    try {
+      const fields = formatFields({
+        updateData: featFlat,
+        columnName: {
+          key: 'feature_flag_key',
+          value: 'feature_flag_value',
+          type: 'feature_flag_type',
+          is_experimental: 'feature_flag_is_experimental',
+        },
+      });
+
+      const query = format(
+        `
+          UPDATE core.feature_flags
+          SET ${fields}
+          WHERE feature_flags.feature_flag_organization = %1$L
+          AND feature_flags.feature_flag_key = %2$L
+        `,
+        clientId,
+        key.toString(),
+      );
+      const { rows } = await manager.query(query);
+      return FeatureFlagEntity.loadFromRow(rows[0]);
+    } catch (error) {
+      throw new NotFoundException('USER_COULD_NOT_BE_UPDATED');
     }
   }
 

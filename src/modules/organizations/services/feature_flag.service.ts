@@ -4,6 +4,7 @@ import { PoolClient } from 'pg';
 import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
 import { AuthProvider } from '../../../entities/users';
+import { UpdateFeatureFlagInput } from '../dto';
 import { CachedFeatureFlagService, FeatureFlagRepository } from '../repositories';
 
 @Injectable()
@@ -29,6 +30,13 @@ export class FeatureFlagService {
     params: { key: string; value: string | null; type: FeatureFlagType; is_experimental: boolean; clientId: string },
   ): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.createOne(manager, params);
+  }
+
+  public async updateOne(
+    manager: PoolClient,
+    params: { clientId: string; key: string; featFlat: UpdateFeatureFlagInput },
+  ): Promise<FeatureFlagEntity> {
+    return this.featFlagRepository.updateOne(manager, params);
   }
 
   public async deleteOne(manager: PoolClient, params: { clientId: string; key: string }): Promise<boolean> {
