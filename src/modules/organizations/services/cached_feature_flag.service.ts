@@ -19,7 +19,7 @@ export class CachedFeatureFlagService {
     const parameter = new OrganizationCacheParameters(clientId, FeatureFlagKey.AUTH_PROVIDER);
     try {
       const searcher = (manager: PoolClient, params: string[]): Promise<FeatureFlagEntity | null> => {
-        return this.featureFlagRepository.findFeatureFlag(manager, { clientId: params[0], key: params[1] });
+        return this.featureFlagRepository.findOne(manager, { clientId: params[0], key: params[1] });
       };
       const flag = await this.cacheService.get(parameter, manager, searcher);
       const parsed = parseEnum(AuthProvider, flag.value);

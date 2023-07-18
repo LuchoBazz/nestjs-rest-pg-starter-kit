@@ -15,25 +15,25 @@ export class FeatureFlagInteractor {
     input: FeatureFlagPaginationInput,
   ): Promise<FeatureFlagPaginationResponse> {
     return this.pgGateway.onSession((manager: PoolClient) => {
-      return this.featFlagService.findFeatureFlagsByOrganization(manager, { ...input, clientId });
+      return this.featFlagService.findManyWithPagination(manager, { ...input, clientId });
     });
   }
 
   public async getFeatureFlag(clientId: string, input: FeatureFlagInput): Promise<FeatureFlagObject> {
     return this.pgGateway.onSession((manager: PoolClient) => {
-      return this.featFlagService.findFeatureFlag(manager, { ...input, clientId });
+      return this.featFlagService.findOne(manager, { ...input, clientId });
     });
   }
 
   public async createFeatureFlag(clientId: string, input: CreateFeatureFlagInput): Promise<FeatureFlagObject> {
     return this.pgGateway.onSession((manager: PoolClient) => {
-      return this.featFlagService.createFeatureFlag(manager, { ...input, clientId });
+      return this.featFlagService.createOne(manager, { ...input, clientId });
     });
   }
 
   public async deleteFeatureFlag(clientId: string, input: FeatureFlagInput): Promise<boolean> {
     return this.pgGateway.onTransaction((manager: PoolClient) => {
-      return this.featFlagService.deleteFeatureFlag(manager, { ...input, clientId });
+      return this.featFlagService.deleteOne(manager, { ...input, clientId });
     });
   }
 }

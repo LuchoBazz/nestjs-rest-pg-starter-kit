@@ -13,29 +13,26 @@ export class FeatureFlagService {
     private readonly cachedFeatFlagService: CachedFeatureFlagService,
   ) {}
 
-  public async findFeatureFlag(
-    manager: PoolClient,
-    params: { clientId: string; key: string },
-  ): Promise<FeatureFlagEntity> {
-    return this.featFlagRepository.findFeatureFlag(manager, params);
+  public async findOne(manager: PoolClient, params: { clientId: string; key: string }): Promise<FeatureFlagEntity> {
+    return this.featFlagRepository.findOne(manager, params);
   }
 
-  public async findFeatureFlagsByOrganization(
+  public async findManyWithPagination(
     manager: PoolClient,
     params: { clientId: string; orderBy?: OrderBy; pagination?: Pagination },
   ): Promise<FeatureFlagPaginationResponse> {
-    return this.featFlagRepository.findFeatureFlagsByOrganization(manager, params);
+    return this.featFlagRepository.findManyWithPagination(manager, params);
   }
 
-  public async createFeatureFlag(
+  public async createOne(
     manager: PoolClient,
     params: { key: string; value: string | null; type: FeatureFlagType; is_experimental: boolean; clientId: string },
   ): Promise<FeatureFlagEntity> {
-    return this.featFlagRepository.createFeatureFlag(manager, params);
+    return this.featFlagRepository.createOne(manager, params);
   }
 
-  public async deleteFeatureFlag(manager: PoolClient, params: { clientId: string; key: string }): Promise<boolean> {
-    return this.featFlagRepository.deleteFeatureFlag(manager, params);
+  public async deleteOne(manager: PoolClient, params: { clientId: string; key: string }): Promise<boolean> {
+    return this.featFlagRepository.deleteOne(manager, params);
   }
 
   public async findAuthProvider(manager: PoolClient, params: { clientId: string }): Promise<AuthProvider> {

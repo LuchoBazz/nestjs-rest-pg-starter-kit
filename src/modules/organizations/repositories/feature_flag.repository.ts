@@ -10,7 +10,7 @@ import { OrderByFeatureFlag } from '../dto';
 
 @Injectable()
 export class FeatureFlagRepository {
-  public async findFeatureFlag(
+  public async findOne(
     manager: PoolClient,
     { key, clientId }: { clientId: string; key: string },
   ): Promise<FeatureFlagEntity> {
@@ -41,7 +41,7 @@ export class FeatureFlagRepository {
     }
   }
 
-  public async findFeatureFlagsByOrganization(
+  public async findManyWithPagination(
     manager: PoolClient,
     { clientId, pagination, orderBy }: { clientId: string; orderBy?: OrderBy; pagination?: Pagination },
   ): Promise<FeatureFlagPaginationResponse> {
@@ -85,7 +85,7 @@ export class FeatureFlagRepository {
     }
   }
 
-  public async createFeatureFlag(
+  public async createOne(
     manager: PoolClient,
     {
       key,
@@ -123,10 +123,7 @@ export class FeatureFlagRepository {
     }
   }
 
-  public async deleteFeatureFlag(
-    manager: PoolClient,
-    { key, clientId }: { clientId: string; key: string },
-  ): Promise<boolean> {
+  public async deleteOne(manager: PoolClient, { key, clientId }: { clientId: string; key: string }): Promise<boolean> {
     try {
       const query = format(
         `
