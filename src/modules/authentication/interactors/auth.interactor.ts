@@ -39,12 +39,6 @@ export class AuthInteractor {
       ]);
     });
 
-    if (phoneNumber) {
-      const parsed = GooglePhoneNumber.parse(phoneNumber);
-      if (parsed.state !== ValidationResult.INPUT_IS_NOT_A_PHONE_NUMBER) {
-      }
-    }
-
     ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
 
     const phoneNumberResponse = this.phoneNumberService.format({
