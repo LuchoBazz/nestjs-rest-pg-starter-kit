@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { GooglePhoneNumber, PhoneNumberFormat, ValidationResult } from '@open-syk/common/utils/phone-number';
 import { PoolClient } from 'pg';
 
 import { ErrorValidator } from '../../../common/errors';
@@ -7,6 +8,7 @@ import { AuthGatewayService } from '../../../gateways/auth';
 import { PgGateway } from '../../../gateways/database/postgresql';
 import { FeatureFlagService } from '../../organizations/services';
 import { UserService } from '../../users/services';
+import { PhoneNumberService } from '../../users/services/phone_number.service';
 import { AuthResponse, AuthSuccessResponse, SignInInput, SignUpInput } from '../dto';
 import { AuthPresenter } from '../presenters';
 import { AuthTokenStatusesRepository } from '../repositories';
@@ -20,10 +22,12 @@ export class AuthInteractor {
     private readonly userService: UserService,
     private readonly authPresenter: AuthPresenter,
     private readonly authGatewayService: AuthGatewayService,
+    private readonly phoneNumberService: PhoneNumberService,
   ) {}
 
   public async signUp(input: SignUpInput): Promise<AuthResponse> {
     const { clientId, accessToken, userInfo } = input;
+    const { phoneNumber } = userInfo;
     const [result, authProvider] = await this.pgGateway.onSession(async (manager: PoolClient) => {
       return Promise.all([
         this.authGatewayService.validateToken(manager, {
@@ -35,9 +39,20 @@ export class AuthInteractor {
       ]);
     });
 
-    console.log(authProvider);
+    if (phoneNumber) {
+      const parsed = GooglePhoneNumber.parse(phoneNumber);
+      if (parsed.state !== ValidationResult.INPUT_IS_NOT_A_PHONE_NUMBER) {
+      }
+    }
 
     ErrorValidator.orThrowBadRequestError(result, 'INVALID_AUTH_TOKEN');
+
+    const phoneNumberResponse = this.phoneNumberService.format({
+      phoneNumber,
+      formatType: PhoneNumberFormat.E164,
+      shouldBePossible: true,
+      shouldBeValid: true,
+    });
 
     const user: UserEntity = UserEntity.load({
       username: userInfo.username,
@@ -45,7 +60,7 @@ export class AuthInteractor {
       last_name: userInfo.lastName,
       email: userInfo.email,
       identification_number: null,
-      phone_number: null,
+      phone_number: phoneNumberResponse.phoneNumber,
       terms: userInfo.terms,
       notifications: userInfo.notifications,
       is_active: true,
