@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GooglePhoneNumber, PhoneNumberFormat, ValidationResult } from '@open-syk/common/utils/phone-number';
+import { PhoneNumberFormat } from '@open-syk/common/utils/phone-number';
 import { PoolClient } from 'pg';
 
 import { ErrorValidator } from '../../../common/errors';
