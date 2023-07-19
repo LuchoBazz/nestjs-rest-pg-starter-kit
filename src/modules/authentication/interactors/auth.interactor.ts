@@ -54,6 +54,8 @@ export class AuthInteractor {
       shouldBeValid: true,
     });
 
+    // TODO: Return alert when phone number is invalid
+
     const user: UserEntity = UserEntity.load({
       username: userInfo.username,
       first_name: userInfo.firstName,
