@@ -30,5 +30,5 @@ export class PhoneObject {
   @Field()
   country_code: number;
   @Field()
-  phone_number_type: string;
+  phone_number_type: number;
 }
