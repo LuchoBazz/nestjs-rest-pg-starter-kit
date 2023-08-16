@@ -51,7 +51,7 @@ export class UserObject {
   last_name: string;
   @Field()
   email: string;
-  @Field()
+  @Field({ nullable: true })
   identification_number: string | null;
   @Field(() => PhoneObject, { nullable: true })
   phone_number: PhoneObject | null;
