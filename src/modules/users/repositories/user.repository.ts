@@ -21,6 +21,8 @@ export class UserRepository {
             user_first_name,
             user_last_name,
             user_email,
+            user_identification_number,
+            user_phone_number,
             user_terms,
             user_notifications,
             user_is_active,
