@@ -1,4 +1,7 @@
+import { Field, ObjectType } from '@nestjs/graphql';
+
 import { BaseModel } from '../base.entity';
+import { PhoneObject } from './phone_number.entity';
 
 export interface UserParams {
   id?: string;
@@ -35,6 +38,40 @@ export enum AuthType {
   FACEBOOK_AUTH = 'FACEBOOK_AUTH',
   GOOGLE_AUTH = 'GOOGLE_AUTH',
   GITHUB_AUTH = 'GITHUB_AUTH',
+}
+
+@ObjectType({ isAbstract: true })
+export class UserObject {
+  @Field()
+  username: string;
+  @Field()
+  first_name: string;
+  @Field()
+  last_name: string;
+  @Field()
+  email: string;
+  @Field()
+  identification_number: string | null;
+  @Field(() => PhoneObject, { nullable: true })
+  phone_number: PhoneObject | null;
+  @Field()
+  terms: boolean;
+  @Field()
+  notifications: boolean;
+  @Field()
+  is_active: boolean;
+  @Field()
+  uid: string;
+  @Field()
+  role: UserRole;
+  @Field()
+  auth_provider: AuthProvider;
+  @Field()
+  auth_type: AuthType;
+  @Field(() => JSON)
+  dynamic_info: Record<string, any>;
+  @Field()
+  organization_client_id: string;
 }
 
 export class UserEntity extends BaseModel {

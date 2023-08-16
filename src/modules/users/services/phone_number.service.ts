@@ -8,6 +8,8 @@ import {
 
 import { INVALID_PHONE_NUMBER, PhoneNumberParsed } from '../../../entities/users/phone_number.entity';
 
+// Reference: https://github.com/ruimarinho/google-libphonenumber
+
 @Injectable()
 export class PhoneNumberService {
   public format({
