@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import GraphQLJSON from 'graphql-type-json';
 
 import { BaseModel } from '../base.entity';
 import { PhoneObject } from './phone_number.entity';
@@ -68,7 +69,7 @@ export class UserObject {
   auth_provider: AuthProvider;
   @Field()
   auth_type: AuthType;
-  @Field(() => JSON)
+  @Field(() => GraphQLJSON)
   dynamic_info: Record<string, any>;
   @Field()
   organization_client_id: string;
