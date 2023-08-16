@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 import { UserEntity, UserObject } from '../../../entities/users';
+import { PhonePresenter } from './phone.presenter';
 
 @Injectable()
 export class UserPresenter {
+  constructor(private readonly phonePresenter: PhonePresenter) {}
+
   public async present(user: UserEntity): Promise<UserObject> {
     return {
       username: user.username,
@@ -11,7 +14,7 @@ export class UserPresenter {
       last_name: user.last_name,
       email: user.email,
       identification_number: user.identification_number,
-      phone_number: null,
+      phone_number: await this.phonePresenter.phoneNumber(user.phone_number),
       terms: user.terms,
       notifications: user.notifications,
       is_active: user.is_active,
