@@ -7,6 +7,7 @@ import { FirebaseModule } from './gateways/auth/firebase/firebase.module';
 import { SupabaseModule } from './gateways/auth/supabase/supabase.module';
 import { GraphqlModule } from './gateways/graphql/graphql.module';
 import { PaypalModule } from './gateways/payment/paypal/paypal.module';
+import { StripeModule } from './gateways/payment/stripe/stripe.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
@@ -27,6 +28,7 @@ import { UsersModule } from './modules/users/users.module';
     CacheModule,
     PaymentModule,
     PaypalModule,
+    StripeModule,
   ],
 })
 export class AppModule {}
