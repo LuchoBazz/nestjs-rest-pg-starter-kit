@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { PaypalCaptureOrder } from '../../../entities/payment/paypal/capture-order.entity';
+import { PaypalCaptureOrderRequest } from '../../../entities/payment/paypal/capture-order.entity';
 import { PaypalOrderCreateRequest } from '../../../entities/payment/paypal/create-order.entity';
 import { PaypalOrder } from '../../../entities/payment/paypal/order.entity';
 import { PaypalGateway } from '../../../gateways/payment/paypal/services/paypal.service';
@@ -13,7 +13,7 @@ export class PaypalService {
     return this.paypalGateway.createOrder(params);
   }
 
-  public async captureOrder(params: { paypalCaptureOrder: PaypalCaptureOrder; token: string }): Promise<PaypalOrder> {
+  public async captureOrder(params: { paypalCaptureOrder: PaypalCaptureOrderRequest; token: string }): Promise<PaypalOrder> {
     return this.paypalGateway.captureOrder(params);
   }
 

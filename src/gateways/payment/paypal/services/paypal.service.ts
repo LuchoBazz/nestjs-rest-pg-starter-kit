@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 import { PaypalAccessToken } from '../../../../entities/payment/paypal/access-token.entity';
-import { PaypalCaptureOrder } from '../../../../entities/payment/paypal/capture-order.entity';
+import { PaypalCaptureOrderRequest } from '../../../../entities/payment/paypal/capture-order.entity';
 import { PaypalOrderCreateRequest } from '../../../../entities/payment/paypal/create-order.entity';
 import { PaypalOrder } from '../../../../entities/payment/paypal/order.entity';
 
@@ -21,6 +21,7 @@ export class PaypalGateway {
     return response.data.access_token;
   }
 
+  // https://developer.paypal.com/docs/api/orders/v2/
   public async createOrder({ request }: { request: PaypalOrderCreateRequest }): Promise<PaypalOrder> {
     const access_token = await this.getToken();
     const url = 'https://api.sandbox.paypal.com/v2/checkout/orders';
@@ -30,11 +31,12 @@ export class PaypalGateway {
     return response.data;
   }
 
+  // https://developer.paypal.com/docs/api/orders/v2/#orders_capture
   public async captureOrder({
     paypalCaptureOrder,
     token,
   }: {
-    paypalCaptureOrder: PaypalCaptureOrder;
+    paypalCaptureOrder: PaypalCaptureOrderRequest;
     token: string;
   }): Promise<PaypalOrder> {
     const url = `https://api.sandbox.paypal.com/v2/checkout/orders/${token}/capture`;
