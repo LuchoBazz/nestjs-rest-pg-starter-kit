@@ -1,7 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
-import { AccessToken } from '../../../../entities/payment/paypal/access-token.entity';
+import { PaypalAccessToken } from '../../../../entities/payment/paypal/access-token.entity';
+import { PaypalCaptureOrder } from '../../../../entities/payment/paypal/capture-order.entity';
 import { PaypalOrderCreateRequest } from '../../../../entities/payment/paypal/create-order.entity';
 import { PaypalOrder } from '../../../../entities/payment/paypal/order.entity';
 
@@ -15,7 +16,7 @@ export class PaypalGateway {
 
     const url = 'https://api.sandbox.paypal.com/v1/oauth2/token';
 
-    const response = await this.httpService.axiosRef.post<AccessToken>(url, params, {
+    const response = await this.httpService.axiosRef.post<PaypalAccessToken>(url, params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -40,7 +41,7 @@ export class PaypalGateway {
 
   public async captureOrder(token: string): Promise<PaypalOrder> {
     const url = `https://api.sandbox.paypal.com/v2/checkout/orders/${token}/capture`;
-    const body = {
+    const body: PaypalCaptureOrder = {
       amount: {
         currency_code: 'USD',
         total: 100,
