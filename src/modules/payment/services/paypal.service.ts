@@ -13,7 +13,10 @@ export class PaypalService {
     return this.paypalGateway.createOrder(params);
   }
 
-  public async captureOrder(params: { paypalCaptureOrder: PaypalCaptureOrderRequest; token: string }): Promise<PaypalOrder> {
+  public async captureOrder(params: {
+    paypalCaptureOrder: PaypalCaptureOrderRequest;
+    token: string;
+  }): Promise<PaypalOrder> {
     return this.paypalGateway.captureOrder(params);
   }
 
