@@ -13,41 +13,33 @@ export class PaypalGateway {
   protected async getToken(): Promise<string> {
     const params = new URLSearchParams();
     params.append('grant_type', 'client_credentials');
-
     const url = 'https://api.sandbox.paypal.com/v1/oauth2/token';
-
     const response = await this.httpService.axiosRef.post<PaypalAccessToken>(url, params, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      auth: {
-        username: 'PAYPAL_API_CLIENT',
-        password: 'PAYPAL_API_SECRET',
-      },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      auth: { username: 'PAYPAL_API_CLIENT', password: 'PAYPAL_API_SECRET' },
     });
     return response.data.access_token;
   }
 
-  public async createOrder(request: PaypalOrderCreateRequest): Promise<PaypalOrder> {
+  public async createOrder({ request }: { request: PaypalOrderCreateRequest }): Promise<PaypalOrder> {
     const access_token = await this.getToken();
     const url = 'https://api.sandbox.paypal.com/v2/checkout/orders';
     const response = await this.httpService.axiosRef.post<PaypalOrder>(url, request, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+      headers: { Authorization: `Bearer ${access_token}` },
     });
     return response.data;
   }
 
-  public async captureOrder(token: string): Promise<PaypalOrder> {
+  public async captureOrder({
+    paypalCaptureOrder,
+    token,
+  }: {
+    paypalCaptureOrder: PaypalCaptureOrder;
+    token: string;
+  }): Promise<PaypalOrder> {
     const url = `https://api.sandbox.paypal.com/v2/checkout/orders/${token}/capture`;
-    const body: PaypalCaptureOrder = {
-      amount: {
-        currency_code: 'USD',
-        total: 100,
-      },
-    };
-    const response = await this.httpService.axiosRef.post<PaypalOrder>(url, body);
+    // const body: PaypalCaptureOrder = { amount: { currency_code: 'USD', total: 100 }};
+    const response = await this.httpService.axiosRef.post<PaypalOrder>(url, paypalCaptureOrder);
     return response.data;
   }
 
