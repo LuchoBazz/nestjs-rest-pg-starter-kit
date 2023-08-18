@@ -18,6 +18,7 @@ export class PaypalGateway {
    *
    * For more information about OAuth 2.0 authentication with PayPal, see
    * {@link https://developer.paypal.com/docs/api/authentication/}.
+   * {@link https://github.com/fazt/nodejs-paypal-restapi/blob/main/src/controllers/payment.controller.js}.
    *
    * @returns {Promise<string>} A promise that resolves to the access token.
    */
