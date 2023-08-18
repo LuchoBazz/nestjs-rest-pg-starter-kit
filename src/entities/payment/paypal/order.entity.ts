@@ -1,36 +1,36 @@
-export interface Order {
+export interface PaypalOrder {
   id: string;
   intent: string;
   status: string;
-  purchase_units: PurchaseUnit[];
-  payer: Payer;
-  links: Link[];
+  purchase_units: PaypalPurchaseUnit[];
+  payer: PaypalPayer;
+  links: PaypalLink[];
 }
 
-interface PurchaseUnit {
-  amount: Amount;
+export interface PaypalPurchaseUnit {
+  amount: PaypalAmount;
   description: string;
-  items: Item[];
+  items: PaypalItem[];
 }
 
-interface Amount {
+export interface PaypalAmount {
   currency_code: string;
   total: number;
 }
 
-interface Item {
+export interface PaypalItem {
   name: string;
   sku: string;
   quantity: number;
   price: number;
 }
 
-interface Payer {
+interface PaypalPayer {
   name: string;
   email: string;
 }
 
-interface Link {
+interface PaypalLink {
   rel: string;
   href: string;
 }
