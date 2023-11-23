@@ -30,11 +30,7 @@ CREATE TABLE core.subscription_plans (
     subscription_plan_variants         VARCHAR[],
     subscription_plan_slug             VARCHAR(63) UNIQUE NOT NULL, -- 'FREE', 'PRO'
     subscription_plan_description      VARCHAR(255),
-    -- subscription_plan_node_quota       INTEGER DEFAULT 100,
-    -- subscription_plan_price_monthly    FLOAT DEFAULT 0, -- 
-    -- subscription_plan_price_yearly     FLOAT DEFAULT 0, --
-    -- subscription_plan_href_monthly     VARCHAR(255),    --
-    -- subscription_plan_href_yearly      VARCHAR(255),    --
+    subscription_plan_node_quota       INTEGER DEFAULT 100,
     subscription_plan_features         JSONB NOT NULL DEFAULT '[]'::JSONB,
     subscription_plan_most_popular     BOOLEAN DEFAULT FALSE,
     subscription_plan_tier             INTEGER DEFAULT 0,
