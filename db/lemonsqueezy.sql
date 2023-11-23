@@ -43,7 +43,7 @@ CREATE TABLE core.subscription_plans (
 CREATE TABLE core.subscriptions (
   subscriptions_id                    UUID NOT NULL,
   subscriptions_user_id               UUID NOT NULL UNIQUE,
-  subscriptions_subscription_plan_id   UUID NOT NULL,
+  subscriptions_subscription_plan_id  UUID NOT NULL,
   subscriptions_frequency             VARCHAR(63) NOT NULL, -- core.subscription_frequency.subscription_frequency_name
   subscriptions_is_active             BOOLEAN NOT NULL DEFAULT TRUE,
   subscriptions_renews_at             TIMESTAMPTZ,
