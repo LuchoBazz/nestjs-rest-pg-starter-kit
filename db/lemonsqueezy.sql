@@ -29,17 +29,17 @@ CREATE TYPE subscription_plan_slug AS ENUM ('FREE', 'PRO');
 
 CREATE TABLE core.subscription_plans (
     subscription_plan_id               UUID NOT NULL PRIMARY KEY,
+    subscription_plan_name             VARCHAR(255),
     subscription_plan_product_id       VARCHAR(255),
     subscription_plan_variants         VARCHAR[],
     subscription_plan_slug             subscription_plan_slug UNIQUE DEFAULT 'FREE',
-    subscription_plan_name             VARCHAR(255),
     subscription_plan_description      VARCHAR(255),
-    subscription_plan_node_quota       INTEGER DEFAULT 100,
-    subscription_plan_price_monthly    FLOAT DEFAULT 0, -- 
-    subscription_plan_price_yearly     FLOAT DEFAULT 0, --
-    subscription_plan_href_monthly     VARCHAR(255),    --
-    subscription_plan_href_yearly      VARCHAR(255),    --
-    subscription_plan_features         VARCHAR[],
+    -- subscription_plan_node_quota       INTEGER DEFAULT 100,
+    -- subscription_plan_price_monthly    FLOAT DEFAULT 0, -- 
+    -- subscription_plan_price_yearly     FLOAT DEFAULT 0, --
+    -- subscription_plan_href_monthly     VARCHAR(255),    --
+    -- subscription_plan_href_yearly      VARCHAR(255),    --
+    subscription_plan_features         JSONB NOT NULL DEFAULT '[]'::JSONB,
     subscription_plan_most_popular     BOOLEAN DEFAULT FALSE,
     subscription_plan_tier             INTEGER DEFAULT 0,
     subscription_plan_is_active        BOOLEAN DEFAULT TRUE,
@@ -48,20 +48,28 @@ CREATE TABLE core.subscription_plans (
 );
 
 CREATE TABLE core.subscriptions (
-    subscriptions_id                     UUID NOT NULL PRIMARY KEY,
+    subscriptions_id                    UUID NOT NULL PRIMARY KEY,
     subscriptions_user_id               VARCHAR(255) UNIQUE,
     subscriptions_subscription_plan_id  VARCHAR(255),
-    subscriptions_frequency             subscription_frequency DEFAULT 'MONTH',
-    subscriptions_isActive              BOOLEAN DEFAULT TRUE,
+    subscriptions_frequency             VARCHAR(255) NOT NULL, -- core.subscription_frequency.subscription_frequency_name
+    subscriptions_is_active             BOOLEAN DEFAULT TRUE,
     subscriptions_renews_at             TIMESTAMPTZ,
     subscriptions_starts_at             TIMESTAMPTZ DEFAULT NOW(),
     subscriptions_ends_at               TIMESTAMPTZ,
     subscriptions_created_at            TIMESTAMPTZ DEFAULT NOW(),
     subscriptions_updated_at            TIMESTAMPTZ DEFAULT NOW(),
-    FOREIGN KEY (subscriptions_user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (subscriptions_subscription_plan_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+    FOREIGN KEY (subscriptions_user_id) REFERENCES core.users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (subscriptions_subscription_plan_id) REFERENCES core.subscription_plans(subscription_plan_id) ON DELETE CASCADE
 );
 
 CREATE TABLE core.subscription_frequency (
-    subscription_frequency_id            UUID NOT NULL PRIMARY KEY,
+    -- Crear restriccion unique a  subscription_frequency_name y subscription_frequency_name
+    subscription_frequency_name                    VARCHAR(255) NOT NULL PRIMARY KEY,
+    subscription_frequency_subscription_plan_id    UUID NOT NULL,
+    subscription_frequency_plan_price              FLOAT DEFAULT 0.0,
+    subscription_frequency_plan_href               VARCHAR(255),
+    subscription_frequency_plan_created_at         TIMESTAMPTZ DEFAULT NOW(),
+    subscription_frequency_plan_updated_at         TIMESTAMPTZ DEFAULT NOW(),
+
+    FOREIGN KEY (subscription_frequency_subscription_plan_id) REFERENCES core.subscription_plans(subscription_plan_id) ON DELETE CASCADE
 )
