@@ -1,6 +1,6 @@
 -- migrate:up
 
-CREATE TABLE core.subscription_frequency (
+CREATE TABLE IF NOT EXISTS core.subscription_frequency (
   subscription_frequency_name                    VARCHAR(63) NOT NULL,
   subscription_frequency_subscription_plan_id    UUID NOT NULL,
   subscription_frequency_plan_price              FLOAT DEFAULT 0.0,

@@ -1,6 +1,6 @@
 -- migrate:up
 
-CREATE TABLE core.subscription_plans (
+CREATE TABLE IF NOT EXISTS core.subscription_plans (
   subscription_plan_id               UUID NOT NULL,
   subscription_plan_name             VARCHAR(63),
   subscription_plan_product_id       VARCHAR(255),
