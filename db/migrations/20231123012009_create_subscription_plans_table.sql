@@ -12,9 +12,12 @@ CREATE TABLE IF NOT EXISTS core.subscription_plans (
   subscription_plan_most_popular     BOOLEAN DEFAULT FALSE,
   subscription_plan_tier             INTEGER DEFAULT 0,
   subscription_plan_is_active        BOOLEAN DEFAULT TRUE,
+  subscription_plan_organization     VARCHAR(63) NOT NULL,
   subscription_plan_created_at       TIMESTAMPTZ DEFAULT NOW(),
   subscription_plan_updated_at       TIMESTAMPTZ DEFAULT NOW(),
-  CONSTRAINT subscription_plans_pk PRIMARY KEY (subscription_plan_id)
+  
+  CONSTRAINT subscription_plans_pk PRIMARY KEY (subscription_plan_id),
+  CONSTRAINT subscription_plans_organizations_fk FOREIGN KEY (subscription_plan_organization) REFERENCES core.organizations(organization_client_id),
 );
 
 -- migrate:down
