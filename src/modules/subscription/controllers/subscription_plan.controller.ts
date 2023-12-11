@@ -21,7 +21,10 @@ export class SubscriptionPlanController {
     @JwtUser() user: UserEntity,
     @Query() params: SubscriptionPlanQueryParams,
   ): Promise<RestResponseWithoutPagination<SubscriptionPlanObject[]>> {
-    const response = await this.subscriptionPlanInteractor.getSubscriptionPlans(user.organization_client_id, params);
+    const response = await this.subscriptionPlanInteractor.getSubscriptionPlans({
+      ...params,
+      clientId: user.organization_client_id,
+    });
     return responseWithoutPagination(response);
   }
 }

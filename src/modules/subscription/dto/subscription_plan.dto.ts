@@ -15,6 +15,7 @@ export class SubscriptionPlanQueryParams {
 
 @InputType({ isAbstract: true })
 export class ExtendedSubscriptionPlan extends SubscriptionPlanQueryParams {
+  @IsString()
   @Field({ nullable: true })
   clientId: string;
 }

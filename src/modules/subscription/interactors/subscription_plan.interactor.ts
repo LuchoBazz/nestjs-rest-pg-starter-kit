@@ -3,7 +3,7 @@ import { PoolClient } from 'pg';
 
 import { SubscriptionPlanObject } from '../../../entities/subscription/subscription_plan.entity';
 import { PgGateway } from '../../../gateways/database/postgresql';
-import { SubscriptionPlanQueryParams } from '../dto/subscription_plan.dto';
+import { ExtendedSubscriptionPlan } from '../dto/subscription_plan.dto';
 import { SubscriptionPlanPresenter } from '../presenters/subscription_plan.presenter';
 import { SubscriptionPlanService } from '../services/subscription_plan.service';
 
@@ -15,12 +15,9 @@ export class SubscriptionPlanInteractor {
     private readonly subscriptionPlanPresenter: SubscriptionPlanPresenter,
   ) {}
 
-  public async getSubscriptionPlans(
-    clientId: string,
-    input: SubscriptionPlanQueryParams,
-  ): Promise<SubscriptionPlanObject[]> {
+  public async getSubscriptionPlans(input: ExtendedSubscriptionPlan): Promise<SubscriptionPlanObject[]> {
     return this.pgGateway.onSession(async (manager: PoolClient) => {
-      const subscriptionPlans = await this.subscriptionPlanService.findMany(manager, { ...input, clientId });
+      const subscriptionPlans = await this.subscriptionPlanService.findMany(manager, input);
       return subscriptionPlans.map(this.subscriptionPlanPresenter.presentSubscriptionPlan);
     });
   }
