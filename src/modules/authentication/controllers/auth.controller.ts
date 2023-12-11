@@ -3,7 +3,7 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 
 import { UserEntity } from '../../../entities/users';
 import { JwtUser } from '../decorators';
-import { AuthResponse, SignInInput, SignUpInput } from '../dto';
+import { AuthResponse, AuthSuccessResponse, SignInInput, SignUpInput } from '../dto';
 import { JwtAuthGuard } from '../guards';
 import { AuthInteractor } from '../interactors';
 
@@ -25,5 +25,11 @@ export class AuthController {
   @Post('revoke-and-refresh-token')
   public async revokeAndRefreshToken(@JwtUser() user: UserEntity): Promise<AuthResponse> {
     return this.authInteractor.revokeAndRefreshToken(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('delete-my-account')
+  public async deleteMyAccount(@JwtUser() user: UserEntity): Promise<AuthSuccessResponse> {
+    return this.authInteractor.deleteMyAccount(user);
   }
 }
