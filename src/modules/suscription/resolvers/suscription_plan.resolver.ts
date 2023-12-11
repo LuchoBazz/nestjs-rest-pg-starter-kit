@@ -6,10 +6,11 @@ import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
 import { GetSuscriptionPlanInput, SuscriptionPlanResponse } from '../dto/suscription_plan.dto';
+import { SuscriptionPlanInteractor } from '../interactors/suscription_plan.interactor';
 
 @Resolver('SuscriptionPlan')
 export class SuscriptionPlanResolver {
-  // constructor(private featureFlagInteractor: FeatureFlagInteractor) {}
+  constructor(private suscriptionPlanInteractor: SuscriptionPlanInteractor) {}
 
   @Permissions(PermissionsValues.READ_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
@@ -18,7 +19,6 @@ export class SuscriptionPlanResolver {
     @Args('input') input: GetSuscriptionPlanInput,
     @JwtUser() user: UserEntity,
   ): Promise<SuscriptionPlanResponse> {
-    console.log({ input, user });
-    return { counter: 0 };
+    return this.suscriptionPlanInteractor.getSuscriptionPlans(user.organization_client_id, input);
   }
 }
