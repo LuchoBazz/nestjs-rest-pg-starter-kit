@@ -3,15 +3,20 @@ import { format } from '@scaleleap/pg-format';
 import { PoolClient } from 'pg';
 
 import { SuscriptionPlanEntity } from '../../../entities/suscription/suscription_plan.entity';
+import { ExtendedSuscriptionPlanInput } from '../dto/suscription_plan.dto';
+import { buildSubscriptionPlanFilter } from './suscription_plan.utils';
 
 @Injectable()
 export class SuscriptionPlanRepository {
-  public async findMany(manager: PoolClient, { clientId }: { clientId: string }): Promise<SuscriptionPlanEntity[]> {
+  public async findMany(
+    manager: PoolClient,
+    { filter, clientId }: ExtendedSuscriptionPlanInput,
+  ): Promise<SuscriptionPlanEntity[]> {
     try {
       const query = format(
         `
           SELECT
-          subscription_plan_id,
+            subscription_plan_id,
             subscription_plan_name,
             subscription_plan_product_id,
             subscription_plan_variants,
@@ -27,6 +32,7 @@ export class SuscriptionPlanRepository {
             subscription_plan_organization
           FROM core.subscription_plans subscription_plans
           WHERE subscription_plans.subscription_plan_organization = %1$L
+          ${buildSubscriptionPlanFilter(filter)}
         `,
         clientId,
       );

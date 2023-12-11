@@ -6,7 +6,7 @@ import { SuscriptionPlanObject } from '../../../entities/suscription/suscription
 import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
-import { GetSuscriptionPlanInput, SuscriptionPlanResponse } from '../dto/suscription_plan.dto';
+import { SuscriptionPlanInput } from '../dto/suscription_plan.dto';
 import { SuscriptionPlanInteractor } from '../interactors/suscription_plan.interactor';
 
 @Resolver('SuscriptionPlan')
@@ -15,9 +15,9 @@ export class SuscriptionPlanResolver {
 
   @Permissions(PermissionsValues.READ_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @Query(() => SuscriptionPlanResponse)
+  @Query(() => [SuscriptionPlanObject])
   public async suscriptionPlans(
-    @Args('input') input: GetSuscriptionPlanInput,
+    @Args('input') input: SuscriptionPlanInput,
     @JwtUser() user: UserEntity,
   ): Promise<SuscriptionPlanObject[]> {
     return this.suscriptionPlanInteractor.getSuscriptionPlans(user.organization_client_id, input);

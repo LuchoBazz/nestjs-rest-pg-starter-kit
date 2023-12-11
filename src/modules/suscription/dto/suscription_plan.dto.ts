@@ -1,14 +1,35 @@
-import { Field, InputType, InterfaceType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, InterfaceType, registerEnumType } from '@nestjs/graphql';
+import { IsEnum, IsString } from 'class-validator';
 
-@ObjectType({ isAbstract: true })
-export class SuscriptionPlanResponse {
-  @Field()
-  counter: number;
+// subscription plan search criteria
+export enum SubscriptionPlanSearchCriteriaEnum {
+  SLUG = 'SLUG',
+  PRODUCT_ID = 'PRODUCT_ID',
+}
+
+registerEnumType(SubscriptionPlanSearchCriteriaEnum, { name: 'SubscriptionPlanSearchCriteriaEnum' });
+
+@InputType({ isAbstract: true })
+@InterfaceType({ isAbstract: true })
+export class SubscriptionPlanFilter {
+  @IsEnum(SubscriptionPlanSearchCriteriaEnum)
+  @Field(() => SubscriptionPlanSearchCriteriaEnum)
+  searchCriteria: SubscriptionPlanSearchCriteriaEnum;
+
+  @IsString()
+  @Field({ nullable: true, defaultValue: true })
+  keyword: boolean;
 }
 
 @InputType({ isAbstract: true })
 @InterfaceType({ isAbstract: true })
-export class GetSuscriptionPlanInput {
+export class SuscriptionPlanInput {
   @Field({ nullable: true })
-  counter: number;
+  filter?: SubscriptionPlanFilter;
+}
+
+@InputType({ isAbstract: true })
+export class ExtendedSuscriptionPlanInput extends SuscriptionPlanInput {
+  @Field({ nullable: true })
+  clientId: string;
 }
