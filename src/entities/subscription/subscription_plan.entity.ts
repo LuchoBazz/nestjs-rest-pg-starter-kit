@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 import { BaseModel } from '../base.entity';
 
-export interface SuscriptionPlanParams {
+export interface SubscriptionPlanParams {
   id: string;
   name: string;
   product_id: string;
@@ -18,7 +18,7 @@ export interface SuscriptionPlanParams {
 }
 
 @ObjectType({ isAbstract: true })
-export class SuscriptionPlanObject {
+export class SubscriptionPlanObject {
   @Field()
   id: string;
   @Field()
@@ -45,7 +45,7 @@ export class SuscriptionPlanObject {
   organization_client_id: string;
 }
 
-export class SuscriptionPlanEntity extends BaseModel {
+export class SubscriptionPlanEntity extends BaseModel {
   private _name: string;
   private _product_id: string;
   private _variants: string[];
@@ -58,7 +58,7 @@ export class SuscriptionPlanEntity extends BaseModel {
   private _is_active: boolean;
   private _organization_client_id: string;
 
-  constructor(params: SuscriptionPlanParams) {
+  constructor(params: SubscriptionPlanParams) {
     super(params.id);
     this.name = params.name;
     this.product_id = params.product_id;
@@ -73,13 +73,13 @@ export class SuscriptionPlanEntity extends BaseModel {
     this.organization_client_id = params.organization_client_id;
   }
 
-  public static load(params: SuscriptionPlanParams): SuscriptionPlanEntity {
-    return new SuscriptionPlanEntity(params);
+  public static load(params: SubscriptionPlanParams): SubscriptionPlanEntity {
+    return new SubscriptionPlanEntity(params);
   }
 
   // deno-lint-ignore no-explicit-any
-  public static loadFromRow(row: any): SuscriptionPlanEntity {
-    return SuscriptionPlanEntity.load({
+  public static loadFromRow(row: any): SubscriptionPlanEntity {
+    return SubscriptionPlanEntity.load({
       id: row.subscription_plan_id,
       name: row.subscription_plan_name,
       product_id: row.subscription_plan_product_id,

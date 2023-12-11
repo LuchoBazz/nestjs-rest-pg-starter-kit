@@ -23,13 +23,13 @@ export class SubscriptionPlanFilter {
 
 @InputType({ isAbstract: true })
 @InterfaceType({ isAbstract: true })
-export class SuscriptionPlanInput {
+export class SubscriptionPlanInput {
   @Field({ nullable: true })
   filter?: SubscriptionPlanFilter;
 }
 
 @InputType({ isAbstract: true })
-export class ExtendedSuscriptionPlanInput extends SuscriptionPlanInput {
+export class ExtendedSubscriptionPlanInput extends SubscriptionPlanInput {
   @Field({ nullable: true })
   clientId: string;
 }

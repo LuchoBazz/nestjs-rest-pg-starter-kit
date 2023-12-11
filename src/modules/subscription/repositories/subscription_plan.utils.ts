@@ -1,6 +1,6 @@
 import { format } from '@scaleleap/pg-format';
 
-import { SubscriptionPlanFilter, SubscriptionPlanSearchCriteriaEnum } from '../dto/suscription_plan.dto';
+import { SubscriptionPlanFilter, SubscriptionPlanSearchCriteriaEnum } from '../dto/subscription_plan.dto';
 
 export const buildSubscriptionPlanFilter = (filter?: SubscriptionPlanFilter): string => {
   if (filter?.searchCriteria === SubscriptionPlanSearchCriteriaEnum.SLUG) {
