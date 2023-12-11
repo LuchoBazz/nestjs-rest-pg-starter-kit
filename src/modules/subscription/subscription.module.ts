@@ -6,7 +6,6 @@ import { SubscriptionPlanController } from './controllers/subscription_plan.cont
 import { SubscriptionPlanInteractor } from './interactors/subscription_plan.interactor';
 import { SubscriptionPlanPresenter } from './presenters/subscription_plan.presenter';
 import { SubscriptionPlanRepository } from './repositories/subscription_plan.repository';
-import { SubscriptionPlanResolver } from './resolvers/subscription_plan.resolver';
 import { SubscriptionPlanService } from './services/subscription_plan.service';
 
 @Module({
@@ -17,7 +16,6 @@ import { SubscriptionPlanService } from './services/subscription_plan.service';
     SubscriptionPlanRepository,
     SubscriptionPlanService,
     SubscriptionPlanPresenter,
-    SubscriptionPlanResolver,
     SubscriptionPlanController,
   ],
   exports: [
@@ -25,7 +23,6 @@ import { SubscriptionPlanService } from './services/subscription_plan.service';
     SubscriptionPlanRepository,
     SubscriptionPlanService,
     SubscriptionPlanPresenter,
-    SubscriptionPlanResolver,
     SubscriptionPlanController,
   ],
 })

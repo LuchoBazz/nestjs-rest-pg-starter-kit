@@ -7,7 +7,7 @@ import { SubscriptionPlanObject } from '../../../entities/subscription/subscript
 import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
-import { SubscriptionPlanInput, SubscriptionPlanQueryParamsDto } from '../dto/subscription_plan.dto';
+import { SubscriptionPlanQueryParams } from '../dto/subscription_plan.dto';
 import { SubscriptionPlanInteractor } from '../interactors/subscription_plan.interactor';
 
 @Controller('subscription-plan')
@@ -15,17 +15,16 @@ export class SubscriptionPlanController {
   constructor(private subscriptionPlanInteractor: SubscriptionPlanInteractor) {}
 
   @Get()
-  @Permissions(PermissionsValues.READ_SUBSCRIPTION_PLANS)
+  @Permissions(PermissionsValues.GUEST_USER)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   public async getSubscriptionPlans(
     @JwtUser() user: UserEntity,
-    @Query() params: SubscriptionPlanQueryParamsDto,
+    @Query() params: SubscriptionPlanQueryParams,
   ): Promise<RestResponseWithoutPagination<SubscriptionPlanObject[]>> {
-    console.log({ user });
-    const { searchCriteria, keyword } = params;
-    const filter = { filter: { searchCriteria, keyword } };
-    const input: SubscriptionPlanInput = { ...filter };
-    const response = await this.subscriptionPlanInteractor.getSubscriptionPlans(user.organization_client_id, input);
+    const response = await this.subscriptionPlanInteractor.getSubscriptionPlans({
+      ...params,
+      clientId: user.organization_client_id,
+    });
     return responseWithoutPagination(response);
   }
 }
