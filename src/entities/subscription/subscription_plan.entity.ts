@@ -23,9 +23,9 @@ export class SubscriptionPlanObject {
   id: string;
   @Field()
   name: string;
-  @Field()
-  product_id: string;
-  @Field()
+  @Field({ nullable: true })
+  product_id?: string;
+  @Field(() => [String])
   variants: string[];
   @Field()
   slug: string;
@@ -33,8 +33,8 @@ export class SubscriptionPlanObject {
   description: string;
   @Field()
   node_quota: number;
-  @Field()
-  features: any[];
+  @Field(() => [String])
+  features: string[];
   @Field()
   most_popular: boolean;
   @Field()
@@ -42,7 +42,7 @@ export class SubscriptionPlanObject {
   @Field()
   is_active: boolean;
   @Field()
-  organization_client_id: string;
+  client_id: string;
 }
 
 export class SubscriptionPlanEntity extends BaseModel {

@@ -1,7 +1,6 @@
 import { Field, InputType, InterfaceType, registerEnumType } from '@nestjs/graphql';
 import { IsEnum, IsString } from 'class-validator';
 
-// subscription plan search criteria
 export enum SubscriptionPlanSearchCriteriaEnum {
   SLUG = 'SLUG',
   PRODUCT_ID = 'PRODUCT_ID',
@@ -17,8 +16,8 @@ export class SubscriptionPlanFilter {
   searchCriteria: SubscriptionPlanSearchCriteriaEnum;
 
   @IsString()
-  @Field({ nullable: true, defaultValue: true })
-  keyword: boolean;
+  @Field({ nullable: true })
+  keyword: string;
 }
 
 @InputType({ isAbstract: true })

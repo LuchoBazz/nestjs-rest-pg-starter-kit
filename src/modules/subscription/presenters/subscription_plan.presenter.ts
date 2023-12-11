@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { SubscriptionPlanEntity, SubscriptionPlanObject } from '../../../entities/subscription/subscription_plan.entity';
+import {
+  SubscriptionPlanEntity,
+  SubscriptionPlanObject,
+} from '../../../entities/subscription/subscription_plan.entity';
 
 @Injectable()
 export class SubscriptionPlanPresenter {
@@ -17,7 +20,7 @@ export class SubscriptionPlanPresenter {
       most_popular: subscriptionPlan.most_popular,
       tier: subscriptionPlan.tier,
       is_active: subscriptionPlan.is_active,
-      organization_client_id: subscriptionPlan.organization_client_id,
+      client_id: subscriptionPlan.organization_client_id,
     };
   }
 }
