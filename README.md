@@ -12,6 +12,7 @@
   <a href="https://eslint.org/" target="blank"><img src="https://raw.githubusercontent.com/eslint/archive-website/e19d0bd4b5c116996f4cd94d4e90df5cc4367236/assets/img/logo.svg" height="100" width="100" alt="ESLint logo" /></a>
   <a href="firebase.google.com" target="blank"><img src="https://i.ibb.co/f4wm6Lg/firebase.webp" height="100" width="100" alt="Firebase logo" /></a>
   <a href="https://supabase.com/" target="blank"><img src="https://i.ibb.co/SKHhMZ9/supabase.png" height="100" width="100" alt="Supabase logo" /></a>
+  <a href="https://www.lemonsqueezy.com/" target="blank"><img src="https://pbs.twimg.com/profile_images/1585179575222501376/SBDi9PA-_400x400.jpg" height="100" width="100" alt="Lemon Squeezy logo" /></a>
 </p>
 
 ## Description
