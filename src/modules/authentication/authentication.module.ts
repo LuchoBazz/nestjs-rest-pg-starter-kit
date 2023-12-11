@@ -12,6 +12,7 @@ import { PermissionService } from '../admin/services/permission.service';
 import { OrganizationsModule } from '../organizations/organizations.module';
 import { UserService } from '../users/services/user.service';
 import { UsersModule } from '../users/users.module';
+import { AuthController } from './controllers/auth.controller';
 import { PermissionsGuard } from './guards/permission.guard';
 import { AuthInteractor } from './interactors/auth.interactor';
 import { AuthPresenter } from './presenters/auth.presenter';
@@ -45,7 +46,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     forwardRef(() => OrganizationsModule),
     forwardRef(() => AuthGatewayModule),
   ],
-  controllers: [],
+  controllers: [AuthController],
   providers: [
     AuthResolver,
     AuthInteractor,
@@ -56,7 +57,16 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     AuthTokenStatusesRepository,
     PermissionService,
     PermissionsGuard,
+    AuthController,
   ],
-  exports: [JwtService, UserService, JwtStrategy, AuthTokenStatusesRepository, PermissionsGuard, PermissionService],
+  exports: [
+    JwtService,
+    UserService,
+    JwtStrategy,
+    AuthTokenStatusesRepository,
+    PermissionsGuard,
+    PermissionService,
+    AuthController,
+  ],
 })
 export class AuthenticationModule {}
