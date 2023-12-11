@@ -5,6 +5,7 @@ import GraphQLJSON from 'graphql-type-json';
 
 import { AuthenticationModule } from '../../modules/authentication/authentication.module';
 import { OrganizationsModule } from '../../modules/organizations/organizations.module';
+import { SubscriptionModule } from '../../modules/subscription/subscription.module';
 import { UsersModule } from '../../modules/users/users.module';
 
 @Module({
@@ -15,7 +16,7 @@ import { UsersModule } from '../../modules/users/users.module';
       autoSchemaFile: 'schema.gql',
       path: '/api/v1',
       playground: true,
-      include: [AuthenticationModule, UsersModule, OrganizationsModule],
+      include: [AuthenticationModule, UsersModule, OrganizationsModule, SubscriptionModule],
     }),
   ],
   providers: [],
