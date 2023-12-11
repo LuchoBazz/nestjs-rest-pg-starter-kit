@@ -13,7 +13,7 @@ import { SubscriptionPlanInteractor } from '../interactors/subscription_plan.int
 export class SubscriptionPlanResolver {
   constructor(private subscriptionPlanInteractor: SubscriptionPlanInteractor) {}
 
-  @Permissions(PermissionsValues.READ_SUBSCRIPTION_PLAN)
+  @Permissions(PermissionsValues.READ_SUBSCRIPTION_PLANS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Query(() => [SubscriptionPlanObject])
   public async subscriptionPlans(
