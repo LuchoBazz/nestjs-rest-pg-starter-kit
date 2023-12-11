@@ -9,6 +9,7 @@ import { GraphqlModule } from './gateways/graphql/graphql.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
+import { SuscriptionModule } from './modules/suscription/suscription.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -23,6 +24,7 @@ import { UsersModule } from './modules/users/users.module';
     SupabaseModule,
     AuthGatewayModule,
     CacheModule,
+    SuscriptionModule,
   ],
 })
 export class AppModule {}

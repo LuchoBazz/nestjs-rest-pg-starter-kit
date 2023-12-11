@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { PermissionsValues } from '../../../entities/authentication';
+import { SuscriptionPlanObject } from '../../../entities/suscription/suscription_plan.entity';
 import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
@@ -18,7 +19,7 @@ export class SuscriptionPlanResolver {
   public async suscriptionPlans(
     @Args('input') input: GetSuscriptionPlanInput,
     @JwtUser() user: UserEntity,
-  ): Promise<SuscriptionPlanResponse> {
+  ): Promise<SuscriptionPlanObject[]> {
     return this.suscriptionPlanInteractor.getSuscriptionPlans(user.organization_client_id, input);
   }
 }
