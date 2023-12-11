@@ -90,7 +90,7 @@ export class SubscriptionPlanEntity extends BaseModel {
       features: row.subscription_plan_features,
       most_popular: row.subscription_plan_most_popular,
       tier: row.subscription_plan_tier,
-      is_active: row.subscription_plan_created_at,
+      is_active: row.subscription_plan_is_active,
       organization_client_id: row.subscription_plan_organization,
     });
   }
