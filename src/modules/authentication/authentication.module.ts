@@ -17,7 +17,6 @@ import { PermissionsGuard } from './guards/permission.guard';
 import { AuthInteractor } from './interactors/auth.interactor';
 import { AuthPresenter } from './presenters/auth.presenter';
 import { AuthTokenStatusesRepository } from './repositories/auth_token_statuses.repository';
-import { AuthResolver } from './resolvers/auth.resolver';
 import { JwtService } from './services/auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
@@ -48,7 +47,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   ],
   controllers: [AuthController],
   providers: [
-    AuthResolver,
     AuthInteractor,
     AuthPresenter,
     JwtService,

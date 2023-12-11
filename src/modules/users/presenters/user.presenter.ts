@@ -22,7 +22,6 @@ export class UserPresenter {
       role: user.role,
       auth_provider: user.auth_provider,
       auth_type: user.auth_type,
-      dynamic_info: {},
       organization_client_id: user.organization_client_id,
     };
   }

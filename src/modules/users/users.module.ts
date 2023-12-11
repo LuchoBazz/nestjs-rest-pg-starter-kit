@@ -6,7 +6,6 @@ import { UserInteractor } from './interactors/user.interactor';
 import { PhonePresenter } from './presenters/phone.presenter';
 import { UserPresenter } from './presenters/user.presenter';
 import { UserRepository } from './repositories/user.repository';
-import { UserResolver } from './resolvers/user.resolver';
 import { PhoneNumberService } from './services/phone_number.service';
 import { UserService } from './services/user.service';
 
@@ -20,7 +19,6 @@ import { UserService } from './services/user.service';
     UserInteractor,
     PhonePresenter,
     UserPresenter,
-    UserResolver,
     UsersController,
   ],
   exports: [
@@ -31,7 +29,6 @@ import { UserService } from './services/user.service';
     UserInteractor,
     PhonePresenter,
     UserPresenter,
-    UserResolver,
     UsersController,
   ],
 })
