@@ -1,5 +1,3 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-
 import { BaseModel } from '../base.entity';
 import { PageInfoResponse } from '../pagination.entity';
 
@@ -29,21 +27,13 @@ export interface FeatureFlagPaginationResponse {
   pageInfo: PageInfoResponse;
 }
 
-@ObjectType({ isAbstract: true })
 export class FeatureFlagObject {
-  @Field()
   id: string;
-  @Field()
   key: string;
-  @Field()
   value: string | null;
-  @Field()
   is_active: boolean;
-  @Field()
   type: FeatureFlagType;
-  @Field()
   organization_client_id: string;
-  @Field()
   is_experimental: boolean;
 }
 

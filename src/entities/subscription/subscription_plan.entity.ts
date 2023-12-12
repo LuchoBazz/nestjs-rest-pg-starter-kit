@@ -1,5 +1,3 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-
 import { BaseModel } from '../base.entity';
 
 export interface SubscriptionPlanParams {
@@ -17,31 +15,18 @@ export interface SubscriptionPlanParams {
   organization_client_id: string;
 }
 
-@ObjectType({ isAbstract: true })
 export class SubscriptionPlanObject {
-  @Field()
   id: string;
-  @Field()
   name: string;
-  @Field({ nullable: true })
   product_id?: string;
-  @Field(() => [String])
   variants: string[];
-  @Field()
   slug: string;
-  @Field()
   description: string;
-  @Field()
   node_quota: number;
-  @Field(() => [String])
   features: string[];
-  @Field()
   most_popular: boolean;
-  @Field()
   tier: number;
-  @Field()
   is_active: boolean;
-  @Field()
   client_id: string;
 }
 
