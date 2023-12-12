@@ -22,7 +22,6 @@ export class OrganizationEntity extends BaseModel {
     return new OrganizationEntity(params);
   }
 
-  // deno-lint-ignore no-explicit-any
   public loadFromRow(row: any): OrganizationEntity {
     return OrganizationEntity.load({
       name: row.organization_name,

@@ -1,6 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
 import { PoolClient } from 'pg';
 
 import { ErrorValidator } from '../../../common/errors';
@@ -19,8 +18,8 @@ export class PermissionsGuard implements CanActivate {
   ) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
-    const ctx = GqlExecutionContext.create(context);
-    const request = ctx.getContext().req;
+    const ctx = context.switchToHttp();
+    const request = ctx.getRequest<Request>() as any;
     const permissions = this.reflector.get<PermissionsValues[]>('permissions', context.getHandler());
     const user = request.user as UserEntity;
 

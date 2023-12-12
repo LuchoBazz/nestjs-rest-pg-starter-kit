@@ -1,4 +1,3 @@
-// user.controller.ts
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 import { responseWithoutPagination, RestResponseWithoutPagination } from '../../../common/mappers/response';
