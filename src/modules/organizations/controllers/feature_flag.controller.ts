@@ -1,5 +1,4 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 
 import { PermissionsValues } from '../../../entities/authentication';
 import { FeatureFlagObject } from '../../../entities/organizations';
@@ -9,42 +8,45 @@ import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
 import {
   CreateFeatureFlagInput,
   FeatureFlagInput,
-  FeatureFlagPaginationInput,
   FeatureFlagResponse,
   FeatureFlagsResponse,
+  OrderByFeatureFlag,
   UpdateFeatureFlagInput,
 } from '../dto';
 import { FeatureFlagInteractor } from '../interactors';
 
-@Resolver('FeatureFlag')
-export class FeatureFlagResolver {
+@Controller('feature-flags')
+export class FeatureFlagController {
   constructor(private featureFlagInteractor: FeatureFlagInteractor) {}
 
   @Permissions(PermissionsValues.READ_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @Query(() => FeatureFlagsResponse)
+  @Get()
   public async featureFlags(
-    @Args('input') input: FeatureFlagPaginationInput,
     @JwtUser() user: UserEntity,
+    @Query('sort_field') sortField?: OrderByFeatureFlag,
+    @Query('asc') asc?: boolean,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
   ): Promise<FeatureFlagsResponse> {
-    return this.featureFlagInteractor.getFeatureFlags(user.organization_client_id, input);
+    return this.featureFlagInteractor.getFeatureFlags(user.organization_client_id, {
+      orderBy: { sortField, asc },
+      pagination: { page, limit },
+    });
   }
 
   @Permissions(PermissionsValues.READ_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @Query(() => FeatureFlagObject)
-  public async featureFlag(
-    @Args('input') input: FeatureFlagInput,
-    @JwtUser() user: UserEntity,
-  ): Promise<FeatureFlagObject> {
-    return this.featureFlagInteractor.getFeatureFlag(user.organization_client_id, input);
+  @Get(':key')
+  public async featureFlag(@JwtUser() user: UserEntity, @Param('key') key): Promise<FeatureFlagObject> {
+    return this.featureFlagInteractor.getFeatureFlag(user.organization_client_id, { key });
   }
 
   @Permissions(PermissionsValues.CREATE_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @Mutation(() => FeatureFlagResponse, { nullable: false })
+  @Post()
   public async addFeatureFlag(
-    @Args('input') input: CreateFeatureFlagInput,
+    @Body() input: CreateFeatureFlagInput,
     @JwtUser() user: UserEntity,
   ): Promise<FeatureFlagObject> {
     return await this.featureFlagInteractor.createFeatureFlag(user.organization_client_id, input);
@@ -52,9 +54,9 @@ export class FeatureFlagResolver {
 
   @Permissions(PermissionsValues.UPDATE_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @Mutation(() => FeatureFlagObject, { nullable: false })
+  @Put()
   public async updateFeatureFlag(
-    @Args('input') input: UpdateFeatureFlagInput,
+    @Body() input: UpdateFeatureFlagInput,
     @JwtUser() user: UserEntity,
   ): Promise<FeatureFlagObject> {
     return this.featureFlagInteractor.updateFeatureFlag(user.organization_client_id, input);
@@ -62,9 +64,9 @@ export class FeatureFlagResolver {
 
   @Permissions(PermissionsValues.REMOVE_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @Mutation(() => FeatureFlagResponse, { nullable: false })
+  @Delete()
   public async deleteFeatureFlag(
-    @Args('input') input: FeatureFlagInput,
+    @Body() input: FeatureFlagInput,
     @JwtUser() user: UserEntity,
   ): Promise<FeatureFlagResponse> {
     const success = await this.featureFlagInteractor.deleteFeatureFlag(user.organization_client_id, input);
