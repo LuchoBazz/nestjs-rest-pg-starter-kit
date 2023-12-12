@@ -37,9 +37,6 @@ lerna-debug.log*
 # Typescript Generator
 /dist
 
-# Graphql Generate
-schema.gql
-
 # Env Files
 *.env
 !example.env
