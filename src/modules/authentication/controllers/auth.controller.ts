@@ -1,4 +1,3 @@
-// user.controller.ts
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 
 import { UserEntity } from '../../../entities/users';
