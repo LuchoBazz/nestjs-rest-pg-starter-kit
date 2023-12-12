@@ -95,7 +95,6 @@ export class UserEntity extends BaseModel {
     return new UserEntity(params);
   }
 
-  // deno-lint-ignore no-explicit-any
   public static loadFromRow(row: any): UserEntity {
     return UserEntity.load({
       id: row.user_id,

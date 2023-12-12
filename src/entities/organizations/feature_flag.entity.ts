@@ -59,7 +59,6 @@ export class FeatureFlagEntity extends BaseModel {
     return new FeatureFlagEntity(params);
   }
 
-  // deno-lint-ignore no-explicit-any
   public static loadFromRow(row: any): FeatureFlagEntity {
     return FeatureFlagEntity.load({
       id: row.feature_flag_id,

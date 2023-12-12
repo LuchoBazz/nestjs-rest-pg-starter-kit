@@ -16,7 +16,6 @@ export class PermissionEntity extends BaseModel {
     return new PermissionEntity(params);
   }
 
-  // deno-lint-ignore no-explicit-any
   public static loadFromRow(row: any): PermissionEntity {
     return PermissionEntity.load({
       name: row.permission_name,

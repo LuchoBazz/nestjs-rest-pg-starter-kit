@@ -62,7 +62,6 @@ export class SubscriptionPlanEntity extends BaseModel {
     return new SubscriptionPlanEntity(params);
   }
 
-  // deno-lint-ignore no-explicit-any
   public static loadFromRow(row: any): SubscriptionPlanEntity {
     return SubscriptionPlanEntity.load({
       id: row.subscription_plan_id,
