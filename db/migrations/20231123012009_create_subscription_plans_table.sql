@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS core.subscription_plans (
   subscription_plan_updated_at       TIMESTAMPTZ DEFAULT NOW(),
   
   CONSTRAINT subscription_plans_pk PRIMARY KEY (subscription_plan_id),
-  CONSTRAINT subscription_plans_organizations_fk FOREIGN KEY (subscription_plan_organization) REFERENCES core.organizations(organization_client_id),
+  CONSTRAINT subscription_plans_organizations_fk FOREIGN KEY (subscription_plan_organization) REFERENCES core.organizations(organization_client_id)
 );
 
 -- migrate:down

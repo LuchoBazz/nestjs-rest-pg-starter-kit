@@ -11,4 +11,6 @@ CREATE TABLE IF NOT EXISTS core.organizations (
   CONSTRAINT organization_client_id_unique UNIQUE (organization_client_id)
 );
 
+INSERT INTO core.organizations (organization_id, organization_name, organization_client_id) VALUES('0bbbe0c7-275c-4584-a03f-9eebba701ed9', 'Syk Organizacion', 'SYK');
+
 -- migrate:down
