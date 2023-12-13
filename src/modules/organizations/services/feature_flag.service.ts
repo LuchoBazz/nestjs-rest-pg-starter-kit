@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
 import { OrderBy, Pagination } from '../../../entities';
-import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
+import { FeatureFlagEntity, FeatureFlagPaginationResponse } from '../../../entities/organizations';
 import { AuthProvider } from '../../../entities/users';
 import { UpdateFeatureFlagInput } from '../dto';
 import { CachedFeatureFlagService, FeatureFlagRepository } from '../repositories';
@@ -27,7 +27,7 @@ export class FeatureFlagService {
 
   public async createOne(
     manager: PoolClient,
-    params: { key: string; value: string | null; type: FeatureFlagType; is_experimental: boolean; clientId: string },
+    params: { key: string; value: boolean; percentage: number; is_experimental: boolean; clientId: string },
   ): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.createOne(manager, params);
   }

@@ -4,33 +4,32 @@ import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'c
 import { PageInfoResponse, PaginationInput } from '../../../common/dto';
 import { FeatureFlagObject } from '../../../entities/organizations';
 
-export enum OrderByFeatureFlag {
-  ID = 'ID',
+export enum ConfigurationOrderBy {
   CREATED_AT = 'CREATED_AT',
 }
 
-export class FeatureFlagInput {
+export class ConfigInput {
   @IsNotEmpty()
   @IsString()
   key: string;
 }
 
-export class FeatureFlagOrderByInput {
-  @IsEnum(OrderByFeatureFlag)
-  sortField?: OrderByFeatureFlag;
+export class ConfigurationOrderByInput {
+  @IsEnum(ConfigurationOrderBy)
+  sortField?: ConfigurationOrderBy;
 
   @IsOptional()
   @IsBoolean()
   asc?: boolean;
 }
 
-export class FeatureFlagPaginationInput {
-  orderBy: FeatureFlagOrderByInput;
+export class ConfigurationPaginationInput {
+  orderBy: ConfigurationOrderByInput;
 
   pagination: PaginationInput;
 }
 
-export class CreateFeatureFlagInput {
+export class CreateConfigurationInput {
   @IsNotEmpty()
   @IsString()
   key: string;
@@ -45,13 +44,13 @@ export class CreateFeatureFlagInput {
   is_experimental: boolean;
 }
 
-export class UpdateFeatureFlagInput extends PartialType(CreateFeatureFlagInput) {
+export class UpdateConfigurationInput extends PartialType(CreateConfigurationInput) {
   @IsNotEmpty()
   @IsString()
   value: boolean;
 }
 
-export class FeatureFlagsResponse {
+export class ConfigurationResponse {
   totalCount: number;
 
   items: FeatureFlagObject[];
