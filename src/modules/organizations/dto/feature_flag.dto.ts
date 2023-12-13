@@ -1,8 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { PageInfoResponse, PaginationInput } from '../../../common/dto';
-import { FeatureFlagObject, FeatureFlagType } from '../../../entities/organizations';
+import { FeatureFlagObject } from '../../../entities/organizations';
 
 export enum OrderByFeatureFlag {
   ID = 'ID',
@@ -35,12 +35,11 @@ export class CreateFeatureFlagInput {
   @IsString()
   key: string;
 
-  @IsNotEmpty()
-  @IsString()
-  value: string | null;
+  @IsBoolean()
+  value: boolean;
 
-  @IsEnum(FeatureFlagType)
-  type: FeatureFlagType;
+  @IsNumber()
+  percentage: number;
 
   @IsBoolean()
   is_experimental: boolean;
@@ -49,7 +48,7 @@ export class CreateFeatureFlagInput {
 export class UpdateFeatureFlagInput extends PartialType(CreateFeatureFlagInput) {
   @IsNotEmpty()
   @IsString()
-  value: string | null;
+  value: boolean;
 }
 
 export class FeatureFlagsResponse {

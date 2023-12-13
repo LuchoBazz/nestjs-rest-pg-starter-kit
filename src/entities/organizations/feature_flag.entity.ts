@@ -4,17 +4,11 @@ import { PageInfoResponse } from '../pagination.entity';
 export interface FeatureFlagParams {
   id: string;
   key: string;
-  value: string | null;
+  value: boolean;
+  percentage: number;
   is_active: boolean;
-  type: FeatureFlagType;
   organization_client_id: string;
   is_experimental: boolean;
-}
-
-export enum FeatureFlagType {
-  BOOLEAN = 'BOOLEAN',
-  ENUM = 'ENUM',
-  JSON = 'JSON',
 }
 
 export enum FeatureFlagKey {
@@ -30,18 +24,18 @@ export interface FeatureFlagPaginationResponse {
 export class FeatureFlagObject {
   id: string;
   key: string;
-  value: string | null;
+  value: boolean;
+  percentage: number;
   is_active: boolean;
-  type: FeatureFlagType;
   organization_client_id: string;
   is_experimental: boolean;
 }
 
 export class FeatureFlagEntity extends BaseModel {
   private _key: string;
-  private _value: string | null;
+  private _value: boolean;
+  private _percentage: number;
   private _is_active: boolean;
-  private _type: FeatureFlagType;
   private _organization_client_id: string;
   private _is_experimental: boolean;
 
@@ -50,7 +44,6 @@ export class FeatureFlagEntity extends BaseModel {
     this.key = params.key;
     this.value = params.value;
     this.is_active = params.is_active;
-    this.type = params.type;
     this.organization_client_id = params.organization_client_id;
     this.is_experimental = params.is_experimental;
   }
@@ -64,8 +57,8 @@ export class FeatureFlagEntity extends BaseModel {
       id: row.feature_flag_id,
       key: row.feature_flag_key,
       value: row.feature_flag_value,
+      percentage: row.feature_flag_percentage,
       is_active: row.feature_flag_is_active,
-      type: row.feature_flag_type,
       organization_client_id: row.feature_flag_organization,
       is_experimental: row.feature_flag_is_experimental,
     });
@@ -79,11 +72,11 @@ export class FeatureFlagEntity extends BaseModel {
     this._key = value;
   }
 
-  public get value(): string | null {
+  public get value(): boolean {
     return this._value;
   }
 
-  public set value(value: string | null) {
+  public set value(value: boolean) {
     this._value = value;
   }
 
@@ -95,12 +88,12 @@ export class FeatureFlagEntity extends BaseModel {
     this._is_active = value;
   }
 
-  public get type(): FeatureFlagType {
-    return this._type;
+  public get percentage(): number {
+    return this._percentage;
   }
 
-  public set type(value: FeatureFlagType) {
-    this._type = value;
+  public set percentage(value: number) {
+    this._percentage = value;
   }
 
   public get organization_client_id(): string {

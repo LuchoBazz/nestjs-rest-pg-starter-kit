@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { mapPagination } from '../../../common/mappers';
 import { formatFields } from '../../../common/utils';
 import { OrderBy, Pagination } from '../../../entities';
-import { FeatureFlagEntity, FeatureFlagPaginationResponse, FeatureFlagType } from '../../../entities/organizations';
+import { FeatureFlagEntity, FeatureFlagPaginationResponse } from '../../../entities/organizations';
 import { OrderByFeatureFlag, UpdateFeatureFlagInput } from '../dto';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class FeatureFlagRepository {
             feature_flag_key,
             feature_flag_value,
             feature_flag_is_active,
-            feature_flag_type,
+            feature_flag_percentage,
             feature_flag_organization,
             feature_flag_created_at,
             feature_flag_updated_at,
@@ -62,7 +62,7 @@ export class FeatureFlagRepository {
             feature_flag_key,
             feature_flag_value,
             feature_flag_is_active,
-            feature_flag_type,
+            feature_flag_percentage,
             feature_flag_organization,
             feature_flag_created_at,
             feature_flag_updated_at,
@@ -91,10 +91,10 @@ export class FeatureFlagRepository {
     {
       key,
       value,
-      type,
+      percentage,
       is_experimental,
       clientId,
-    }: { key: string; value: string | null; type: FeatureFlagType; is_experimental: boolean; clientId: string },
+    }: { key: string; value: boolean; percentage: number; is_experimental: boolean; clientId: string },
   ): Promise<FeatureFlagEntity> {
     try {
       const query = format(
@@ -104,7 +104,7 @@ export class FeatureFlagRepository {
             feature_flag_key,
             feature_flag_value,
             feature_flag_is_active,
-            feature_flag_type,
+            feature_flag_percentage,
             feature_flag_organization,
             feature_flag_is_experimental
           ) VALUES(%1$L, %2$L, %3$L, true, %4$L, %5$L, %6$L)
@@ -113,7 +113,7 @@ export class FeatureFlagRepository {
         uuid(),
         key,
         value,
-        type.toString(),
+        percentage,
         clientId,
         String(is_experimental),
       );
@@ -134,7 +134,7 @@ export class FeatureFlagRepository {
         columnName: {
           key: 'feature_flag_key',
           value: 'feature_flag_value',
-          type: 'feature_flag_type',
+          percentage: 'feature_flag_percentage',
           is_experimental: 'feature_flag_is_experimental',
         },
       });
