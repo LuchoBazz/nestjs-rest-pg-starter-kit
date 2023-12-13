@@ -1,41 +1,50 @@
 import { BaseModel } from '../base.entity';
 import { PageInfoResponse } from '../pagination.entity';
 
-export interface FeatureFlagParams {
+export interface ConfigurationParams {
   id: string;
   key: string;
   value: boolean;
-  percentage: number;
+  type: FeatureFlagType;
   is_active: boolean;
   organization_client_id: string;
   is_experimental: boolean;
 }
 
-export interface FeatureFlagPaginationResponse {
+export enum ConfigurationKey {
+  AUTH_PROVIDER = 'AUTH_PROVIDER',
+}
+
+export enum FeatureFlagType {
+  ENUM = 'ENUM',
+  JSON = 'JSON',
+}
+
+export interface ConfigurationPaginationResponse {
   totalCount: number;
-  items: FeatureFlagEntity[];
+  items: ConfigurationEntity[];
   pageInfo: PageInfoResponse;
 }
 
-export class FeatureFlagObject {
+export class ConfigurationObject {
   id: string;
   key: string;
   value: boolean;
-  percentage: number;
+  type: FeatureFlagType;
   is_active: boolean;
   organization_client_id: string;
   is_experimental: boolean;
 }
 
-export class FeatureFlagEntity extends BaseModel {
+export class ConfigurationEntity extends BaseModel {
   private _key: string;
   private _value: boolean;
-  private _percentage: number;
+  private _type: FeatureFlagType;
   private _is_active: boolean;
   private _organization_client_id: string;
   private _is_experimental: boolean;
 
-  constructor(params: FeatureFlagParams) {
+  constructor(params: ConfigurationParams) {
     super(params.id);
     this.key = params.key;
     this.value = params.value;
@@ -44,19 +53,19 @@ export class FeatureFlagEntity extends BaseModel {
     this.is_experimental = params.is_experimental;
   }
 
-  public static load(params: FeatureFlagParams): FeatureFlagEntity {
-    return new FeatureFlagEntity(params);
+  public static load(params: ConfigurationParams): ConfigurationEntity {
+    return new ConfigurationEntity(params);
   }
 
-  public static loadFromRow(row: any): FeatureFlagEntity {
-    return FeatureFlagEntity.load({
-      id: row.feature_flag_id,
-      key: row.feature_flag_key,
-      value: row.feature_flag_value,
-      percentage: row.feature_flag_percentage,
-      is_active: row.feature_flag_is_active,
-      organization_client_id: row.feature_flag_organization,
-      is_experimental: row.feature_flag_is_experimental,
+  public static loadFromRow(row: any): ConfigurationEntity {
+    return ConfigurationEntity.load({
+      id: row.configuration_id,
+      key: row.configuration_key,
+      value: row.configuration_value,
+      type: row.configuration_type,
+      is_active: row.configuration_is_active,
+      organization_client_id: row.configuration_organization,
+      is_experimental: row.configuration_is_experimental,
     });
   }
 
@@ -84,12 +93,12 @@ export class FeatureFlagEntity extends BaseModel {
     this._is_active = value;
   }
 
-  public get percentage(): number {
-    return this._percentage;
+  public get type(): FeatureFlagType {
+    return this._type;
   }
 
-  public set percentage(value: number) {
-    this._percentage = value;
+  public set type(value: FeatureFlagType) {
+    this._type = value;
   }
 
   public get organization_client_id(): string {
