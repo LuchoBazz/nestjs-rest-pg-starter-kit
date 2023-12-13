@@ -4,7 +4,7 @@ import { PageInfoResponse } from '../pagination.entity';
 export interface ConfigurationParams {
   id: string;
   key: string;
-  value: boolean;
+  value: string;
   type: FeatureFlagType;
   is_active: boolean;
   organization_client_id: string;
@@ -29,7 +29,7 @@ export interface ConfigurationPaginationResponse {
 export class ConfigurationObject {
   id: string;
   key: string;
-  value: boolean;
+  value: string;
   type: FeatureFlagType;
   is_active: boolean;
   organization_client_id: string;
@@ -38,7 +38,7 @@ export class ConfigurationObject {
 
 export class ConfigurationEntity extends BaseModel {
   private _key: string;
-  private _value: boolean;
+  private _value: string;
   private _type: FeatureFlagType;
   private _is_active: boolean;
   private _organization_client_id: string;
@@ -77,11 +77,11 @@ export class ConfigurationEntity extends BaseModel {
     this._key = value;
   }
 
-  public get value(): boolean {
+  public get value(): string {
     return this._value;
   }
 
-  public set value(value: boolean) {
+  public set value(value: string) {
     this._value = value;
   }
 
