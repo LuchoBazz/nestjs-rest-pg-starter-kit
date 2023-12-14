@@ -1,14 +1,15 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { PageInfoResponse, PaginationInput } from '../../../common/dto';
 import { FeatureFlagObject } from '../../../entities/organizations';
+import { ConfigurationType } from '../../../entities/organizations/configuration.entity';
 
 export enum ConfigurationOrderBy {
   CREATED_AT = 'CREATED_AT',
 }
 
-export class ConfigInput {
+export class ConfigurationInput {
   @IsNotEmpty()
   @IsString()
   key: string;
@@ -35,20 +36,13 @@ export class CreateConfigurationInput {
   key: string;
 
   @IsBoolean()
-  value: boolean;
+  value: string;
 
-  @IsNumber()
-  percentage: number;
-
-  @IsBoolean()
-  is_experimental: boolean;
+  @IsEnum(ConfigurationType)
+  type: ConfigurationType;
 }
 
-export class UpdateConfigurationInput extends PartialType(CreateConfigurationInput) {
-  @IsNotEmpty()
-  @IsString()
-  value: boolean;
-}
+export class UpdateConfigurationInput extends PartialType(CreateConfigurationInput) {}
 
 export class ConfigurationResponse {
   totalCount: number;

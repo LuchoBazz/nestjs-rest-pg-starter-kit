@@ -5,7 +5,7 @@ export interface ConfigurationParams {
   id: string;
   key: string;
   value: string;
-  type: FeatureFlagType;
+  type: ConfigurationType;
   is_active: boolean;
   organization_client_id: string;
   is_experimental: boolean;
@@ -15,7 +15,7 @@ export enum ConfigurationKey {
   AUTH_PROVIDER = 'AUTH_PROVIDER',
 }
 
-export enum FeatureFlagType {
+export enum ConfigurationType {
   ENUM = 'ENUM',
   JSON = 'JSON',
 }
@@ -30,7 +30,7 @@ export class ConfigurationObject {
   id: string;
   key: string;
   value: string;
-  type: FeatureFlagType;
+  type: ConfigurationType;
   is_active: boolean;
   organization_client_id: string;
   is_experimental: boolean;
@@ -39,7 +39,7 @@ export class ConfigurationObject {
 export class ConfigurationEntity extends BaseModel {
   private _key: string;
   private _value: string;
-  private _type: FeatureFlagType;
+  private _type: ConfigurationType;
   private _is_active: boolean;
   private _organization_client_id: string;
   private _is_experimental: boolean;
@@ -93,11 +93,11 @@ export class ConfigurationEntity extends BaseModel {
     this._is_active = value;
   }
 
-  public get type(): FeatureFlagType {
+  public get type(): ConfigurationType {
     return this._type;
   }
 
-  public set type(value: FeatureFlagType) {
+  public set type(value: ConfigurationType) {
     this._type = value;
   }
 

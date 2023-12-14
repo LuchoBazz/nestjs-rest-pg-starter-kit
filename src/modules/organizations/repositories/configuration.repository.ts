@@ -9,6 +9,7 @@ import { OrderBy, Pagination } from '../../../entities';
 import {
   ConfigurationEntity,
   ConfigurationPaginationResponse,
+  ConfigurationType,
 } from '../../../entities/organizations/configuration.entity';
 import { ConfigurationOrderBy, UpdateConfigurationInput } from '../dto/configuration.dto';
 
@@ -86,7 +87,7 @@ export class ConfigurationRepository {
 
   public async createOne(
     manager: PoolClient,
-    { key, value, type, clientId }: { key: string; value: boolean; type: number; clientId: string },
+    { key, value, type, clientId }: { key: string; value: string; type: ConfigurationType; clientId: string },
   ): Promise<ConfigurationEntity> {
     try {
       const query = format(
@@ -103,7 +104,7 @@ export class ConfigurationRepository {
         uuid(),
         key,
         value,
-        type,
+        type.toString(),
         clientId,
       );
       const { rows } = await manager.query(query);

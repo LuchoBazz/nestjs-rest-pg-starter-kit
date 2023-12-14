@@ -5,6 +5,7 @@ import { OrderBy, Pagination } from '../../../entities';
 import {
   ConfigurationEntity,
   ConfigurationPaginationResponse,
+  ConfigurationType,
 } from '../../../entities/organizations/configuration.entity';
 import { UpdateConfigurationInput } from '../dto/configuration.dto';
 import { ConfigurationRepository } from '../repositories/configuration.repository';
@@ -26,7 +27,7 @@ export class ConfigurationService {
 
   public async createOne(
     manager: PoolClient,
-    params: { key: string; value: boolean; type: number; clientId: string },
+    params: { key: string; value: string; type: ConfigurationType; clientId: string },
   ): Promise<ConfigurationEntity> {
     return this.configurationRepository.createOne(manager, params);
   }
