@@ -52,7 +52,7 @@ export class ConfigurationResponse {
   pageInfo: PageInfoResponse;
 }
 
-export class FeatureFlagResponse {
+export class ConfigurationSuccessResponse {
   @IsBoolean()
   success: boolean;
 }
