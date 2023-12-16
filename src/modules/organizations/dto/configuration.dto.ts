@@ -9,7 +9,7 @@ export enum ConfigurationOrderBy {
   CREATED_AT = 'CREATED_AT',
 }
 
-export class ConfigurationInput {
+export class FilterConfigurationInput {
   @IsNotEmpty()
   @IsString()
   key: string;

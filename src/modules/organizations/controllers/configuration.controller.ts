@@ -9,10 +9,10 @@ import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
 import {
-  ConfigurationInput,
   ConfigurationOrderBy,
   ConfigurationSuccessResponse,
   CreateConfigurationInput,
+  FilterConfigurationInput,
   UpdateConfigurationInput,
 } from '../dto/configuration.dto';
 import { ConfigurationInteractor } from '../interactors/configuration.interactor';
@@ -68,7 +68,7 @@ export class ConfigurationController {
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Delete()
   public async deleteConfiguration(
-    @Body() input: ConfigurationInput,
+    @Body() input: FilterConfigurationInput,
     @JwtUser() user: UserEntity,
   ): Promise<ConfigurationSuccessResponse> {
     const success = await this.configurationInteractor.deleteConfiguration(user.organization_client_id, input);

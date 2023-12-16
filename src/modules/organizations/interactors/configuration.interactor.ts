@@ -7,9 +7,9 @@ import {
 } from '../../../entities/organizations/configuration.entity';
 import { PgGateway } from '../../../gateways/database/postgresql';
 import {
-  ConfigurationInput,
   ConfigurationPaginationInput,
   CreateConfigurationInput,
+  FilterConfigurationInput,
   UpdateConfigurationInput,
 } from '../dto/configuration.dto';
 import { ConfigurationPresenter } from '../presenters/configuration.presenter';
@@ -32,7 +32,7 @@ export class ConfigurationInteractor {
     });
   }
 
-  public async getConfiguration(clientId: string, input: ConfigurationInput): Promise<ConfigurationObject> {
+  public async getConfiguration(clientId: string, input: FilterConfigurationInput): Promise<ConfigurationObject> {
     return this.pgGateway.onSession(async (manager: PoolClient) => {
       const config = await this.configurationService.findOne(manager, { ...input, clientId });
       return this.configurationPresenter.present(config);
@@ -48,12 +48,12 @@ export class ConfigurationInteractor {
 
   public async updateConfiguration(clientId: string, input: UpdateConfigurationInput): Promise<ConfigurationObject> {
     return this.pgGateway.onTransaction(async (manager: PoolClient) => {
-      const config = await this.configurationService.updateOne(manager, { clientId, key: input.key, config: input });
+      const config = await this.configurationService.updateOne(manager, { ...input, clientId });
       return this.configurationPresenter.present(config);
     });
   }
 
-  public async deleteConfiguration(clientId: string, input: ConfigurationInput): Promise<boolean> {
+  public async deleteConfiguration(clientId: string, input: FilterConfigurationInput): Promise<boolean> {
     return this.pgGateway.onTransaction((manager: PoolClient) => {
       return this.configurationService.deleteOne(manager, { ...input, clientId });
     });

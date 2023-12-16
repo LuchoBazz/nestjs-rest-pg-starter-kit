@@ -5,19 +5,23 @@ import { v4 as uuid } from 'uuid';
 
 import { mapPagination } from '../../../common/mappers';
 import { formatFields } from '../../../common/utils';
-import { OrderBy, Pagination } from '../../../entities';
 import {
   ConfigurationEntity,
   ConfigurationPaginationResponse,
   ConfigurationType,
 } from '../../../entities/organizations/configuration.entity';
-import { ConfigurationOrderBy, UpdateConfigurationInput } from '../dto/configuration.dto';
+import {
+  ConfigurationOrderBy,
+  ConfigurationPaginationInput,
+  FilterConfigurationInput,
+  UpdateConfigurationInput,
+} from '../dto/configuration.dto';
 
 @Injectable()
 export class ConfigurationRepository {
   public async findOne(
     manager: PoolClient,
-    { key, clientId }: { clientId: string; key: string },
+    { key, clientId }: FilterConfigurationInput & { clientId: string },
   ): Promise<ConfigurationEntity> {
     try {
       const query = format(
@@ -46,7 +50,7 @@ export class ConfigurationRepository {
 
   public async findManyWithPagination(
     manager: PoolClient,
-    { clientId, pagination, orderBy }: { clientId: string; orderBy?: OrderBy; pagination?: Pagination },
+    { clientId, pagination, orderBy }: ConfigurationPaginationInput & { clientId: string },
   ): Promise<ConfigurationPaginationResponse> {
     try {
       const { page = 1, limit = 10 } = pagination ?? {};
@@ -116,13 +120,13 @@ export class ConfigurationRepository {
 
   public async updateOne(
     manager: PoolClient,
-    { clientId, key, config }: { clientId: string; key: string; config: UpdateConfigurationInput },
+    params: UpdateConfigurationInput & { clientId: string },
   ): Promise<ConfigurationEntity> {
     try {
       const fields = formatFields({
-        updateData: config,
+        updateData: params,
         columnName: {
-          key: 'configuration_key',
+          key: 'configuration_key', // TODO: should it be eliminated?
           value: 'configuration_value',
           type: 'configuration_type',
         },
@@ -135,8 +139,8 @@ export class ConfigurationRepository {
           WHERE configurations.configuration_organization = %1$L
           AND configurations.configuration_key = %2$L
         `,
-        clientId,
-        key.toString(),
+        params.clientId,
+        params.key.toString(),
       );
       const { rows } = await manager.query(query);
       return ConfigurationEntity.loadFromRow(rows[0]);
@@ -145,7 +149,10 @@ export class ConfigurationRepository {
     }
   }
 
-  public async deleteOne(manager: PoolClient, { key, clientId }: { clientId: string; key: string }): Promise<boolean> {
+  public async deleteOne(
+    manager: PoolClient,
+    { key, clientId }: FilterConfigurationInput & { clientId: string },
+  ): Promise<boolean> {
     try {
       const query = format(
         `
