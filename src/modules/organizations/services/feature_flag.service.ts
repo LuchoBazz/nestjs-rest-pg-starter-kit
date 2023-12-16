@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse } from '../../../entities/organizations';
 import { AuthProvider } from '../../../entities/users';
-import { UpdateFeatureFlagInput } from '../dto';
+import {
+  CreateFeatureFlagInput,
+  FeatureFlagPaginationInput,
+  FilterFeatureFlagInput,
+  UpdateFeatureFlagInput,
+} from '../dto';
 import { CachedFeatureFlagService, FeatureFlagRepository } from '../repositories';
 
 @Injectable()
@@ -14,32 +18,35 @@ export class FeatureFlagService {
     private readonly cachedFeatFlagService: CachedFeatureFlagService,
   ) {}
 
-  public async findOne(manager: PoolClient, params: { clientId: string; key: string }): Promise<FeatureFlagEntity> {
+  public async findOne(
+    manager: PoolClient,
+    params: FilterFeatureFlagInput & { clientId: string },
+  ): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.findOne(manager, params);
   }
 
   public async findManyWithPagination(
     manager: PoolClient,
-    params: { clientId: string; orderBy?: OrderBy; pagination?: Pagination },
+    params: FeatureFlagPaginationInput & { clientId: string },
   ): Promise<FeatureFlagPaginationResponse> {
     return this.featFlagRepository.findManyWithPagination(manager, params);
   }
 
   public async createOne(
     manager: PoolClient,
-    params: { key: string; value: boolean; percentage: number; is_experimental: boolean; clientId: string },
+    params: CreateFeatureFlagInput & { clientId: string },
   ): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.createOne(manager, params);
   }
 
   public async updateOne(
     manager: PoolClient,
-    params: { clientId: string; key: string; featFlag: UpdateFeatureFlagInput },
+    params: UpdateFeatureFlagInput & { clientId: string },
   ): Promise<FeatureFlagEntity> {
     return this.featFlagRepository.updateOne(manager, params);
   }
 
-  public async deleteOne(manager: PoolClient, params: { clientId: string; key: string }): Promise<boolean> {
+  public async deleteOne(manager: PoolClient, params: FilterFeatureFlagInput & { clientId: string }): Promise<boolean> {
     return this.featFlagRepository.deleteOne(manager, params);
   }
 

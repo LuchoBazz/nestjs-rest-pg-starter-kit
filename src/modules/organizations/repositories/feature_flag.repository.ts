@@ -5,15 +5,20 @@ import { v4 as uuid } from 'uuid';
 
 import { mapPagination } from '../../../common/mappers';
 import { formatFields } from '../../../common/utils';
-import { OrderBy, Pagination } from '../../../entities';
 import { FeatureFlagEntity, FeatureFlagPaginationResponse } from '../../../entities/organizations';
-import { OrderByFeatureFlag, UpdateFeatureFlagInput } from '../dto';
+import {
+  CreateFeatureFlagInput,
+  FeatureFlagPaginationInput,
+  FilterFeatureFlagInput,
+  OrderByFeatureFlag,
+  UpdateFeatureFlagInput,
+} from '../dto';
 
 @Injectable()
 export class FeatureFlagRepository {
   public async findOne(
     manager: PoolClient,
-    { key, clientId }: { clientId: string; key: string },
+    { key, clientId }: FilterFeatureFlagInput & { clientId: string },
   ): Promise<FeatureFlagEntity> {
     try {
       const query = format(
@@ -44,7 +49,7 @@ export class FeatureFlagRepository {
 
   public async findManyWithPagination(
     manager: PoolClient,
-    { clientId, pagination, orderBy }: { clientId: string; orderBy?: OrderBy; pagination?: Pagination },
+    { clientId, pagination, orderBy }: FeatureFlagPaginationInput & { clientId: string },
   ): Promise<FeatureFlagPaginationResponse> {
     try {
       const { page = 1, limit = 10 } = pagination ?? {};
@@ -88,13 +93,7 @@ export class FeatureFlagRepository {
 
   public async createOne(
     manager: PoolClient,
-    {
-      key,
-      value,
-      percentage,
-      is_experimental,
-      clientId,
-    }: { key: string; value: boolean; percentage: number; is_experimental: boolean; clientId: string },
+    { key, value, percentage, is_experimental, clientId }: CreateFeatureFlagInput & { clientId: string },
   ): Promise<FeatureFlagEntity> {
     try {
       const query = format(
@@ -126,11 +125,11 @@ export class FeatureFlagRepository {
 
   public async updateOne(
     manager: PoolClient,
-    { clientId, key, featFlag }: { clientId: string; key: string; featFlag: UpdateFeatureFlagInput },
+    params: UpdateFeatureFlagInput & { clientId: string },
   ): Promise<FeatureFlagEntity> {
     try {
       const fields = formatFields({
-        updateData: featFlag,
+        updateData: params,
         columnName: {
           key: 'feature_flag_key',
           value: 'feature_flag_value',
@@ -146,8 +145,8 @@ export class FeatureFlagRepository {
           WHERE feature_flags.feature_flag_organization = %1$L
           AND feature_flags.feature_flag_key = %2$L
         `,
-        clientId,
-        key.toString(),
+        params.clientId,
+        params.key.toString(),
       );
       const { rows } = await manager.query(query);
       return FeatureFlagEntity.loadFromRow(rows[0]);
@@ -156,7 +155,10 @@ export class FeatureFlagRepository {
     }
   }
 
-  public async deleteOne(manager: PoolClient, { key, clientId }: { clientId: string; key: string }): Promise<boolean> {
+  public async deleteOne(
+    manager: PoolClient,
+    { key, clientId }: FilterFeatureFlagInput & { clientId: string },
+  ): Promise<boolean> {
     try {
       const query = format(
         `

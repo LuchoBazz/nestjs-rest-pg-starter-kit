@@ -9,7 +9,7 @@ export enum OrderByFeatureFlag {
   CREATED_AT = 'CREATED_AT',
 }
 
-export class FeatureFlagInput {
+export class FilterFeatureFlagInput {
   @IsNotEmpty()
   @IsString()
   key: string;

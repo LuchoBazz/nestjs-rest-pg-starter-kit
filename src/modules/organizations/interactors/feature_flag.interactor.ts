@@ -3,7 +3,12 @@ import { PoolClient } from 'pg';
 
 import { FeatureFlagObject, FeatureFlagPaginationResponse } from '../../../entities/organizations';
 import { PgGateway } from '../../../gateways/database/postgresql';
-import { CreateFeatureFlagInput, FeatureFlagInput, FeatureFlagPaginationInput, UpdateFeatureFlagInput } from '../dto';
+import {
+  CreateFeatureFlagInput,
+  FeatureFlagPaginationInput,
+  FilterFeatureFlagInput,
+  UpdateFeatureFlagInput,
+} from '../dto';
 import { FeatureFlagService } from '../services';
 
 @Injectable()
@@ -19,7 +24,7 @@ export class FeatureFlagInteractor {
     });
   }
 
-  public async getFeatureFlag(clientId: string, input: FeatureFlagInput): Promise<FeatureFlagObject> {
+  public async getFeatureFlag(clientId: string, input: FilterFeatureFlagInput): Promise<FeatureFlagObject> {
     return this.pgGateway.onSession((manager: PoolClient) => {
       return this.featFlagService.findOne(manager, { ...input, clientId });
     });
@@ -33,11 +38,11 @@ export class FeatureFlagInteractor {
 
   public async updateFeatureFlag(clientId: string, input: UpdateFeatureFlagInput): Promise<FeatureFlagObject> {
     return this.pgGateway.onTransaction((manager: PoolClient) => {
-      return this.featFlagService.updateOne(manager, { featFlag: input, key: input.key, clientId });
+      return this.featFlagService.updateOne(manager, { ...input, clientId });
     });
   }
 
-  public async deleteFeatureFlag(clientId: string, input: FeatureFlagInput): Promise<boolean> {
+  public async deleteFeatureFlag(clientId: string, input: FilterFeatureFlagInput): Promise<boolean> {
     return this.pgGateway.onTransaction((manager: PoolClient) => {
       return this.featFlagService.deleteOne(manager, { ...input, clientId });
     });
