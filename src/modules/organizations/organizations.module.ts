@@ -8,6 +8,7 @@ import { ConfigurationController } from './controllers/configuration.controller'
 import { FeatureFlagController } from './controllers/feature_flag.controller';
 import { ConfigurationInteractor } from './interactors/configuration.interactor';
 import { FeatureFlagInteractor } from './interactors/feature_flag.interactor';
+import { ConfigurationPresenter } from './presenters/configuration.presenter';
 import { ConfigurationRepository } from './repositories/configuration.repository';
 import { FeatureFlagRepository } from './repositories/feature_flag.repository';
 import { CachedConfigurationService } from './services/cached_configuration.service';
@@ -28,6 +29,7 @@ import { FeatureFlagService } from './services/feature_flag.service';
     ConfigurationService,
     CachedConfigurationService,
     ConfigurationInteractor,
+    ConfigurationPresenter,
   ],
   exports: [
     FeatureFlagRepository,
@@ -39,6 +41,7 @@ import { FeatureFlagService } from './services/feature_flag.service';
     ConfigurationService,
     CachedConfigurationService,
     ConfigurationInteractor,
+    ConfigurationPresenter,
   ],
 })
 export class OrganizationsModule {}
