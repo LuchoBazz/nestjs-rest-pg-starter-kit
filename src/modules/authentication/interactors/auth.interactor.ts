@@ -49,23 +49,23 @@ export class AuthInteractor {
 
     // TODO: Return alert when phone number is invalid
 
-    const user: UserEntity = UserEntity.load({
-      username: userInfo.username,
-      first_name: userInfo.firstName,
-      last_name: userInfo.lastName,
-      email: userInfo.email,
-      identification_number: null,
-      phone_number: phoneNumberResponse.phoneNumber,
-      terms: userInfo.terms,
-      notifications: userInfo.notifications,
-      is_active: true,
-      uid: result.uid,
-      role: UserRole.USER,
-      auth_provider: authProvider,
-      auth_type: userInfo.authType,
-      dynamic_info: {},
-      organization_client_id: clientId,
-    });
+    const user: UserEntity = new UserEntity(
+      userInfo.username,
+      userInfo.firstName,
+      userInfo.lastName,
+      userInfo.email,
+      null,
+      phoneNumberResponse.phoneNumber,
+      userInfo.terms,
+      userInfo.notifications,
+      true,
+      result.uid,
+      UserRole.USER,
+      authProvider,
+      userInfo.authType,
+      {},
+      clientId,
+    );
 
     const userCreated = await this.pgGateway.onTransaction(async (manager: PoolClient) => {
       return this.userService.createOne(manager, { user });
