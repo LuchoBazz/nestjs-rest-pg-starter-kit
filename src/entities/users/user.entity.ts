@@ -1,25 +1,6 @@
 import { BaseModel } from '../base.entity';
 import { PhoneObject } from './phone_number.entity';
 
-export interface UserParams {
-  id?: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  identification_number: string | null;
-  phone_number: string | null;
-  terms: boolean;
-  notifications: boolean;
-  is_active: boolean;
-  uid: string;
-  role: UserRole;
-  auth_provider: AuthProvider;
-  auth_type: AuthType;
-  dynamic_info: Record<string, any>;
-  organization_client_id: string;
-}
-
 export enum UserRole {
   INTERNAL_ADMIN = 'INTERNAL_ADMIN',
   EXTERNAL_ADMIN = 'EXTERNAL_ADMIN',
@@ -72,48 +53,59 @@ export class UserEntity extends BaseModel {
   private _dynamic_info: Record<string, any>;
   private _organization_client_id: string;
 
-  constructor(params: UserParams) {
-    super(params.id);
-    this.username = params.username;
-    this.first_name = params.first_name;
-    this.last_name = params.last_name;
-    this.email = params.email;
-    this.identification_number = params.identification_number;
-    this.phone_number = params.phone_number;
-    this.terms = params.terms;
-    this.notifications = params.notifications;
-    this.is_active = params.is_active;
-    this.uid = params.uid;
-    this.role = params.role;
-    this.auth_provider = params.auth_provider;
-    this.auth_type = params.auth_type;
-    this.dynamic_info = params.dynamic_info;
-    this.organization_client_id = params.organization_client_id;
-  }
-
-  public static load(params: UserParams): UserEntity {
-    return new UserEntity(params);
+  constructor(
+    username: string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    identification_number: string | null,
+    phone_number: string | null,
+    terms: boolean,
+    notifications: boolean,
+    is_active: boolean,
+    uid: string,
+    role: UserRole,
+    auth_provider: AuthProvider,
+    auth_type: AuthType,
+    dynamic_info: Record<string, any>,
+    organization_client_id: string,
+  ) {
+    super();
+    this.username = username;
+    this.first_name = first_name;
+    this.last_name = last_name;
+    this.email = email;
+    this.identification_number = identification_number;
+    this.phone_number = phone_number;
+    this.terms = terms;
+    this.notifications = notifications;
+    this.is_active = is_active;
+    this.uid = uid;
+    this.role = role;
+    this.auth_provider = auth_provider;
+    this.auth_type = auth_type;
+    this.dynamic_info = dynamic_info;
+    this.organization_client_id = organization_client_id;
   }
 
   public static loadFromRow(row: any): UserEntity {
-    return UserEntity.load({
-      id: row.user_id,
-      username: row.user_username,
-      first_name: row.user_first_name,
-      last_name: row.user_last_name,
-      email: row.user_email,
-      identification_number: row.user_identification_number ?? null,
-      phone_number: row.user_phone_number ?? null,
-      terms: row.user_terms,
-      notifications: row.user_notifications,
-      is_active: row.user_is_active,
-      uid: row.user_uid,
-      role: row.user_role,
-      auth_provider: row.user_auth_provider,
-      auth_type: row.user_auth_type,
-      dynamic_info: row.user_dynamic_info,
-      organization_client_id: row.user_organization,
-    });
+    return new UserEntity(
+      row.user_username,
+      row.user_first_name,
+      row.user_last_name,
+      row.user_email,
+      row.user_identification_number ?? null,
+      row.user_phone_number ?? null,
+      row.user_terms,
+      row.user_notifications,
+      row.user_is_active,
+      row.user_uid,
+      row.user_role,
+      row.user_auth_provider,
+      row.user_auth_type,
+      row.user_dynamic_info,
+      row.user_organization,
+    );
   }
 
   public get username(): string {
