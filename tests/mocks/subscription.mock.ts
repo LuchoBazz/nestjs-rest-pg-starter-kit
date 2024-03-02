@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { SubscriptionPlanEntity } from '../../src/entities/subscription/subscription_plan.entity';
+import { generateRandomClientId } from './organization.mock';
 
 export const generateRandomSubscriptionPlanEntity = ({
   id = faker.string.uuid(),
@@ -14,7 +15,7 @@ export const generateRandomSubscriptionPlanEntity = ({
   mostPopular = false,
   tier = faker.number.int({ min: 10, max: 100 }),
   isActive = true,
-  clientId = faker.string.alpha({ length: 5, casing: 'upper' }),
+  clientId = generateRandomClientId(),
 } = {}): SubscriptionPlanEntity => {
   return new SubscriptionPlanEntity(
     id,

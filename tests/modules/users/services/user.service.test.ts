@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { UserRepository } from '../../../../src/modules/users/repositories';
 import { UserService } from '../../../../src/modules/users/services';
+import { generateRandomClientId } from '../../../mocks/organization.mock';
 import { generateRandomUserEntity } from '../../../mocks/user.mock';
 
 describe('Given an UserService', () => {
@@ -32,7 +33,7 @@ describe('Given an UserService', () => {
 
   it('should call userRepository findOneByEmail method with correct parameters', async () => {
     const sessionMock = {} as any;
-    const clientId = faker.string.alpha({ length: 5, casing: 'upper' });
+    const clientId = generateRandomClientId();
     const email = faker.internet.email();
     const userEntityMock = generateRandomUserEntity();
 
