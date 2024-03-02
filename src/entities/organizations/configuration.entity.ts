@@ -1,16 +1,6 @@
 import { BaseModel } from '../base.entity';
 import { PageInfoResponse } from '../pagination.entity';
 
-export interface ConfigurationParams {
-  id: string;
-  key: string;
-  value: string;
-  type: ConfigurationType;
-  is_active: boolean;
-  organization_client_id: string;
-  is_experimental: boolean;
-}
-
 export enum ConfigurationKey {
   AUTH_PROVIDER = 'AUTH_PROVIDER',
 }
@@ -44,29 +34,33 @@ export class ConfigurationEntity extends BaseModel {
   private _organization_client_id: string;
   private _is_experimental: boolean;
 
-  constructor(params: ConfigurationParams) {
-    super(params.id);
-    this.key = params.key;
-    this.value = params.value;
-    this.is_active = params.is_active;
-    this.organization_client_id = params.organization_client_id;
-    this.is_experimental = params.is_experimental;
-  }
-
-  public static load(params: ConfigurationParams): ConfigurationEntity {
-    return new ConfigurationEntity(params);
+  constructor(
+    id: string,
+    key: string,
+    value: string,
+    type: ConfigurationType,
+    is_active: boolean,
+    organization_client_id: string,
+    is_experimental: boolean,
+  ) {
+    super(id);
+    this.key = key;
+    this.value = value;
+    this.is_active = is_active;
+    this.organization_client_id = organization_client_id;
+    this.is_experimental = is_experimental;
   }
 
   public static loadFromRow(row: any): ConfigurationEntity {
-    return ConfigurationEntity.load({
-      id: row.configuration_id,
-      key: row.configuration_key,
-      value: row.configuration_value,
-      type: row.configuration_type,
-      is_active: row.configuration_is_active,
-      organization_client_id: row.configuration_organization,
-      is_experimental: row.configuration_is_experimental,
-    });
+    return new ConfigurationEntity(
+      row.configuration_id,
+      row.configuration_key,
+      row.configuration_value,
+      row.configuration_type,
+      row.configuration_is_active,
+      row.configuration_organization,
+      row.configuration_is_experimental,
+    );
   }
 
   public get key(): string {

@@ -1,16 +1,5 @@
 import { BaseModel } from '../base.entity';
 import { PageInfoResponse } from '../pagination.entity';
-
-export interface FeatureFlagParams {
-  id: string;
-  key: string;
-  value: boolean;
-  percentage: number;
-  is_active: boolean;
-  organization_client_id: string;
-  is_experimental: boolean;
-}
-
 export interface FeatureFlagPaginationResponse {
   totalCount: number;
   items: FeatureFlagEntity[];
@@ -35,29 +24,33 @@ export class FeatureFlagEntity extends BaseModel {
   private _organization_client_id: string;
   private _is_experimental: boolean;
 
-  constructor(params: FeatureFlagParams) {
-    super(params.id);
-    this.key = params.key;
-    this.value = params.value;
-    this.is_active = params.is_active;
-    this.organization_client_id = params.organization_client_id;
-    this.is_experimental = params.is_experimental;
-  }
-
-  public static load(params: FeatureFlagParams): FeatureFlagEntity {
-    return new FeatureFlagEntity(params);
+  constructor(
+    id: string,
+    key: string,
+    value: boolean,
+    percentage: number,
+    is_active: boolean,
+    organization_client_id: string,
+    is_experimental: boolean,
+  ) {
+    super(id);
+    this.key = key;
+    this.value = value;
+    this.is_active = is_active;
+    this.organization_client_id = organization_client_id;
+    this.is_experimental = is_experimental;
   }
 
   public static loadFromRow(row: any): FeatureFlagEntity {
-    return FeatureFlagEntity.load({
-      id: row.feature_flag_id,
-      key: row.feature_flag_key,
-      value: row.feature_flag_value,
-      percentage: row.feature_flag_percentage,
-      is_active: row.feature_flag_is_active,
-      organization_client_id: row.feature_flag_organization,
-      is_experimental: row.feature_flag_is_experimental,
-    });
+    return new FeatureFlagEntity(
+      row.feature_flag_id,
+      row.feature_flag_key,
+      row.feature_flag_value,
+      row.feature_flag_percentage,
+      row.feature_flag_is_active,
+      row.feature_flag_organization,
+      row.feature_flag_is_experimental,
+    );
   }
 
   public get key(): string {

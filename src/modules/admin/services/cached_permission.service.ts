@@ -22,7 +22,7 @@ export class CachedPermissionService {
           role: params[0] as UserRole,
         });
         if (!permissions?.length) {
-          return [new PermissionEntity({ name: PermissionsValues.GUEST_USER })];
+          return [new PermissionEntity(PermissionsValues.GUEST_USER)];
         }
         return permissions;
       };

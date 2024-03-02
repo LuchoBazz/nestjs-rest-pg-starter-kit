@@ -1,25 +1,15 @@
 import { BaseModel } from '../base.entity';
 
-export interface PermissionParams {
-  name: string;
-}
-
 export class PermissionEntity extends BaseModel {
   private _name: string;
 
-  constructor(params: PermissionParams) {
+  constructor(name: string) {
     super();
-    this.name = params.name;
-  }
-
-  public static load(params: PermissionParams): PermissionEntity {
-    return new PermissionEntity(params);
+    this.name = name;
   }
 
   public static loadFromRow(row: any): PermissionEntity {
-    return PermissionEntity.load({
-      name: row.permission_name,
-    });
+    return new PermissionEntity(row.permission_name);
   }
 
   public get name(): string {
