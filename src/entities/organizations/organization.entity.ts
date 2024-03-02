@@ -1,33 +1,19 @@
 import { BaseModel } from '../base.entity';
 
-export interface OrganizationParams {
-  name: string;
-  client_id: string;
-  alpha_user: number;
-}
-
 export class OrganizationEntity extends BaseModel {
   private _name: string;
   private _alpha_user: number;
   private _client_id: string;
 
-  constructor(params: OrganizationParams) {
+  constructor(name: string, client_id: string, alpha_user: number) {
     super();
-    this._name = params.name;
-    this._client_id = params.client_id;
-    this._alpha_user = params.alpha_user;
-  }
-
-  public static load(params: OrganizationParams): OrganizationEntity {
-    return new OrganizationEntity(params);
+    this._name = name;
+    this._client_id = client_id;
+    this._alpha_user = alpha_user;
   }
 
   public loadFromRow(row: any): OrganizationEntity {
-    return OrganizationEntity.load({
-      name: row.organization_name,
-      client_id: row.organization_client_id,
-      alpha_user: row.organization_alpha_user,
-    });
+    return new OrganizationEntity(row.organization_name, row.organization_client_id, row.organization_alpha_user);
   }
 
   public get name(): string {

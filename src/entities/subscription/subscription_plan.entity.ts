@@ -1,20 +1,5 @@
 import { BaseModel } from '../base.entity';
 
-export interface SubscriptionPlanParams {
-  id: string;
-  name: string;
-  product_id: string;
-  variants: string[];
-  slug: string;
-  description: string;
-  node_quota: number;
-  features: any[];
-  most_popular: boolean;
-  tier: number;
-  is_active: boolean;
-  organization_client_id: string;
-}
-
 export class SubscriptionPlanObject {
   id: string;
   name: string;
@@ -43,40 +28,49 @@ export class SubscriptionPlanEntity extends BaseModel {
   private _is_active: boolean;
   private _organization_client_id: string;
 
-  constructor(params: SubscriptionPlanParams) {
-    super(params.id);
-    this.name = params.name;
-    this.product_id = params.product_id;
-    this.variants = params.variants;
-    this.slug = params.slug;
-    this.description = params.description;
-    this.node_quota = params.node_quota;
-    this.features = params.features;
-    this.most_popular = params.most_popular;
-    this.tier = params.tier;
-    this.is_active = params.is_active;
-    this.organization_client_id = params.organization_client_id;
-  }
-
-  public static load(params: SubscriptionPlanParams): SubscriptionPlanEntity {
-    return new SubscriptionPlanEntity(params);
+  constructor(
+    id: string,
+    name: string,
+    product_id: string,
+    variants: string[],
+    slug: string,
+    description: string,
+    node_quota: number,
+    features: any[],
+    most_popular: boolean,
+    tier: number,
+    is_active: boolean,
+    organization_client_id: string,
+  ) {
+    super(id);
+    this.name = name;
+    this.product_id = product_id;
+    this.variants = variants;
+    this.slug = slug;
+    this.description = description;
+    this.node_quota = node_quota;
+    this.features = features;
+    this.most_popular = most_popular;
+    this.tier = tier;
+    this.is_active = is_active;
+    this.organization_client_id = organization_client_id;
   }
 
   public static loadFromRow(row: any): SubscriptionPlanEntity {
-    return SubscriptionPlanEntity.load({
-      id: row.subscription_plan_id,
-      name: row.subscription_plan_name,
-      product_id: row.subscription_plan_product_id,
-      variants: row.subscription_plan_variants,
-      slug: row.subscription_plan_slug,
-      description: row.subscription_plan_description,
-      node_quota: row.subscription_plan_node_quota,
-      features: row.subscription_plan_features,
-      most_popular: row.subscription_plan_most_popular,
-      tier: row.subscription_plan_tier,
-      is_active: row.subscription_plan_is_active,
-      organization_client_id: row.subscription_plan_organization,
-    });
+    return new SubscriptionPlanEntity(
+      row.subscription_plan_id,
+      row.subscription_plan_name,
+      row.subscription_plan_product_id,
+      row.subscription_plan_variants,
+      row.subscription_plan_slug,
+      row.subscription_plan_description,
+      row.subscription_plan_node_quota,
+      row.subscription_plan_features,
+      row.subscription_plan_most_popular,
+      row.subscription_plan_tier,
+      row.subscription_plan_is_active,
+      row.subscription_plan_organization,
+    );
   }
 
   public get name(): string {
