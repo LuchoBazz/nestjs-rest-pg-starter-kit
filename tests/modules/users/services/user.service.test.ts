@@ -26,6 +26,10 @@ describe('Given an UserService', () => {
     repository = module.get(UserRepository);
   });
 
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
   it('should call userRepository findOneByEmail method with correct parameters', async () => {
     const sessionMock = {} as any;
     const clientId = faker.string.alpha({ length: 5, casing: 'upper' });
