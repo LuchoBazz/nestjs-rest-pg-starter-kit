@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { AuthProvider, AuthType, UserEntity, UserRole } from '../../src/entities/users';
+import { generateRandomClientId } from './organization.mock';
 
 export const generateRandomUserEntity = ({
   username = faker.internet.userName(),
@@ -17,7 +18,7 @@ export const generateRandomUserEntity = ({
   authProvider = AuthProvider.FIREBASE,
   authType = AuthType.EMAIL_AND_PASSWORD,
   dynamicInfo = {},
-  organization = faker.string.alpha({ length: 5, casing: 'upper' }),
+  organization = generateRandomClientId(),
 } = {}): UserEntity => {
   return new UserEntity(
     username,
