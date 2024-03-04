@@ -13,7 +13,10 @@ import { FeatureFlagService } from '../services';
 
 @Injectable()
 export class FeatureFlagInteractor {
-  constructor(private readonly pgGateway: PgGateway, private readonly featFlagService: FeatureFlagService) {}
+  constructor(
+    private readonly pgGateway: PgGateway,
+    private readonly featFlagService: FeatureFlagService,
+  ) {}
 
   public async getFeatureFlags(
     clientId: string,
