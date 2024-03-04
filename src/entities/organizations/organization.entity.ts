@@ -2,10 +2,10 @@ import { BaseModel } from '../base.entity';
 
 export class OrganizationEntity extends BaseModel {
   private _name: string;
-  private _alpha_user: number;
+  private _alpha_user: string;
   private _client_id: string;
 
-  constructor(name: string, client_id: string, alpha_user: number) {
+  constructor(name: string, client_id: string, alpha_user: string) {
     super();
     this._name = name;
     this._client_id = client_id;
@@ -32,11 +32,11 @@ export class OrganizationEntity extends BaseModel {
     this._client_id = value;
   }
 
-  public get alpha_user(): number {
+  public get alpha_user(): string {
     return this._alpha_user;
   }
 
-  public set alpha_user(value: number) {
+  public set alpha_user(value: string) {
     this._alpha_user = value;
   }
 }
