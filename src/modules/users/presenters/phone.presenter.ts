@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { GooglePhoneNumber, PhoneNumberFormat, PhoneNumberUtil } from '@open-syk/common/utils/phone-number';
 
-import { FormatPhoneNumberObject, PhoneObject } from '../../../entities/users/phone_number.entity';
+import { FormatPhoneNumberResponse, PhoneResponse } from '../../../entities/users/phone_number.entity';
 import { PhoneNumberService } from '../services';
 
 @Injectable()
 export class PhonePresenter {
   constructor(private readonly phoneNumberService: PhoneNumberService) {}
 
-  public async phoneNumber(phoneNumber: string | null): Promise<PhoneObject | null> {
+  public async phoneNumber(phoneNumber: string | null): Promise<PhoneResponse | null> {
     if (!phoneNumber) {
       return null;
     }
@@ -21,7 +21,7 @@ export class PhonePresenter {
     return { format, country_code, phone_number_type, region_code };
   }
 
-  public formatPhoneNumber(phoneNumber: string | null): FormatPhoneNumberObject | null {
+  public formatPhoneNumber(phoneNumber: string | null): FormatPhoneNumberResponse | null {
     const e164 = this.phoneNumberService.format({ phoneNumber, formatType: PhoneNumberFormat.E164 }).phoneNumber;
     const international = this.phoneNumberService.format({
       phoneNumber,

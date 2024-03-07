@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.entity';
 
-export class SubscriptionPlanObject {
+export class SubscriptionPlanResponse {
   id: string;
   name: string;
   product_id?: string;

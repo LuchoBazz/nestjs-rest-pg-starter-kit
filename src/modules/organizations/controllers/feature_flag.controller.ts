@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 
 import { PermissionsValues } from '../../../entities/authentication';
-import { FeatureFlagObject } from '../../../entities/organizations';
+import { FeatureFlagResponse } from '../../../entities/organizations';
 import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
@@ -38,7 +38,7 @@ export class FeatureFlagController {
   @Permissions(PermissionsValues.READ_FEATURE_FLAGS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Get(':key')
-  public async featureFlag(@JwtUser() user: UserEntity, @Param('key') key): Promise<FeatureFlagObject> {
+  public async featureFlag(@JwtUser() user: UserEntity, @Param('key') key): Promise<FeatureFlagResponse> {
     return this.featureFlagInteractor.getFeatureFlag(user.organization_client_id, { key });
   }
 
@@ -48,7 +48,7 @@ export class FeatureFlagController {
   public async addFeatureFlag(
     @Body() input: CreateFeatureFlagInput,
     @JwtUser() user: UserEntity,
-  ): Promise<FeatureFlagObject> {
+  ): Promise<FeatureFlagResponse> {
     return await this.featureFlagInteractor.createFeatureFlag(user.organization_client_id, input);
   }
 
@@ -58,7 +58,7 @@ export class FeatureFlagController {
   public async updateFeatureFlag(
     @Body() input: UpdateFeatureFlagInput,
     @JwtUser() user: UserEntity,
-  ): Promise<FeatureFlagObject> {
+  ): Promise<FeatureFlagResponse> {
     return this.featureFlagInteractor.updateFeatureFlag(user.organization_client_id, input);
   }
 

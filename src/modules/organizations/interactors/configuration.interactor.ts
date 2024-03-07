@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
 import {
-  ConfigurationObject,
   ConfigurationPaginationResponse,
+  ConfigurationResponse,
 } from '../../../entities/organizations/configuration.entity';
 import { PgGateway } from '../../../gateways/database/postgresql';
 import {
@@ -32,21 +32,21 @@ export class ConfigurationInteractor {
     });
   }
 
-  public async getConfiguration(clientId: string, input: FilterConfigurationInput): Promise<ConfigurationObject> {
+  public async getConfiguration(clientId: string, input: FilterConfigurationInput): Promise<ConfigurationResponse> {
     return this.pgGateway.onSession(async (manager: PoolClient) => {
       const config = await this.configurationService.findOne(manager, { ...input, clientId });
       return this.configurationPresenter.present(config);
     });
   }
 
-  public async createConfiguration(clientId: string, input: CreateConfigurationInput): Promise<ConfigurationObject> {
+  public async createConfiguration(clientId: string, input: CreateConfigurationInput): Promise<ConfigurationResponse> {
     return this.pgGateway.onSession(async (manager: PoolClient) => {
       const config = await this.configurationService.createOne(manager, { ...input, clientId });
       return this.configurationPresenter.present(config);
     });
   }
 
-  public async updateConfiguration(clientId: string, input: UpdateConfigurationInput): Promise<ConfigurationObject> {
+  public async updateConfiguration(clientId: string, input: UpdateConfigurationInput): Promise<ConfigurationResponse> {
     return this.pgGateway.onTransaction(async (manager: PoolClient) => {
       const config = await this.configurationService.updateOne(manager, { ...input, clientId });
       return this.configurationPresenter.present(config);

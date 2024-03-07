@@ -2,7 +2,7 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 import { responseWithoutPagination, RestResponseWithoutPagination } from '../../../common/mappers/response';
 import { PermissionsValues } from '../../../entities/authentication';
-import { SubscriptionPlanObject } from '../../../entities/subscription/subscription_plan.entity';
+import { SubscriptionPlanResponse } from '../../../entities/subscription/subscription_plan.entity';
 import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
@@ -19,7 +19,7 @@ export class SubscriptionPlanController {
   public async getSubscriptionPlans(
     @JwtUser() user: UserEntity,
     @Query() params: SubscriptionPlanQueryParams,
-  ): Promise<RestResponseWithoutPagination<SubscriptionPlanObject[]>> {
+  ): Promise<RestResponseWithoutPagination<SubscriptionPlanResponse[]>> {
     const response = await this.subscriptionPlanInteractor.getSubscriptionPlans({
       ...params,
       clientId: user.organization_client_id,

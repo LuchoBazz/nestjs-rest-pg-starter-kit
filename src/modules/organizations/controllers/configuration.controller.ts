@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } fro
 
 import { PermissionsValues } from '../../../entities/authentication';
 import {
-  ConfigurationObject,
   ConfigurationPaginationResponse,
+  ConfigurationResponse,
 } from '../../../entities/organizations/configuration.entity';
 import { UserEntity } from '../../../entities/users';
 import { JwtUser, Permissions } from '../../authentication/decorators';
@@ -40,7 +40,7 @@ export class ConfigurationController {
   @Permissions(PermissionsValues.READ_CONFIGURATIONS)
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Get(':key')
-  public async getConfiguration(@JwtUser() user: UserEntity, @Param('key') key): Promise<ConfigurationObject> {
+  public async getConfiguration(@JwtUser() user: UserEntity, @Param('key') key): Promise<ConfigurationResponse> {
     return this.configurationInteractor.getConfiguration(user.organization_client_id, { key });
   }
 
@@ -50,7 +50,7 @@ export class ConfigurationController {
   public async addConfiguration(
     @Body() input: CreateConfigurationInput,
     @JwtUser() user: UserEntity,
-  ): Promise<ConfigurationObject> {
+  ): Promise<ConfigurationResponse> {
     return await this.configurationInteractor.createConfiguration(user.organization_client_id, input);
   }
 
@@ -60,7 +60,7 @@ export class ConfigurationController {
   public async updateConfiguration(
     @Body() input: UpdateConfigurationInput,
     @JwtUser() user: UserEntity,
-  ): Promise<ConfigurationObject> {
+  ): Promise<ConfigurationResponse> {
     return this.configurationInteractor.updateConfiguration(user.organization_client_id, input);
   }
 

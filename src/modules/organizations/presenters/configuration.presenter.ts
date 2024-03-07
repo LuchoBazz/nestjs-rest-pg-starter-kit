@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { ConfigurationEntity, ConfigurationObject } from '../../../entities/organizations/configuration.entity';
+import { ConfigurationEntity, ConfigurationResponse } from '../../../entities/organizations/configuration.entity';
 
 @Injectable()
 export class ConfigurationPresenter {
-  public present(config: ConfigurationEntity): ConfigurationObject {
+  public present(config: ConfigurationEntity): ConfigurationResponse {
     return {
       id: config.id,
       key: config.key,

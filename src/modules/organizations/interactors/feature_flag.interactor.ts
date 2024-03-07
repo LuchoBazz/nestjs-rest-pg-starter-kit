@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { FeatureFlagObject, FeatureFlagPaginationResponse } from '../../../entities/organizations';
+import { FeatureFlagPaginationResponse, FeatureFlagResponse } from '../../../entities/organizations';
 import { PgGateway } from '../../../gateways/database/postgresql';
 import {
   CreateFeatureFlagInput,
@@ -27,19 +27,19 @@ export class FeatureFlagInteractor {
     });
   }
 
-  public async getFeatureFlag(clientId: string, input: FilterFeatureFlagInput): Promise<FeatureFlagObject> {
+  public async getFeatureFlag(clientId: string, input: FilterFeatureFlagInput): Promise<FeatureFlagResponse> {
     return this.pgGateway.onSession((manager: PoolClient) => {
       return this.featFlagService.findOne(manager, { ...input, clientId });
     });
   }
 
-  public async createFeatureFlag(clientId: string, input: CreateFeatureFlagInput): Promise<FeatureFlagObject> {
+  public async createFeatureFlag(clientId: string, input: CreateFeatureFlagInput): Promise<FeatureFlagResponse> {
     return this.pgGateway.onSession((manager: PoolClient) => {
       return this.featFlagService.createOne(manager, { ...input, clientId });
     });
   }
 
-  public async updateFeatureFlag(clientId: string, input: UpdateFeatureFlagInput): Promise<FeatureFlagObject> {
+  public async updateFeatureFlag(clientId: string, input: UpdateFeatureFlagInput): Promise<FeatureFlagResponse> {
     return this.pgGateway.onTransaction((manager: PoolClient) => {
       return this.featFlagService.updateOne(manager, { ...input, clientId });
     });

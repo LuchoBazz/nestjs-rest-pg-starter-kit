@@ -6,7 +6,7 @@ export interface FeatureFlagPaginationResponse {
   pageInfo: PageInfoResponse;
 }
 
-export class FeatureFlagObject {
+export class FeatureFlagResponse {
   id: string;
   key: string;
   value: boolean;

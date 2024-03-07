@@ -10,14 +10,14 @@ export const INVALID_PHONE_NUMBER: PhoneNumberParsed = {
   phoneNumber: null,
 };
 
-export class FormatPhoneNumberObject {
+export class FormatPhoneNumberResponse {
   e164: string;
   national: string;
   international: string;
 }
 
-export class PhoneObject {
-  format: FormatPhoneNumberObject | null;
+export class PhoneResponse {
+  format: FormatPhoneNumberResponse | null;
   region_code: string;
   country_code: number;
   phone_number_type: number;

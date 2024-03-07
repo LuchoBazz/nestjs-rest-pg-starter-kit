@@ -16,7 +16,7 @@ export interface ConfigurationPaginationResponse {
   pageInfo: PageInfoResponse;
 }
 
-export class ConfigurationObject {
+export class ConfigurationResponse {
   id: string;
   key: string;
   value: string;

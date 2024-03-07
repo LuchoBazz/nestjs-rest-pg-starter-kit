@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserEntity, UserObject } from '../../../entities/users';
+import { UserEntity, UserResponse } from '../../../entities/users';
 import { PhonePresenter } from './phone.presenter';
 
 @Injectable()
 export class UserPresenter {
   constructor(private readonly phonePresenter: PhonePresenter) {}
 
-  public async present(user: UserEntity): Promise<UserObject> {
+  public async present(user: UserEntity): Promise<UserResponse> {
     return {
       username: user.username,
       first_name: user.first_name,

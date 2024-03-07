@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { SubscriptionPlanObject } from '../../../entities/subscription/subscription_plan.entity';
+import { SubscriptionPlanResponse } from '../../../entities/subscription/subscription_plan.entity';
 import { PgGateway } from '../../../gateways/database/postgresql';
 import { ExtendedSubscriptionPlan } from '../dto/subscription_plan.dto';
 import { SubscriptionPlanPresenter } from '../presenters/subscription_plan.presenter';
@@ -15,7 +15,7 @@ export class SubscriptionPlanInteractor {
     private readonly subscriptionPlanPresenter: SubscriptionPlanPresenter,
   ) {}
 
-  public async getSubscriptionPlans(input: ExtendedSubscriptionPlan): Promise<SubscriptionPlanObject[]> {
+  public async getSubscriptionPlans(input: ExtendedSubscriptionPlan): Promise<SubscriptionPlanResponse[]> {
     return this.pgGateway.onSession(async (manager: PoolClient) => {
       const subscriptionPlans = await this.subscriptionPlanService.findMany(manager, input);
       return subscriptionPlans.map(this.subscriptionPlanPresenter.presentSubscriptionPlan);

@@ -2,7 +2,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { PageInfoResponse, PaginationInput } from '../../../common/dto';
-import { FeatureFlagObject } from '../../../entities/organizations';
+import { FeatureFlagResponse } from '../../../entities/organizations';
 import { ConfigurationType } from '../../../entities/organizations/configuration.entity';
 
 export enum ConfigurationOrderBy {
@@ -47,7 +47,7 @@ export class UpdateConfigurationInput extends PartialType(CreateConfigurationInp
 export class ConfigurationResponse {
   totalCount: number;
 
-  items: FeatureFlagObject[];
+  items: FeatureFlagResponse[];
 
   pageInfo: PageInfoResponse;
 }

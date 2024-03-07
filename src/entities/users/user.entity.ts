@@ -1,5 +1,5 @@
 import { BaseModel } from '../base.entity';
-import { PhoneObject } from './phone_number.entity';
+import { PhoneResponse } from './phone_number.entity';
 
 export enum UserRole {
   INTERNAL_ADMIN = 'INTERNAL_ADMIN',
@@ -19,13 +19,13 @@ export enum AuthType {
   GITHUB_AUTH = 'GITHUB_AUTH',
 }
 
-export class UserObject {
+export class UserResponse {
   username: string;
   first_name: string;
   last_name: string;
   email: string;
   identification_number: string | null;
-  phone_number: PhoneObject | null;
+  phone_number: PhoneResponse | null;
   terms: boolean;
   notifications: boolean;
   is_active: boolean;

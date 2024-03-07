@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 
 import {
   SubscriptionPlanEntity,
-  SubscriptionPlanObject,
+  SubscriptionPlanResponse,
 } from '../../../entities/subscription/subscription_plan.entity';
 
 @Injectable()
 export class SubscriptionPlanPresenter {
-  public presentSubscriptionPlan(subscriptionPlan: SubscriptionPlanEntity): SubscriptionPlanObject {
+  public presentSubscriptionPlan(subscriptionPlan: SubscriptionPlanEntity): SubscriptionPlanResponse {
     return {
       id: subscriptionPlan.id,
       name: subscriptionPlan.name,
