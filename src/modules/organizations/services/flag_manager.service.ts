@@ -29,19 +29,19 @@ export class FeatureFlagManagerService {
   }
 
   private async findFeatureFlagByPercentage({ clientId, key, userId }: FindFlagManagerDTO): Promise<boolean> {
-    return await this.pgGateway.onSession(async (manager: PoolClient) => {
-      const featureFlag = await this.cachedFeatureFlag.findOne(manager, { clientId, key });
-      const userHash = this.getHashCyrb53(userId);
-      const remainder = userHash % 100;
-      return featureFlag && remainder <= featureFlag.percentage;
+    const featureFlag = await this.pgGateway.onSession(async (manager: PoolClient) => {
+      return await this.cachedFeatureFlag.findOne(manager, { clientId, key });
     });
+    const userHash = this.getHashCyrb53(userId);
+    const remainder = userHash % 100;
+    return Boolean(featureFlag) && remainder <= featureFlag.percentage;
   }
 
   private async findFeatureFlagByLocation({}: FindFlagManagerDTO): Promise<boolean> {
     return Promise.resolve(false);
   }
 
-  private getHashCyrb53(str: string, seed = 1000000007): number {
+  getHashCyrb53(str: string, seed = 1000000007): number {
     let h1 = 0xdeadbeef ^ seed,
       h2 = 0x41c6ce57 ^ seed;
     for (let i = 0, ch; i < str.length; i++) {
