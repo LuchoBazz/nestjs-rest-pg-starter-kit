@@ -2,18 +2,16 @@ import { BaseModel } from '../base.entity';
 
 export class OrganizationEntity extends BaseModel {
   private _name: string;
-  private _alpha_user: string;
   private _client_id: string;
 
-  constructor(name: string, client_id: string, alpha_user: string) {
+  constructor(name: string, client_id: string) {
     super();
     this._name = name;
     this._client_id = client_id;
-    this._alpha_user = alpha_user;
   }
 
   public loadFromRow(row: any): OrganizationEntity {
-    return new OrganizationEntity(row.organization_name, row.organization_client_id, row.organization_alpha_user);
+    return new OrganizationEntity(row.organization_name, row.organization_client_id);
   }
 
   public get name(): string {
@@ -30,13 +28,5 @@ export class OrganizationEntity extends BaseModel {
 
   public set client_id(value: string) {
     this._client_id = value;
-  }
-
-  public get alpha_user(): string {
-    return this._alpha_user;
-  }
-
-  public set alpha_user(value: string) {
-    this._alpha_user = value;
   }
 }
