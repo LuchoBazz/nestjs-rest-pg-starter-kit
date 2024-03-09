@@ -23,7 +23,7 @@ const cyrb53 = (str: string, seed = 0) => {
 };
 
 @Injectable()
-export class FeaturueFlagManagerService {
+export class FeatureFlagManagerService {
   constructor(
     private readonly pgGateway: PgGateway,
     private readonly cachedFeatureFlag: CachedFeatureFlagService,

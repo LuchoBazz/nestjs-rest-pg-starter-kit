@@ -15,6 +15,7 @@ import { CachedConfigurationService } from './services/cached_configuration.serv
 import { CachedFeatureFlagService } from './services/cached_feature_flag.service';
 import { ConfigurationService } from './services/configuration.service';
 import { FeatureFlagService } from './services/feature_flag.service';
+import { FeatureFlagManagerService } from './services/flag_manager.service';
 
 @Module({
   imports: [CacheModule, PostgresqlModule, forwardRef(() => AuthenticationModule), UsersModule],
@@ -30,6 +31,7 @@ import { FeatureFlagService } from './services/feature_flag.service';
     CachedConfigurationService,
     ConfigurationInteractor,
     ConfigurationPresenter,
+    FeatureFlagManagerService,
   ],
   exports: [
     FeatureFlagRepository,
@@ -42,6 +44,7 @@ import { FeatureFlagService } from './services/feature_flag.service';
     CachedConfigurationService,
     ConfigurationInteractor,
     ConfigurationPresenter,
+    FeatureFlagManagerService,
   ],
 })
 export class OrganizationsModule {}
