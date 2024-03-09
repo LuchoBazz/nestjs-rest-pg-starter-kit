@@ -59,7 +59,7 @@ export class FeatureFlagsResponse {
   pageInfo: PageInfoResponse;
 }
 
-export class FeatureFlagResponse {
+export class FeatureFlagBooleanResponse {
   @IsBoolean()
   success: boolean;
 }

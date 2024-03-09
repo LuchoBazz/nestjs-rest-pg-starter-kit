@@ -7,7 +7,7 @@ import { JwtUser, Permissions } from '../../authentication/decorators';
 import { JwtAuthGuard, PermissionsGuard } from '../../authentication/guards';
 import {
   CreateFeatureFlagInput,
-  FeatureFlagResponse,
+  FeatureFlagBooleanResponse,
   FeatureFlagsResponse,
   FilterFeatureFlagInput,
   OrderByFeatureFlag,
@@ -68,7 +68,7 @@ export class FeatureFlagController {
   public async deleteFeatureFlag(
     @Body() input: FilterFeatureFlagInput,
     @JwtUser() user: UserEntity,
-  ): Promise<FeatureFlagResponse> {
+  ): Promise<FeatureFlagBooleanResponse> {
     const success = await this.featureFlagInteractor.deleteFeatureFlag(user.organization_client_id, input);
     return { success };
   }
