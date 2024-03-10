@@ -2,12 +2,12 @@ import { BaseModel } from '../base.entity';
 
 export class OrganizationEntity extends BaseModel {
   private _name: string;
-  private _client_id: string;
+  private _clientId: string;
 
-  constructor(name: string, client_id: string) {
+  constructor(name: string, clientId: string) {
     super();
     this._name = name;
-    this._client_id = client_id;
+    this._clientId = clientId;
   }
 
   public loadFromRow(row: any): OrganizationEntity {
@@ -22,11 +22,11 @@ export class OrganizationEntity extends BaseModel {
     this._name = value;
   }
 
-  public get client_id(): string {
-    return this._client_id;
+  public get clientId(): string {
+    return this._clientId;
   }
 
-  public set client_id(value: string) {
-    this._client_id = value;
+  public set clientId(value: string) {
+    this._clientId = value;
   }
 }
