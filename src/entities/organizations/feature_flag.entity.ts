@@ -6,6 +6,11 @@ export interface FeatureFlagPaginationResponse {
   pageInfo: PageInfoResponse;
 }
 
+export enum FeatureFlagType {
+  PERCENTAGE = 'PERCENTAGE',
+  LOCATION = 'LOCATION',
+}
+
 export class FeatureFlagResponse {
   id: string;
   key: string;
@@ -36,6 +41,7 @@ export class FeatureFlagEntity extends BaseModel {
     super(id);
     this.key = key;
     this.value = value;
+    this.percentage = percentage;
     this.is_active = is_active;
     this.organization_client_id = organization_client_id;
     this.is_experimental = is_experimental;
