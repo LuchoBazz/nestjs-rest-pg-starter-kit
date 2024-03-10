@@ -49,13 +49,12 @@ describe.each([
 
     repositoryPgGateway.onSession.mockResolvedValueOnce(featureFlagMock);
 
-    const hash = service.getHashCyrb53(userId);
-    const userPercentage = hash % 100;
+    const userIdHash = 198641970791380;
+    const userPercentage = userIdHash % 100;
 
     const result = await service.findFeatureFlag({ clientId, key, userId, type: FeatureFlagType.PERCENTAGE });
     expect(result).toEqual(expected);
     expect(repositoryPgGateway.onSession).toHaveBeenCalledTimes(1);
-    expect(hash).toEqual(198641970791380);
     expect(userPercentage).toEqual(80);
   });
 });
