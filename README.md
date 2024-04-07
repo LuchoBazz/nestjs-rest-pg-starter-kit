@@ -14,6 +14,12 @@
   <a href="https://www.lemonsqueezy.com/" target="blank"><img src="https://pbs.twimg.com/profile_images/1585179575222501376/SBDi9PA-_400x400.jpg" height="100" width="100" alt="Lemon Squeezy logo" /></a>
 </p>
 
+## ⚠️ Disclaimer
+
+This project is currently marked as Experimental and Unstable. While efforts have been made to ensure its functionality, please be aware that it may contain bugs, incomplete features, or undergo significant changes in future updates. 
+
+Use this project at your own risk. We recommend exercising caution and testing thoroughly before deploying it in production environments. Contributions, feedback, and bug reports are welcome to help improve the stability and reliability of the project. 🚀
+
 ## Description
 
 This starter kit provides a template for creating Nest.js projects with Rest API as the API layer and raw PostgreSQL for database operations.
